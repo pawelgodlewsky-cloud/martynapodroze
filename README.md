@@ -1,17 +1,19 @@
 # Martyna Podróże
 
-Strona internetowa marki **Martyna Podróże** — krótkie podróże po Europie,
-gotowe plany city breaków, realne koszty i inspiracje dla osób, które mają
-1–3 dni.
+Strona internetowa marki **Martyna Podróże** — praktyczne ebooki, przewodniki
+i indywidualne wsparcie dla kobiet, które chcą podróżować pewniej solo lub
+z rodziną, w rozsądnym budżecie.
 
 ## Etap projektu
 
 Aktualnie repozytorium zawiera pierwszą, responsywną wersję strony głównej.
-Najważniejszym elementem jest planer pomagający wybrać podróż według:
+Najważniejszym elementem jest formularz pomagający wybrać odpowiednie wsparcie:
 
-- liczby dni,
+- gotowy ebook lub przewodnik,
+- indywidualny plan podróży od A do Z,
+- konsultację podróżniczą,
 - lotniska wylotu,
-- budżetu.
+- budżetu podróży.
 
 ## Uruchomienie lokalne
 
@@ -27,8 +29,9 @@ Następnie otwórz `http://127.0.0.1:4175`.
 ## Plan rozwoju
 
 1. Zastąpienie zdjęć demonstracyjnych fotografiami Martyny.
-2. Dodanie prawdziwych planów podróży i kierunków.
-3. Osobne podstrony city breaków.
-4. Newsletter i formularz współpracy.
+2. Dodanie prawdziwych ebooków, przewodników, cen i opinii.
+3. Uruchomienie sprzedaży oraz podstron produktów.
+4. Formularze konsultacji, indywidualnego planowania i newslettera.
 5. SEO, analityka i dokumenty prawne.
 6. Podłączenie domeny `martynapodroze.pl`.
+7. Rozwinięcie oferty o wspólne kobiece wyjazdy z Martyną.
