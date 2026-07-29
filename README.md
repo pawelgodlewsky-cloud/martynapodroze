@@ -9,9 +9,9 @@ z rodziną, w rozsądnym budżecie.
 Aktualnie repozytorium zawiera pierwszą, responsywną wersję strony głównej.
 Najważniejszym elementem jest formularz pomagający wybrać odpowiednie wsparcie:
 
-- gotowy ebook lub przewodnik,
-- indywidualny plan podróży od A do Z,
-- konsultację podróżniczą,
+- 4-dniowy przewodnik „Lombardia bez stresu” (59 zł na premierę, później 79 zł),
+- indywidualny plan podróży od A do Z (349 / 549 / 749 zł),
+- godzinną konsultację podróżniczą (169 zł na start),
 - lotniska wylotu,
 - budżetu podróży.
 

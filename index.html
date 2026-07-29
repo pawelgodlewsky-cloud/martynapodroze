@@ -1778,6 +1778,40 @@
       font-size: 0.74rem;
     }
 
+    .proof-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .proof-item {
+      display: grid;
+      gap: 1px;
+      padding: 0 18px;
+      border-right: 1px solid var(--line);
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    .proof-item:first-child {
+      padding-left: 0;
+    }
+
+    .proof-item:last-child {
+      border-right: 0;
+    }
+
+    .proof-item strong {
+      color: var(--ink);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+
     .avatar {
       border-color: var(--cloud);
     }
@@ -1924,6 +1958,8 @@
     }
 
     .trip-card {
+      display: flex;
+      flex-direction: column;
       border-color: var(--line);
       border-radius: 18px;
       box-shadow: 0 10px 30px rgba(73, 57, 45, 0.06);
@@ -1977,6 +2013,9 @@
     }
 
     .trip-card-body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
       padding: 21px 22px 24px;
     }
 
@@ -1990,9 +2029,86 @@
       color: var(--coral);
     }
 
+    .product-summary {
+      min-height: 72px;
+      margin: 13px 0 0;
+      color: var(--ink-soft);
+      font-size: 0.86rem;
+      line-height: 1.65;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .price-row strong {
+      color: var(--coral);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 0.9;
+    }
+
+    .price-row span {
+      color: var(--ink-soft);
+      font-size: 0.68rem;
+      line-height: 1.35;
+    }
+
+    .price-row del {
+      opacity: 0.75;
+    }
+
+    .product-features {
+      display: grid;
+      gap: 8px;
+      margin: 19px 0 0;
+      padding: 0;
+      color: var(--ink-soft);
+      font-size: 0.76rem;
+      line-height: 1.45;
+      list-style: none;
+    }
+
+    .product-features li {
+      position: relative;
+      padding-left: 17px;
+    }
+
+    .product-features li::before {
+      position: absolute;
+      top: 0.58em;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--yellow);
+      content: "";
+    }
+
+    .trip-card-link {
+      margin-top: auto;
+    }
+
     .trip-card-link span:last-child {
       background: #f2e7dc;
       color: var(--coral);
+    }
+
+    .offer-note {
+      max-width: 900px;
+      margin: 30px auto 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 253, 251, 0.75);
+      padding: 15px 20px;
+      color: var(--ink-soft);
+      font-size: 0.76rem;
+      line-height: 1.6;
+      text-align: center;
     }
 
     .timeline-section {
@@ -2196,6 +2312,23 @@
         font-size: 0.92rem;
       }
 
+      .proof-list {
+        gap: 10px 0;
+      }
+
+      .proof-item {
+        padding-inline: 10px;
+        font-size: 0.65rem;
+      }
+
+      .proof-item strong {
+        font-size: 1.15rem;
+      }
+
+      .product-summary {
+        min-height: 0;
+      }
+
       .hero-visual {
         min-height: 410px;
         border-radius: 180px 180px 19px 19px;
@@ -2254,19 +2387,18 @@
             <a class="secondary-button" href="#planer">Zaplanuj podróż z Martyną</a>
           </div>
 
-          <div class="trust-note">
-            <span class="avatar-stack" aria-hidden="true">
-              <span class="avatar">MK</span>
-              <span class="avatar">AN</span>
-              <span class="avatar">OL</span>
-            </span>
-            <span>Sprawdzone wskazówki, rozsądny budżet i wsparcie krok po kroku</span>
+          <div class="trust-note" aria-label="Doświadczenie Martyny">
+            <ul class="proof-list">
+              <li class="proof-item"><strong>10 185</strong><span>obserwujących</span></li>
+              <li class="proof-item"><strong>35+</strong><span>odwiedzonych krajów</span></li>
+              <li class="proof-item"><strong>31+</strong><span>przygotowanych planów</span></li>
+            </ul>
           </div>
         </div>
 
         <div class="hero-visual" aria-label="Miejsce na fotografię Martyny z podróży">
           <div class="trip-path">
-            <span class="path-tag">WAW → NAP</span>
+            <span class="path-tag">WAW → BGY</span>
           </div>
           <div class="route-line" aria-hidden="true"></div>
 
@@ -2276,8 +2408,8 @@
                 <span>zdjęcie Martyny</span>
               </div>
               <div class="scene-label">
-                <strong>W drogę z gotowym planem</strong>
-                <span>LEPIEJ LECIEĆ</span>
+                <strong>Przewodnik po Lombardii</strong>
+                <span>4 DNI</span>
               </div>
             </div>
           </div>
@@ -2346,30 +2478,48 @@
 
         <div class="cards-grid" id="trip-results">
           <article class="trip-card" id="ebooki" data-days="1" data-budget="0">
-            <div class="card-scene scene-corfu">
-              <span class="card-day">EBOOKI</span>
-              <span class="card-location">Gotowe i konkretne</span>
+            <div class="card-scene scene-bergamo">
+              <span class="card-day">WKRÓTCE</span>
+              <span class="card-location">4 dni w Lombardii</span>
             </div>
             <div class="trip-card-body">
-              <h3>Twój plan zawsze pod ręką</h3>
-              <p class="trip-data"><strong>Krok po kroku</strong><span>trasy, koszty i praktyczne wskazówki</span></p>
-              <a class="trip-card-link" href="#timeline">
-                <span>Zobacz ebooki i przewodniki</span>
+              <h3>Lombardia bez stresu</h3>
+              <p class="product-summary">Praktyczny przewodnik po Bergamo, Mediolanie oraz jeziorach Garda i Como. Gotowy plan na 4 dni, transport, restauracje i konkretne wskazówki.</p>
+              <div class="price-row">
+                <strong>59 zł</strong>
+                <span>cena premierowa<br><del>79 zł regularnie</del></span>
+              </div>
+              <ul class="product-features">
+                <li>plan zwiedzania dzień po dniu</li>
+                <li>dojazdy, bilety i miejsca, w których warto zjeść</li>
+                <li>podpowiedzi, na czym nie warto przepłacać</li>
+              </ul>
+              <a class="trip-card-link" href="#poradniki">
+                <span>Powiadom mnie o premierze</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
 
           <article class="trip-card" data-days="2" data-budget="0">
-            <div class="card-scene scene-bergamo">
+            <div class="card-scene scene-corfu">
               <span class="card-day">PLAN OD A DO Z</span>
-              <span class="card-location">Tylko dla Ciebie</span>
+              <span class="card-location">Jeden plan dla całej grupy</span>
             </div>
             <div class="trip-card-body">
               <h3>Wyjazd ułożony po Twojemu</h3>
-              <p class="trip-data"><strong>Od lotu do powrotu</strong><span>noclegi, transfery i zwiedzanie</span></p>
-              <a class="trip-card-link" href="#timeline">
-                <span>Zapytaj o indywidualny plan</span>
+              <p class="product-summary">Otrzymujesz gotową trasę, sprawdzone propozycje i bezpośrednie linki. Ty wybierasz i samodzielnie dokonujesz rezerwacji.</p>
+              <div class="price-row">
+                <strong>od 349 zł</strong>
+                <span>2-4 dni: 349 zł<br>5-7 dni: 549 zł<br>8-10 dni: 749 zł</span>
+              </div>
+              <ul class="product-features">
+                <li>loty, noclegi, transport, bilety i atrakcje</li>
+                <li>plan dzień po dniu i sprawdzone restauracje</li>
+                <li>realizacja do 7 dni roboczych i jedna seria poprawek</li>
+              </ul>
+              <a class="trip-card-link" href="mailto:podroz.martyna@gmail.com?subject=Zapytanie%20o%20indywidualny%20plan%20podrozy">
+                <span>Zapytaj o swój plan</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
@@ -2381,15 +2531,25 @@
               <span class="card-location">Rozmowa z Martyną</span>
             </div>
             <div class="trip-card-body">
-              <h3>Spokojnie przed podróżą</h3>
-              <p class="trip-data"><strong>Odpowiedzi bez oceniania</strong><span>na wszystkie Twoje pytania</span></p>
-              <a class="trip-card-link" href="#timeline">
-                <span>Umów konsultację</span>
+              <h3>Godzina konkretnego planowania</h3>
+              <p class="product-summary">Rozmowa online albo telefoniczna. Razem porządkujemy kierunek, budżet, loty, noclegi i pytania, które nie dają Ci spokoju.</p>
+              <div class="price-row">
+                <strong>169 zł</strong>
+                <span>cena premierowa<br><del>199 zł regularnie</del></span>
+              </div>
+              <ul class="product-features">
+                <li>krótka ankieta przed spotkaniem</li>
+                <li>60 minut rozmowy i podsumowanie e-mailem</li>
+                <li>100 zł rabatu na plan zamówiony w ciągu 7 dni</li>
+              </ul>
+              <a class="trip-card-link" href="mailto:podroz.martyna@gmail.com?subject=Konsultacja%20podroznicza">
+                <span>Umów konsultację za 169 zł</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
         </div>
+        <p class="offer-note">Martyna przygotowuje plan oraz bezpośrednie linki do ofert. Loty, noclegi, bilety i pozostałe usługi rezerwujesz oraz opłacasz samodzielnie u wybranych dostawców. Cena planu dotyczy jednego wspólnego programu podróży. Bardziej złożone potrzeby większej grupy wyceniamy indywidualnie.</p>
       </div>
     </section>
 
@@ -2473,15 +2633,15 @@
       <div class="container">
         <div class="newsletter-box">
           <div class="newsletter-copy">
-            <h2>Lepszy plan zaczyna się od jednej dobrej okazji.</h2>
-            <p>Co tydzień Martyna wybiera propozycje tanich lotów i praktyczne wskazówki podróżnicze. Zapisz się, a także jako pierwsza poznasz plany przyszłych kobiecych wyjazdów.</p>
+            <h2>Przewodnik po Lombardii już powstaje.</h2>
+            <p>Zapisz się, aby jako pierwsza poznać datę premiery i kupić 4-dniowy przewodnik w cenie 59 zł. Otrzymasz też cotygodniowe propozycje tanich lotów i praktyczne wskazówki.</p>
           </div>
 
           <form class="signup" id="newsletter-form">
             <label for="email">Twój adres e-mail</label>
             <div class="signup-row">
               <input id="email" name="email" type="email" placeholder="np. ola@email.pl" required>
-              <button type="submit">Chcę tanie loty →</button>
+              <button type="submit">Powiadom mnie o premierze →</button>
             </div>
             <p class="signup-message" id="signup-message" aria-live="polite"></p>
           </form>
@@ -2510,10 +2670,11 @@
           <strong>Poznaj</strong>
           <a href="#omnie">O Martynie</a>
           <a href="#poradniki">Newsletter</a>
-          <a href="#kontakt">Współpraca</a>
+          <a href="mailto:podroz.martyna@gmail.com?subject=Wspolpraca%20z%20Martyna%20Podroze">Współpraca</a>
         </div>
         <div class="footer-column">
-          <strong>Obserwuj</strong>
+          <strong>Kontakt</strong>
+          <a href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>
           <a href="https://www.instagram.com/martyna_podroze/">Instagram</a>
           <a href="#poradniki">Newsletter</a>
           <a href="#start">Polityka prywatności</a>
@@ -2526,7 +2687,7 @@
     </div>
   </footer>
 
-  <a class="mobile-cta" href="#ebooki">Zobacz przewodniki →</a>
+  <a class="mobile-cta" href="#poradniki">Powiadom mnie o premierze →</a>
   <div class="prototype-note">WERSJA ROBOCZA 01</div>
 
   <script>
@@ -2539,6 +2700,7 @@
       const resultCards = [...document.querySelectorAll(".trip-card")];
       const newsletter = document.getElementById("newsletter-form");
       const signupMessage = document.getElementById("signup-message");
+      const email = document.getElementById("email");
       let selectedDays = 1;
 
       const supportLabels = {
@@ -2574,7 +2736,7 @@
           resultCards.forEach((card) => card.classList.remove("is-hidden"));
           status.textContent += " · pokazujemy najbliższe propozycje";
         } else {
-          status.textContent += ` · ${visible} ${visible === 1 ? "pasujący plan" : "pasujące plany"}`;
+          status.textContent += ` · ${visible} ${visible === 1 ? "pasująca opcja" : "pasujące opcje"}`;
         }
       }
 
@@ -2600,7 +2762,12 @@
 
       newsletter.addEventListener("submit", (event) => {
         event.preventDefault();
-        signupMessage.textContent = "To tylko prototyp - formularz pokazuje docelowe zachowanie.";
+        const subject = encodeURIComponent("Powiadom mnie o premierze przewodnika po Lombardii");
+        const body = encodeURIComponent(
+          `Proszę o informację o premierze przewodnika po Lombardii.\n\nMój adres e-mail: ${email.value}`
+        );
+        signupMessage.textContent = "Otwieramy wiadomość do Martyny. Wyślij ją, aby zapisać się na listę premiery.";
+        window.location.href = `mailto:podroz.martyna@gmail.com?subject=${subject}&body=${body}`;
       });
     })();
   </script>
