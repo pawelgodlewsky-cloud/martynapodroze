@@ -2439,28 +2439,25 @@
               </div>
 
               <label class="select-wrap">
-                <span class="field-label">Skąd lecisz?</span>
-                <select class="finder-select" id="departure">
-                  <option value="any">Dowolne lotnisko</option>
-                  <option value="warszawa">Warszawa</option>
-                  <option value="krakow">Kraków</option>
-                  <option value="katowice">Katowice</option>
-                  <option value="gdansk">Gdańsk</option>
+                <span class="field-label">Kto podróżuje?</span>
+                <select class="finder-select" id="travel-party">
+                  <option value="solo">Podróżuję solo</option>
+                  <option value="couple">Z partnerem</option>
+                  <option value="family" selected>Z rodziną</option>
+                  <option value="group">W większej grupie</option>
                 </select>
               </label>
 
               <label class="select-wrap">
-                <span class="field-label">Budżet podróży</span>
-                <select class="finder-select" id="budget">
-                  <option value="1500">do 1500 zł</option>
-                  <option value="1000" selected>do 1000 zł</option>
-                  <option value="700">do 700 zł</option>
+                <span class="field-label">Cena i zakres</span>
+                <select class="finder-select" id="service-price">
+                  <option value="ebook-59">Przewodnik 4 dni - 59 zł</option>
                 </select>
               </label>
 
-              <button class="finder-submit" type="submit">Pokaż możliwości →</button>
+              <button class="finder-submit" type="submit">Pokaż wybraną usługę →</button>
             </div>
-            <p class="finder-status" id="finder-status" aria-live="polite">Wybrano: ebook · dowolne lotnisko · budżet podróży do 1000 zł</p>
+            <p class="finder-status" id="finder-status" aria-live="polite">Wybrano: ebook · wyjazd z rodziną · przewodnik 4 dni - 59 zł</p>
           </form>
         </div>
       </div>
@@ -2693,8 +2690,8 @@
   <script>
     (() => {
       const dayButtons = [...document.querySelectorAll(".day-button")];
-      const departure = document.getElementById("departure");
-      const budget = document.getElementById("budget");
+      const travelParty = document.getElementById("travel-party");
+      const servicePrice = document.getElementById("service-price");
       const finder = document.getElementById("trip-finder");
       const status = document.getElementById("finder-status");
       const resultCards = [...document.querySelectorAll(".trip-card")];
@@ -2709,18 +2706,44 @@
         3: "konsultacja"
       };
 
-      const departureLabels = {
-        any: "dowolne lotnisko",
-        warszawa: "Warszawa",
-        krakow: "Kraków",
-        katowice: "Katowice",
-        gdansk: "Gdańsk"
+      const travelPartyLabels = {
+        solo: "podróż solo",
+        couple: "wyjazd z partnerem",
+        family: "wyjazd z rodziną",
+        group: "wyjazd w większej grupie"
       };
 
+      const servicePriceOptions = {
+        1: [
+          { value: "ebook-59", label: "Przewodnik 4 dni - 59 zł" }
+        ],
+        2: [
+          { value: "plan-349", label: "Plan 2-4 dni - 349 zł" },
+          { value: "plan-549", label: "Plan 5-7 dni - 549 zł" },
+          { value: "plan-749", label: "Plan 8-10 dni - 749 zł" }
+        ],
+        3: [
+          { value: "consultation-169", label: "Konsultacja 60 min - 169 zł" }
+        ]
+      };
+
+      function updatePriceOptions() {
+        servicePrice.replaceChildren(
+          ...servicePriceOptions[selectedDays].map(({ value, label }) => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            return option;
+          })
+        );
+      }
+
       function updateStatus() {
+        const selectedPrice = servicePrice.options[servicePrice.selectedIndex];
         status.textContent =
           `Wybrano: ${supportLabels[selectedDays]} · ` +
-          `${departureLabels[departure.value]} · budżet podróży do ${budget.value} zł`;
+          `${travelPartyLabels[travelParty.value]} · ` +
+          `${selectedPrice.textContent.toLowerCase()}`;
       }
 
       function filterCards() {
@@ -2746,12 +2769,13 @@
           dayButtons.forEach((item) => {
             item.setAttribute("aria-pressed", String(item === button));
           });
+          updatePriceOptions();
           updateStatus();
         });
       });
 
-      departure.addEventListener("change", updateStatus);
-      budget.addEventListener("change", updateStatus);
+      travelParty.addEventListener("change", updateStatus);
+      servicePrice.addEventListener("change", updateStatus);
 
       finder.addEventListener("submit", (event) => {
         event.preventDefault();
