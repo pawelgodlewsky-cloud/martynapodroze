@@ -1,6 +1,6 @@
 # Martyna Podróże
 
-Strona internetowa marki **Martyna Podróże** — praktyczne ebooki, przewodniki
+Strona internetowa marki **Martyna Podróże** - praktyczne ebooki, przewodniki
 i indywidualne wsparcie dla kobiet, które chcą podróżować pewniej solo lub
 z rodziną, w rozsądnym budżecie.
 
