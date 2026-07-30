@@ -2173,6 +2173,306 @@
       text-align: center;
     }
 
+    .inquiry-section {
+      padding: 116px 0;
+      border-top: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(233, 184, 79, 0.13), transparent 24%),
+        linear-gradient(135deg, #f7f0e8, #f0e5dc);
+    }
+
+    .inquiry-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.25fr);
+      gap: clamp(34px, 6vw, 78px);
+      align-items: start;
+    }
+
+    .inquiry-copy {
+      padding-top: 18px;
+    }
+
+    .inquiry-copy h2 {
+      max-width: 540px;
+      margin: 14px 0 20px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3.15rem, 5.1vw, 5.5rem);
+      font-weight: 600;
+      letter-spacing: -0.045em;
+      line-height: 0.9;
+    }
+
+    .inquiry-lead {
+      max-width: 470px;
+      color: var(--ink-soft);
+      line-height: 1.75;
+    }
+
+    .inquiry-steps {
+      display: grid;
+      gap: 0;
+      margin: 34px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .inquiry-steps li {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      border-top: 1px solid rgba(111, 104, 98, 0.2);
+      padding: 17px 0;
+    }
+
+    .inquiry-steps li:last-child {
+      border-bottom: 1px solid rgba(111, 104, 98, 0.2);
+    }
+
+    .inquiry-steps span {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(200, 110, 89, 0.35);
+      border-radius: 50%;
+      color: var(--coral);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .inquiry-steps strong {
+      display: block;
+      margin-bottom: 3px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+    }
+
+    .inquiry-steps p {
+      color: var(--ink-soft);
+      font-size: 0.8rem;
+      line-height: 1.55;
+    }
+
+    .inquiry-note {
+      margin-top: 24px;
+      color: var(--coral);
+      font-family: "Caveat", cursive;
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .inquiry-form {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #dfd1c4;
+      border-radius: 24px;
+      background: rgba(255, 253, 251, 0.96);
+      box-shadow: 0 24px 70px rgba(73, 57, 45, 0.1);
+      padding: clamp(24px, 4vw, 46px);
+    }
+
+    .inquiry-form::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 110px;
+      height: 110px;
+      border: 1px solid rgba(200, 110, 89, 0.09);
+      border-radius: 50%;
+      content: "";
+      transform: translate(42%, -42%);
+    }
+
+    .form-heading {
+      position: relative;
+      margin-bottom: 28px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .form-heading strong {
+      display: block;
+      margin-bottom: 5px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .form-heading span {
+      color: var(--ink-soft);
+      font-size: 0.78rem;
+      line-height: 1.55;
+    }
+
+    .inquiry-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 19px 16px;
+    }
+
+    .inquiry-field {
+      display: grid;
+      gap: 8px;
+      color: var(--ink);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .inquiry-field.is-wide {
+      grid-column: 1 / -1;
+    }
+
+    .inquiry-field small {
+      color: var(--ink-soft);
+      font-size: 0.65rem;
+      font-weight: 500;
+    }
+
+    .inquiry-field input,
+    .inquiry-field select,
+    .inquiry-field textarea {
+      width: 100%;
+      min-height: 54px;
+      border: 1px solid #cfc0b3;
+      border-radius: 12px;
+      background: #fffdfa;
+      color: var(--ink);
+      padding: 12px 14px;
+      font: inherit;
+      font-size: 0.84rem;
+      font-weight: 500;
+    }
+
+    .inquiry-field textarea {
+      min-height: 128px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .inquiry-field input::placeholder,
+    .inquiry-field textarea::placeholder {
+      color: #9a8f86;
+      opacity: 1;
+    }
+
+    .inquiry-field input:focus,
+    .inquiry-field select:focus,
+    .inquiry-field textarea:focus {
+      border-color: var(--coral);
+      outline: 3px solid rgba(200, 110, 89, 0.13);
+    }
+
+    .inquiry-consent {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      grid-column: 1 / -1;
+      gap: 10px;
+      align-items: start;
+      color: var(--ink-soft);
+      cursor: pointer;
+      font-size: 0.7rem;
+      line-height: 1.55;
+    }
+
+    .inquiry-consent input {
+      width: 18px;
+      height: 18px;
+      margin: 2px 0 0;
+      accent-color: var(--coral);
+    }
+
+    .inquiry-submit {
+      display: inline-flex;
+      grid-column: 1 / -1;
+      min-height: 58px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--coral);
+      color: var(--white);
+      cursor: pointer;
+      padding: 14px 24px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      transition:
+        background 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .inquiry-submit:hover {
+      background: #ac5846;
+      box-shadow: 0 12px 30px rgba(172, 88, 70, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .inquiry-privacy {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      color: var(--ink-soft);
+      font-size: 0.66rem;
+      line-height: 1.55;
+    }
+
+    .inquiry-privacy summary {
+      width: fit-content;
+      color: var(--coral);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .inquiry-privacy p {
+      margin: 9px 0 0;
+    }
+
+    .form-honey {
+      position: absolute;
+      left: -9999px;
+    }
+
+    @media (max-width: 900px) {
+      .inquiry-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .inquiry-copy {
+        max-width: 650px;
+        padding-top: 0;
+      }
+
+      .inquiry-copy h2 {
+        max-width: 650px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .inquiry-section {
+        padding: 82px 0;
+      }
+
+      .inquiry-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .inquiry-field.is-wide,
+      .inquiry-consent,
+      .inquiry-submit,
+      .inquiry-privacy {
+        grid-column: 1;
+      }
+
+      .inquiry-form {
+        border-radius: 20px;
+        padding: 23px 18px 26px;
+      }
+    }
+
     .timeline-section {
       background:
         linear-gradient(135deg, rgba(255, 253, 251, 0.5), transparent 40%),
@@ -2309,6 +2609,15 @@
     .mobile-cta {
       background: var(--yellow);
       color: var(--ink);
+      transition:
+        opacity 180ms ease,
+        transform 180ms ease;
+    }
+
+    .mobile-cta.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(calc(100% + 30px));
     }
 
     @media (max-width: 1050px) {
@@ -2574,7 +2883,7 @@
                 <li>plan dzień po dniu i sprawdzone restauracje</li>
                 <li>realizacja do 7 dni roboczych i jedna seria poprawek</li>
               </ul>
-              <a class="trip-card-link" href="mailto:podroz.martyna@gmail.com?subject=Zapytanie%20o%20indywidualny%20plan%20podrozy">
+              <a class="trip-card-link" href="#zamowienie" data-inquiry-service="plan">
                 <span>Zapytaj o swój plan</span>
                 <span aria-hidden="true">→</span>
               </a>
@@ -2598,7 +2907,7 @@
                 <li>60 minut rozmowy i podsumowanie e-mailem</li>
                 <li>100 zł rabatu na plan zamówiony w ciągu 7 dni</li>
               </ul>
-              <a class="trip-card-link" href="mailto:podroz.martyna@gmail.com?subject=Konsultacja%20podroznicza">
+              <a class="trip-card-link" href="#zamowienie" data-inquiry-service="consultation">
                 <span>Umów konsultację za 169 zł</span>
                 <span aria-hidden="true">→</span>
               </a>
@@ -2606,6 +2915,151 @@
           </article>
         </div>
         <p class="offer-note">Martyna przygotowuje plan oraz bezpośrednie linki do ofert. Loty, noclegi, bilety i pozostałe usługi rezerwujesz oraz opłacasz samodzielnie u wybranych dostawców. Cena planu dotyczy jednego wspólnego programu podróży. Bardziej złożone potrzeby większej grupy wyceniamy indywidualnie.</p>
+      </div>
+    </section>
+
+    <section class="inquiry-section" id="zamowienie">
+      <div class="container inquiry-grid">
+        <div class="inquiry-copy">
+          <p class="eyebrow">Zacznijmy od rozmowy</p>
+          <h2>Opowiedz Martynie o swojej podróży</h2>
+          <p class="inquiry-lead">Wypełnij krótki formularz. Martyna przeczyta Twoje zgłoszenie i odpowie na podany adres e-mail po zapoznaniu się ze szczegółami.</p>
+
+          <ol class="inquiry-steps">
+            <li>
+              <span>1</span>
+              <div>
+                <strong>Opisujesz swój pomysł</strong>
+                <p>Kierunek, termin, liczba osób i to, czego najbardziej potrzebujesz.</p>
+              </div>
+            </li>
+            <li>
+              <span>2</span>
+              <div>
+                <strong>Martyna sprawdza zakres</strong>
+                <p>Otrzymasz odpowiedź, proponowaną usługę oraz potwierdzenie ceny.</p>
+              </div>
+            </li>
+            <li>
+              <span>3</span>
+              <div>
+                <strong>Decydujesz bez pośpiechu</strong>
+                <p>Dopiero po Twojej akceptacji ustalacie płatność i termin realizacji.</p>
+              </div>
+            </li>
+          </ol>
+
+          <p class="inquiry-note">Spokojnie, wysłanie formularza nie jest jeszcze rezerwacją ani płatnością ♡</p>
+        </div>
+
+        <form
+          class="inquiry-form"
+          id="inquiry-form"
+          action="https://formsubmit.co/podroz.martyna@gmail.com"
+          method="POST"
+        >
+          <input type="hidden" name="_subject" value="Nowe zgłoszenie ze strony Martyna Podróże">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://pawelgodlewsky-cloud.github.io/martynapodroze/dziekujemy.html">
+          <input type="hidden" name="_url" value="https://pawelgodlewsky-cloud.github.io/martynapodroze/#zamowienie">
+          <input type="hidden" name="_autoresponse" value="Dziękuję za wiadomość. Przeczytam Twoje zgłoszenie i odpowiem na podany adres e-mail. Martyna">
+          <label class="form-honey" aria-hidden="true">
+            Nie wypełniaj tego pola
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off">
+          </label>
+
+          <div class="form-heading">
+            <strong>Twoja podróż w kilku zdaniach</strong>
+            <span>Pola oznaczone gwiazdką są potrzebne, aby Martyna mogła odpowiedzieć.</span>
+          </div>
+
+          <div class="inquiry-fields">
+            <label class="inquiry-field is-wide">
+              Jakiej usługi potrzebujesz? *
+              <select id="inquiry-service" name="Wybrana usługa" required>
+                <option value="">Wybierz usługę</option>
+                <option value="Indywidualny plan podróży">Indywidualny plan podróży</option>
+                <option value="Konsultacja podróżnicza 60 minut">Konsultacja podróżnicza 60 minut</option>
+                <option value="Nie wiem, potrzebuję podpowiedzi">Nie wiem, potrzebuję podpowiedzi</option>
+              </select>
+            </label>
+
+            <label class="inquiry-field">
+              Imię *
+              <input type="text" name="Imię" autocomplete="given-name" placeholder="Jak masz na imię?" required>
+            </label>
+
+            <label class="inquiry-field">
+              Adres e-mail *
+              <input type="email" name="email" autocomplete="email" placeholder="np. anna@gmail.com" required>
+            </label>
+
+            <label class="inquiry-field">
+              Numer telefonu
+              <input type="tel" name="Telefon" autocomplete="tel" placeholder="Opcjonalnie">
+            </label>
+
+            <label class="inquiry-field">
+              Preferowany kontakt *
+              <select name="Preferowany kontakt" required>
+                <option value="E-mail">E-mail</option>
+                <option value="Telefon">Telefon</option>
+              </select>
+            </label>
+
+            <label class="inquiry-field">
+              Dokąd chcesz pojechać? *
+              <input type="text" name="Kierunek podróży" placeholder="np. Rzym lub jeszcze nie wiem" required>
+            </label>
+
+            <label class="inquiry-field">
+              Kiedy planujesz wyjazd?
+              <input type="text" name="Termin podróży" placeholder="np. wrzesień 2026">
+            </label>
+
+            <label class="inquiry-field">
+              Kto podróżuje? *
+              <select name="Uczestnicy podróży" required>
+                <option value="">Wybierz odpowiedź</option>
+                <option value="Podróżuję solo">Podróżuję solo</option>
+                <option value="Z partnerem">Z partnerem</option>
+                <option value="Z rodziną">Z rodziną</option>
+                <option value="W większej grupie">W większej grupie</option>
+              </select>
+            </label>
+
+            <label class="inquiry-field">
+              Budżet całego wyjazdu
+              <input type="text" name="Budżet podróży" placeholder="np. 4000 zł">
+              <small>Może być orientacyjny.</small>
+            </label>
+
+            <label class="inquiry-field">
+              Liczba dni
+              <input type="number" name="Liczba dni" min="1" max="60" inputmode="numeric" placeholder="np. 5">
+            </label>
+
+            <label class="inquiry-field is-wide">
+              Co jest dla Ciebie najtrudniejsze w planowaniu? *
+              <textarea name="Opis potrzeb" minlength="20" placeholder="Napisz, czego się obawiasz, co jest już zarezerwowane i w czym Martyna powinna Ci pomóc." required></textarea>
+            </label>
+
+            <label class="inquiry-consent">
+              <input type="checkbox" name="Zgoda na kontakt" value="Tak" required>
+              <span>Zgadzam się na wykorzystanie podanych danych wyłącznie do odpowiedzi na moje zgłoszenie i przygotowania oferty. *</span>
+            </label>
+
+            <button class="inquiry-submit" type="submit">
+              Wyślij zgłoszenie do Martyny
+              <span aria-hidden="true">→</span>
+            </button>
+
+            <details class="inquiry-privacy">
+              <summary>Jak wykorzystamy Twoje dane?</summary>
+              <p>Administratorem danych jest Martyna Podróże, kontakt: podroz.martyna@gmail.com. Dane wykorzystamy wyłącznie do obsługi zgłoszenia i przygotowania odpowiedzi. Nie zapisujemy Cię w ten sposób do newslettera. Formularz technicznie obsługuje zewnętrzny dostawca FormSubmit.</p>
+            </details>
+          </div>
+        </form>
       </div>
     </section>
 
@@ -2756,6 +3210,10 @@
       const newsletter = document.getElementById("newsletter-form");
       const signupMessage = document.getElementById("signup-message");
       const email = document.getElementById("email");
+      const inquiryService = document.getElementById("inquiry-service");
+      const inquiryLinks = [...document.querySelectorAll("[data-inquiry-service]")];
+      const inquirySection = document.getElementById("zamowienie");
+      const mobileCta = document.querySelector(".mobile-cta");
       const siteHeader = document.querySelector(".site-header");
       const menuButton = document.querySelector(".menu-button");
       const mainNavigation = document.getElementById("main-navigation");
@@ -2787,6 +3245,11 @@
         3: [
           { value: "consultation-169", label: "Konsultacja 60 min - 169 zł" }
         ]
+      };
+
+      const inquiryServiceValues = {
+        plan: "Indywidualny plan podróży",
+        consultation: "Konsultacja podróżnicza 60 minut"
       };
 
       function closeMenu() {
@@ -2867,6 +3330,22 @@
 
       travelParty.addEventListener("change", updateStatus);
       servicePrice.addEventListener("change", updateStatus);
+
+      inquiryLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          inquiryService.value = inquiryServiceValues[link.dataset.inquiryService] || "";
+        });
+      });
+
+      if ("IntersectionObserver" in window) {
+        const inquiryObserver = new IntersectionObserver(
+          ([entry]) => {
+            mobileCta.classList.toggle("is-hidden", entry.isIntersecting);
+          },
+          { threshold: 0.05 }
+        );
+        inquiryObserver.observe(inquirySection);
+      }
 
       finder.addEventListener("submit", (event) => {
         event.preventDefault();

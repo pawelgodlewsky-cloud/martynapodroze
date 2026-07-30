@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Dziękuję za wiadomość | Martyna Podróże</title>
+  <meta name="description" content="Potwierdzenie wysłania zgłoszenia do Martyny Podróże.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f0e8;
+      --paper: #fffdfb;
+      --ink: #2d2926;
+      --soft: #766d66;
+      --coral: #c86e59;
+      --yellow: #e9b84f;
+      --line: #dfd1c4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(233, 184, 79, 0.16), transparent 25%),
+        linear-gradient(135deg, var(--cream), #efe3d9);
+      color: var(--ink);
+      font-family: "Manrope", sans-serif;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      display: grid;
+      width: min(100% - 32px, 940px);
+      min-height: 100vh;
+      margin: 0 auto;
+      place-items: center;
+      padding: 42px 0;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255, 253, 251, 0.95);
+      box-shadow: 0 28px 80px rgba(73, 57, 45, 0.12);
+      padding: clamp(32px, 7vw, 78px);
+      text-align: center;
+    }
+
+    .card::before {
+      position: absolute;
+      top: -70px;
+      right: -70px;
+      width: 190px;
+      height: 190px;
+      border: 1px solid rgba(200, 110, 89, 0.12);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .logo {
+      display: inline-block;
+      width: min(260px, 70%);
+      margin-bottom: 42px;
+    }
+
+    .logo img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .stamp {
+      display: grid;
+      width: 62px;
+      height: 62px;
+      margin: 0 auto 24px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--ink);
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 680px;
+      margin: 0 auto;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3.2rem, 8vw, 6.4rem);
+      font-weight: 600;
+      letter-spacing: -0.045em;
+      line-height: 0.9;
+    }
+
+    h1 em {
+      color: var(--coral);
+      font-weight: 500;
+    }
+
+    .lead {
+      max-width: 610px;
+      margin: 26px auto 0;
+      color: var(--soft);
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      line-height: 1.75;
+    }
+
+    .note {
+      margin: 22px 0 0;
+      color: var(--coral);
+      font-family: "Caveat", cursive;
+      font-size: 1.45rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 38px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button-primary {
+      background: var(--coral);
+      color: white;
+    }
+
+    .button-secondary {
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--coral);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="card" aria-labelledby="page-title">
+      <a class="logo" href="./" aria-label="Wróć na stronę główną Martyna Podróże">
+        <img src="assets/logo-martyna-v2.png" alt="Martyna Podróże" width="1746" height="351">
+      </a>
+
+      <div class="stamp" aria-hidden="true">✓</div>
+      <h1 id="page-title">Dziękuję za <em>Twoje zgłoszenie</em></h1>
+      <p class="lead">Wiadomość została wysłana do Martyny. Odpowiedź otrzymasz na podany adres e-mail po zapoznaniu się ze szczegółami zgłoszenia.</p>
+      <p class="note">Do zobaczenia w podróży ♡</p>
+
+      <div class="actions">
+        <a class="button button-primary" href="./">Wróć na stronę główną</a>
+        <a class="button button-secondary" href="https://www.instagram.com/martyna_podroze/">Zobacz Instagram</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
