@@ -1881,13 +1881,11 @@
     }
 
     .hero-visual {
+      aspect-ratio: 3 / 4;
       min-height: 590px;
       overflow: hidden;
       border-radius: 250px 250px 24px 24px;
-      background:
-        linear-gradient(180deg, transparent 55%, rgba(45, 41, 38, 0.22)),
-        url("https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?auto=format&fit=crop&w=1400&q=88")
-        54% center / cover no-repeat;
+      background: #d8e1e7;
       box-shadow: var(--shadow);
     }
 
@@ -1895,9 +1893,20 @@
       display: none;
     }
 
+    .hero-visual > .hero-photo {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 55%;
+    }
+
     .hero-visual::before {
       position: absolute;
       inset: 0;
+      z-index: 2;
       border: 9px solid rgba(255, 253, 251, 0.92);
       border-radius: inherit;
       content: "";
@@ -1906,16 +1915,11 @@
 
     .hero-visual::after {
       position: absolute;
-      right: 24px;
-      bottom: 22px;
-      border-radius: 999px;
-      background: rgba(255, 253, 251, 0.9);
-      color: #5f554f;
-      padding: 9px 13px;
-      content: "docelowo: zdjęcie Martyny";
-      font-family: "Caveat", cursive;
-      font-size: 1rem;
-      backdrop-filter: blur(8px);
+      inset: 65% 0 0;
+      z-index: 1;
+      background: linear-gradient(180deg, transparent, rgba(45, 41, 38, 0.12));
+      content: "";
+      pointer-events: none;
     }
 
     .finder-wrap {
@@ -2336,8 +2340,9 @@
       }
 
       .hero-visual {
-        width: 100%;
+        width: min(100%, 560px);
         min-height: 500px;
+        margin-inline: auto;
         border-radius: 220px 220px 22px 22px;
       }
 
@@ -2461,27 +2466,16 @@
           </div>
         </div>
 
-        <div class="hero-visual" aria-label="Miejsce na fotografię Martyny z podróży">
-          <div class="trip-path">
-            <span class="path-tag">WAW → BGY</span>
-          </div>
-          <div class="route-line" aria-hidden="true"></div>
-
-          <div class="postcard postcard-main">
-            <div class="scene">
-              <div class="portrait-placeholder">
-                <span>zdjęcie Martyny</span>
-              </div>
-              <div class="scene-label">
-                <strong>Przewodnik po Lombardii</strong>
-                <span>4 DNI</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="postcard postcard-small" aria-hidden="true">
-            <div class="small-scene"></div>
-          </div>
+        <div class="hero-visual">
+          <img
+            class="hero-photo"
+            src="assets/martyna-santorini.jpg"
+            alt="Martyna na Santorini, na tle białych domów, błękitnych kopuł i morza"
+            width="1200"
+            height="1600"
+            fetchpriority="high"
+            decoding="async"
+          >
         </div>
       </div>
 
