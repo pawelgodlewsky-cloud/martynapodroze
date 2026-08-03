@@ -2915,99 +2915,37 @@
         url("assets/martyna-santorini.jpg") center 58% / cover no-repeat;
     }
 
-    .hero-visual > .hero-stamp {
-      position: absolute;
-      z-index: 4;
-      bottom: 34px;
-      left: 26px;
-      display: grid;
-      width: 142px;
-      aspect-ratio: 1;
-      place-items: center;
-      border: 2px solid rgba(169, 85, 67, 0.82);
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 48% 45%, rgba(255, 253, 251, 0.96), rgba(250, 240, 228, 0.9));
-      box-shadow:
-        0 12px 30px rgba(45, 41, 38, 0.14),
-        inset 0 0 0 6px rgba(169, 85, 67, 0.1);
-      color: var(--coral-action);
-      animation: passport-stamp-in 920ms cubic-bezier(0.2, 0.9, 0.28, 1.24) 520ms both;
-      backdrop-filter: blur(6px);
-      pointer-events: none;
-      transform: rotate(-8deg);
-    }
-
-    .hero-stamp::before {
-      position: absolute;
-      inset: 9px;
-      border: 1px dashed rgba(169, 85, 67, 0.6);
-      border-radius: 50%;
-      content: "";
-    }
-
-    .hero-stamp::after {
-      position: absolute;
-      top: 19px;
-      color: var(--yellow);
-      content: "✦";
-      font-size: 0.72rem;
-      text-shadow: 0 1px 0 rgba(45, 41, 38, 0.12);
-    }
-
-    .hero-stamp-copy {
+    .hero-copy h1 em {
       position: relative;
-      z-index: 1;
-      display: grid;
-      place-items: center;
-      margin-top: 10px;
-      line-height: 1;
-      text-align: center;
+      padding-bottom: 0.08em;
     }
 
-    .hero-stamp-copy span {
-      font-family: "Caveat", cursive;
-      font-size: 1.15rem;
-      font-weight: 600;
+    .hero-underline {
+      position: absolute;
+      right: 1%;
+      bottom: -0.08em;
+      left: 1%;
+      width: 84%;
+      height: 0.28em;
+      overflow: visible;
+      pointer-events: none;
     }
 
-    .hero-stamp-copy strong {
-      margin-top: 2px;
-      font-family: "Manrope", sans-serif;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+    .hero-underline path {
+      fill: none;
+      stroke: var(--coral-action);
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      stroke-linecap: round;
+      stroke-width: 3;
+      vector-effect: non-scaling-stroke;
+      animation: hero-underline-draw 880ms cubic-bezier(0.2, 0.78, 0.28, 1) 680ms forwards;
+      opacity: 0.72;
     }
 
-    .hero-stamp-copy small {
-      margin-top: 8px;
-      color: var(--utility-text);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.48rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    @keyframes passport-stamp-in {
-      0% {
-        opacity: 0;
-        transform: translateY(-32px) scale(1.42) rotate(-18deg);
-      }
-
-      58% {
-        opacity: 1;
-        transform: translateY(4px) scale(0.94) rotate(-6deg);
-      }
-
-      78% {
-        transform: translateY(-2px) scale(1.04) rotate(-9deg);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1) rotate(-8deg);
+    @keyframes hero-underline-draw {
+      to {
+        stroke-dashoffset: 0;
       }
     }
 
@@ -3061,37 +2999,15 @@
     }
 
     @media (max-width: 520px) {
-      .hero-visual > .hero-stamp {
-        bottom: 20px;
-        left: 18px;
-        width: 112px;
-      }
-
-      .hero-stamp::after {
-        top: 14px;
-      }
-
-      .hero-stamp-copy span {
-        font-size: 0.95rem;
-      }
-
-      .hero-stamp-copy strong {
-        font-size: 0.56rem;
-      }
-
-      .hero-stamp-copy small {
-        margin-top: 6px;
-        font-size: 0.4rem;
-      }
-
       .footer-column a {
         font-size: 0.9rem;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-visual > .hero-stamp {
+      .hero-underline path {
         animation: none;
+        stroke-dashoffset: 0;
       }
     }
   </style>
@@ -3121,7 +3037,15 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Podróże zaczynają się od dobrego planu ♡</p>
-          <h1>Podróżuj odważniej. <em>Z planem, któremu ufasz.</em></h1>
+          <h1>
+            Podróżuj odważniej.
+            <em>
+              Z planem, któremu ufasz.
+              <svg class="hero-underline" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true">
+                <path pathLength="1" d="M6 23 C86 9 151 30 231 18 C318 6 394 27 476 17 C526 11 566 14 594 9"></path>
+              </svg>
+            </em>
+          </h1>
           <p>Praktyczne ebooki, przewodniki i indywidualne wsparcie dla kobiet, które chcą ruszyć w świat solo lub z rodziną - spokojniej, rozsądnie i bez przepłacania.</p>
 
           <div class="hero-actions">
@@ -3153,13 +3077,6 @@
             fetchpriority="high"
             decoding="async"
           >
-          <div class="hero-stamp" aria-hidden="true">
-            <div class="hero-stamp-copy">
-              <span>Martyna</span>
-              <strong>była tu</strong>
-              <small>Santorini · Grecja</small>
-            </div>
-          </div>
         </div>
       </div>
 
