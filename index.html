@@ -2614,23 +2614,22 @@
     }
 
     .timeline::before {
-      background:
-        repeating-linear-gradient(90deg, rgba(111, 104, 98, 0.34) 0 9px, transparent 9px 17px);
+      right: calc(20% - 18px);
+      left: 18px;
+      background: rgba(111, 104, 98, 0.28);
     }
 
     .timeline-dot {
       border-color: #f1e7dd;
-      background: #9aa08f;
+      background: var(--timeline-color, #6f9e97);
       box-shadow: 0 0 0 2px rgba(111, 104, 98, 0.25);
     }
 
-    .timeline-step:nth-child(3) .timeline-dot {
-      background: var(--yellow);
-    }
-
-    .timeline-step:last-child .timeline-dot {
-      background: var(--coral);
-    }
+    .timeline-step:nth-child(1) { --timeline-color: #6f9e97; }
+    .timeline-step:nth-child(2) { --timeline-color: #3a8ba2; }
+    .timeline-step:nth-child(3) { --timeline-color: #e3b53d; }
+    .timeline-step:nth-child(4) { --timeline-color: #c98469; }
+    .timeline-step:nth-child(5) { --timeline-color: #a95543; }
 
     .timeline-time {
       color: var(--coral);
@@ -2642,6 +2641,110 @@
 
     .timeline-step p {
       color: #81776f;
+    }
+
+    .timeline::after {
+      position: absolute;
+      z-index: 1;
+      top: 17px;
+      right: calc(20% - 18px);
+      left: 18px;
+      height: 2px;
+      background: var(--coral-action);
+      content: "";
+      opacity: 0.82;
+      transform: scaleX(1);
+      transform-origin: left center;
+      transition: transform 1.12s cubic-bezier(0.2, 0.78, 0.25, 1);
+    }
+
+    .timeline-step:nth-child(1) { --timeline-delay: 70ms; }
+    .timeline-step:nth-child(2) { --timeline-delay: 270ms; }
+    .timeline-step:nth-child(3) { --timeline-delay: 470ms; }
+    .timeline-step:nth-child(4) { --timeline-delay: 670ms; }
+    .timeline-step:nth-child(5) { --timeline-delay: 870ms; }
+
+    .timeline-dot,
+    .timeline-time,
+    .timeline-step h3,
+    .timeline-step p {
+      transition:
+        opacity 420ms ease,
+        transform 560ms cubic-bezier(0.2, 0.78, 0.25, 1),
+        box-shadow 420ms ease;
+    }
+
+    .timeline-dot {
+      position: relative;
+    }
+
+    .timeline-step:last-child .timeline-dot::after {
+      position: absolute;
+      inset: -8px;
+      border: 1px solid rgba(169, 85, 67, 0.5);
+      border-radius: 50%;
+      content: "";
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .timeline-section.is-observed .timeline::after {
+      transform: scaleX(0);
+    }
+
+    .timeline-section.is-observed .timeline-dot {
+      opacity: 0.42;
+      transform: scale(0.72);
+    }
+
+    .timeline-section.is-observed .timeline-time,
+    .timeline-section.is-observed .timeline-step h3,
+    .timeline-section.is-observed .timeline-step p {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .timeline-section.is-visible .timeline::after {
+      transform: scaleX(1);
+    }
+
+    .timeline-section.is-visible .timeline-dot {
+      opacity: 1;
+      transform: scale(1);
+      transition-delay: var(--timeline-delay);
+    }
+
+    .timeline-section.is-visible .timeline-time,
+    .timeline-section.is-visible .timeline-step h3,
+    .timeline-section.is-visible .timeline-step p {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: calc(var(--timeline-delay) + 120ms);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .timeline-section.is-visible .timeline-step:hover .timeline-dot {
+        box-shadow:
+          0 0 0 2px rgba(111, 104, 98, 0.25),
+          0 10px 24px rgba(169, 85, 67, 0.2);
+        transform: scale(1.55);
+        transition-delay: 0ms;
+      }
+    }
+
+    .timeline-section.is-visible .timeline-step:last-child .timeline-dot::after {
+      animation: timeline-arrival 820ms ease-out 1.15s 1 both;
+    }
+
+    @keyframes timeline-arrival {
+      0% {
+        opacity: 0.5;
+        transform: scale(0.72);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.65);
+      }
     }
 
     .about-image {
@@ -2775,8 +2878,33 @@
       }
 
       .timeline::before {
-        background:
-          repeating-linear-gradient(180deg, rgba(111, 104, 98, 0.34) 0 9px, transparent 9px 17px);
+        right: auto;
+        left: 22px;
+        background: rgba(111, 104, 98, 0.28);
+      }
+
+      .timeline::after {
+        top: 7px;
+        right: auto;
+        bottom: 72px;
+        left: 22px;
+        width: 2px;
+        height: auto;
+        background: var(--coral-action);
+        transform: scaleY(1);
+        transform-origin: center top;
+      }
+
+      .timeline-section.is-observed .timeline::after {
+        transform: scaleY(0);
+      }
+
+      .timeline-section.is-visible .timeline::after {
+        transform: scaleY(1);
+      }
+
+      .timeline-dot {
+        position: absolute;
       }
     }
 
@@ -3238,6 +3366,32 @@
       .postcard-journal.is-visible .postcard {
         opacity: 1;
         transform: translateY(var(--rest-y, 0)) rotate(var(--tilt, 0deg));
+      }
+
+      .timeline::after,
+      .timeline-dot,
+      .timeline-time,
+      .timeline-step h3,
+      .timeline-step p {
+        animation: none !important;
+        transition: none;
+      }
+
+      .timeline-section.is-observed .timeline::after,
+      .timeline-section.is-visible .timeline::after {
+        transform: none;
+      }
+
+      .timeline-section.is-observed .timeline-dot,
+      .timeline-section.is-visible .timeline-dot,
+      .timeline-section.is-observed .timeline-time,
+      .timeline-section.is-visible .timeline-time,
+      .timeline-section.is-observed .timeline-step h3,
+      .timeline-section.is-visible .timeline-step h3,
+      .timeline-section.is-observed .timeline-step p,
+      .timeline-section.is-visible .timeline-step p {
+        opacity: 1;
+        transform: none;
       }
     }
   </style>
@@ -3809,6 +3963,7 @@
       const menuButton = document.querySelector(".menu-button");
       const mainNavigation = document.getElementById("main-navigation");
       const postcardJournal = document.querySelector(".postcard-journal");
+      const timelineSection = document.querySelector(".timeline-section");
       const mobileNavigation = window.matchMedia("(max-width: 1050px)");
       const compactOffers = window.matchMedia("(max-width: 820px)");
       let selectedDays = 1;
@@ -3974,6 +4129,25 @@
         observer.observe(postcardJournal);
       }
 
+      function initTimelineMotion() {
+        if (!timelineSection) return;
+
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+          timelineSection.classList.add("is-visible");
+          return;
+        }
+
+        timelineSection.classList.add("is-observed");
+        const observer = new IntersectionObserver((entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          timelineSection.classList.add("is-visible");
+          observer.disconnect();
+        }, { threshold: 0.28 });
+
+        observer.observe(timelineSection);
+      }
+
       dayButtons.forEach((button) => {
         button.addEventListener("click", () => {
           selectedDays = Number(button.dataset.days);
@@ -4006,6 +4180,7 @@
       syncCompactOffers();
       updateMobileCta();
       initPostcardJournal();
+      initTimelineMotion();
 
       finder.addEventListener("submit", (event) => {
         event.preventDefault();
