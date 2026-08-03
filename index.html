@@ -2968,7 +2968,226 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .postcard-journal {
+      position: relative;
+      padding: clamp(82px, 9vw, 132px) 0 clamp(76px, 8vw, 116px);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 30%, rgba(255, 202, 58, 0.14), transparent 24%),
+        linear-gradient(180deg, #f7fafc 0%, #eef5f8 48%, #f7fafc 100%);
+    }
+
+    .postcard-journal::before {
+      position: absolute;
+      top: 58%;
+      right: -10%;
+      left: -10%;
+      height: 1px;
+      background: rgba(58, 139, 162, 0.2);
+      content: "";
+      transform: rotate(-2deg);
+    }
+
+    .postcard-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.55fr);
+      align-items: end;
+      gap: 42px;
+      margin-bottom: clamp(40px, 6vw, 74px);
+    }
+
+    .postcard-intro .eyebrow {
+      grid-column: 1 / -1;
+      margin-bottom: -20px;
+    }
+
+    .postcard-intro h2 {
+      max-width: 760px;
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.7rem, 6vw, 5.6rem);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      line-height: 0.88;
+    }
+
+    .postcard-intro h2 em {
+      color: var(--blue);
+      font-weight: 500;
+    }
+
+    .postcard-intro > p:last-child {
+      max-width: 470px;
+      margin: 0 0 4px;
+      color: var(--ink-soft);
+      font-size: 0.98rem;
+      line-height: 1.75;
+    }
+
+    .postcard-viewport {
+      position: relative;
+      width: 100%;
+      padding: 28px max(20px, calc((100vw - var(--container)) / 2));
+      outline: none;
+    }
+
+    .postcard-track {
+      display: flex;
+      width: max-content;
+      align-items: flex-end;
+      justify-content: center;
+      margin-inline: auto;
+      padding: 28px 0 38px;
+    }
+
+    .postcard {
+      position: relative;
+      z-index: var(--stack, 1);
+      width: clamp(184px, 16vw, 250px);
+      flex: 0 0 auto;
+      margin: 0 clamp(-46px, -2.6vw, -28px);
+      padding: clamp(8px, 0.8vw, 12px) clamp(8px, 0.8vw, 12px) clamp(15px, 1.3vw, 22px);
+      border: 1px solid rgba(20, 32, 43, 0.09);
+      background: #fffefb;
+      box-shadow:
+        0 24px 52px rgba(20, 32, 43, 0.14),
+        0 5px 12px rgba(20, 32, 43, 0.08);
+      transform: translateY(var(--rest-y, 0)) rotate(var(--tilt, 0deg));
+      transform-origin: 50% 88%;
+      transition:
+        transform 620ms cubic-bezier(0.2, 0.78, 0.25, 1),
+        opacity 420ms ease,
+        box-shadow 320ms ease;
+    }
+
+    .postcard-journal.is-observed .postcard {
+      opacity: 0;
+      transform: translateY(calc(var(--rest-y, 0px) + 92px)) rotate(var(--tilt, 0deg));
+    }
+
+    .postcard-journal.is-visible .postcard {
+      opacity: 1;
+      transform: translateY(var(--rest-y, 0)) rotate(var(--tilt, 0deg));
+      transition-delay: var(--delay, 0ms);
+    }
+
+    .postcard-journal.is-visible .postcard:hover {
+      z-index: 20;
+      box-shadow:
+        0 34px 74px rgba(20, 32, 43, 0.2),
+        0 8px 18px rgba(20, 32, 43, 0.1);
+      transform: translateY(-24px) rotate(0deg) scale(1.035);
+      transition-delay: 0ms;
+    }
+
+    .postcard-photo {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: #dde8ec;
+    }
+
+    .postcard-photo::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 68%, rgba(20, 32, 43, 0.12));
+      content: "";
+      pointer-events: none;
+    }
+
+    .postcard-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--focus, center);
+      filter: saturate(0.94) contrast(1.02);
+      transition: transform 720ms cubic-bezier(0.2, 0.78, 0.25, 1);
+    }
+
+    .postcard-journal.is-visible .postcard:hover img {
+      transform: scale(1.035);
+    }
+
+    .postcard figcaption {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 4px 0;
+      color: var(--ink);
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.12rem, 1.5vw, 1.38rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .postcard figcaption small {
+      color: var(--ink-soft);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.59rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .postcard-hint {
+      display: none;
+      margin: 16px 20px 0;
+      color: var(--ink-soft);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.06em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
     @media (max-width: 820px) {
+      .postcard-intro {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .postcard-intro .eyebrow {
+        margin-bottom: -4px;
+      }
+
+      .postcard-intro h2 {
+        max-width: 620px;
+      }
+
+      .postcard-viewport {
+        overflow-x: auto;
+        padding-inline: 12vw;
+        scroll-padding-inline: 12vw;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .postcard-viewport::-webkit-scrollbar {
+        display: none;
+      }
+
+      .postcard-track {
+        gap: 18px;
+        justify-content: flex-start;
+        margin: 0;
+      }
+
+      .postcard {
+        width: min(68vw, 286px);
+        margin: 0;
+        scroll-snap-align: center;
+      }
+
+      .postcard-journal.is-visible .postcard:hover {
+        transform: translateY(var(--rest-y, 0)) rotate(var(--tilt, 0deg));
+      }
+
+      .postcard-hint {
+        display: block;
+      }
+
       .mobile-cta {
         right: 14px;
         bottom: max(14px, env(safe-area-inset-bottom));
@@ -3008,6 +3227,17 @@
       .hero-underline path {
         animation: none;
         stroke-dashoffset: 0;
+      }
+
+      .postcard,
+      .postcard-photo img {
+        transition: none;
+      }
+
+      .postcard-journal.is-observed .postcard,
+      .postcard-journal.is-visible .postcard {
+        opacity: 1;
+        transform: translateY(var(--rest-y, 0)) rotate(var(--tilt, 0deg));
       }
     }
   </style>
@@ -3121,6 +3351,75 @@
           </form>
         </div>
       </div>
+    </section>
+
+    <section class="postcard-journal" aria-labelledby="postcard-heading">
+      <div class="container postcard-intro">
+        <p class="eyebrow">31 krajów w kadrach</p>
+        <h2 id="postcard-heading">Pocztówki z miejsc, <em>które zostały na dłużej.</em></h2>
+        <p>Nie tylko punkty na mapie. To widoki, smaki i małe momenty, z których później powstają sprawdzone plany podróży.</p>
+      </div>
+
+      <div class="postcard-viewport" tabindex="0" aria-label="Przewijana kolekcja zdjęć z podróży Martyny">
+        <div class="postcard-track">
+          <figure class="postcard" style="--tilt: -5.5deg; --rest-y: 18px; --delay: 0ms; --stack: 2; --focus: 58% center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-grand-canyon.jpg" alt="Martyna podczas wędrówki nad Wielkim Kanionem" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Wielki Kanion</span><small>USA</small></figcaption>
+          </figure>
+
+          <figure class="postcard" style="--tilt: 3.5deg; --rest-y: -8px; --delay: 80ms; --stack: 4; --focus: center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-new-york.jpg" alt="Martyna oglądająca panoramę Nowego Jorku" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Nowy Jork</span><small>USA</small></figcaption>
+          </figure>
+
+          <figure class="postcard" style="--tilt: -2deg; --rest-y: 10px; --delay: 160ms; --stack: 3; --focus: 48% center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-rome.jpg" alt="Martyna przy kawie z widokiem na Koloseum" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Rzym</span><small>Włochy</small></figcaption>
+          </figure>
+
+          <figure class="postcard" style="--tilt: 4.5deg; --rest-y: -2px; --delay: 240ms; --stack: 6; --focus: 55% center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-egypt.jpg" alt="Martyna na tle piramid w Gizie" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Giza</span><small>Egipt</small></figcaption>
+          </figure>
+
+          <figure class="postcard" style="--tilt: -4deg; --rest-y: 14px; --delay: 320ms; --stack: 5; --focus: 56% center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-lake-como.jpg" alt="Martyna nad jeziorem Como, na tle gór" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Jezioro Como</span><small>Włochy</small></figcaption>
+          </figure>
+
+          <figure class="postcard" style="--tilt: 2.5deg; --rest-y: -10px; --delay: 400ms; --stack: 7; --focus: 68% center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-amalfi.jpg" alt="Martyna odpoczywająca nad morzem na Wybrzeżu Amalfitańskim" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Amalfi</span><small>Włochy</small></figcaption>
+          </figure>
+
+          <figure class="postcard" style="--tilt: -3deg; --rest-y: 8px; --delay: 480ms; --stack: 3; --focus: center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-riga.jpg" alt="Martyna spacerująca po kolorowej starówce w Rydze" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Ryga</span><small>Łotwa</small></figcaption>
+          </figure>
+
+          <figure class="postcard" style="--tilt: 5deg; --rest-y: 16px; --delay: 560ms; --stack: 2; --focus: 52% center;">
+            <div class="postcard-photo">
+              <img src="assets/postcard-moomin.jpg" alt="Martyna przed niebieskim domem Muminków" width="1200" height="1600" loading="lazy" decoding="async">
+            </div>
+            <figcaption><span>Dolina Muminków</span><small>Finlandia</small></figcaption>
+          </figure>
+        </div>
+      </div>
+      <p class="postcard-hint" aria-hidden="true">Przesuń, aby zobaczyć kolejne kadry →</p>
     </section>
 
     <section class="plans" id="plany">
@@ -3509,6 +3808,7 @@
       const siteHeader = document.querySelector(".site-header");
       const menuButton = document.querySelector(".menu-button");
       const mainNavigation = document.getElementById("main-navigation");
+      const postcardJournal = document.querySelector(".postcard-journal");
       const mobileNavigation = window.matchMedia("(max-width: 1050px)");
       const compactOffers = window.matchMedia("(max-width: 820px)");
       let selectedDays = 1;
@@ -3655,6 +3955,25 @@
         });
       }
 
+      function initPostcardJournal() {
+        if (!postcardJournal) return;
+
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+          postcardJournal.classList.add("is-visible");
+          return;
+        }
+
+        postcardJournal.classList.add("is-observed");
+        const observer = new IntersectionObserver((entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          postcardJournal.classList.add("is-visible");
+          observer.disconnect();
+        }, { threshold: 0.18 });
+
+        observer.observe(postcardJournal);
+      }
+
       dayButtons.forEach((button) => {
         button.addEventListener("click", () => {
           selectedDays = Number(button.dataset.days);
@@ -3686,6 +4005,7 @@
 
       syncCompactOffers();
       updateMobileCta();
+      initPostcardJournal();
 
       finder.addEventListener("submit", (event) => {
         event.preventDefault();
