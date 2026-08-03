@@ -1,0 +1,78 @@
+name: Update Instagram follower count
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-followers-sync
+  cancel-in-progress: true
+
+jobs:
+  update-followers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Fetch the current follower count
+        env:
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          CONFIGURED_GRAPH_API_VERSION: ${{ vars.META_GRAPH_API_VERSION }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${INSTAGRAM_USER_ID}" || -z "${INSTAGRAM_ACCESS_TOKEN}" ]]; then
+            echo "Instagram secrets are not configured. Keeping the current fallback value."
+            exit 0
+          fi
+
+          graph_api_version="${CONFIGURED_GRAPH_API_VERSION:-v25.0}"
+          response="$(curl --silent --show-error --fail-with-body \
+            --get "https://graph.facebook.com/${graph_api_version}/${INSTAGRAM_USER_ID}" \
+            --header "Authorization: Bearer ${INSTAGRAM_ACCESS_TOKEN}" \
+            --data-urlencode "fields=followers_count,username")"
+
+          follower_count="$(jq -r '.followers_count // empty' <<<"${response}")"
+          username="$(jq -r '.username // "martyna_podroze"' <<<"${response}")"
+
+          if ! [[ "${follower_count}" =~ ^[0-9]+$ ]] || [[ "${follower_count}" -lt 1 ]]; then
+            echo "Meta API returned an invalid follower count."
+            exit 1
+          fi
+
+          current_count="$(jq -r '.instagramFollowers // 0' assets/social-proof.json)"
+          if [[ "${follower_count}" == "${current_count}" ]]; then
+            echo "Follower count has not changed."
+            exit 0
+          fi
+
+          jq -n \
+            --argjson instagramFollowers "${follower_count}" \
+            --arg updatedAt "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --arg source "instagram-graph-api" \
+            --arg username "${username}" \
+            '{instagramFollowers: $instagramFollowers, updatedAt: $updatedAt, source: $source, username: $username}' \
+            > assets/social-proof.json
+
+      - name: Publish an updated count
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- assets/social-proof.json; then
+            echo "Follower count has not changed."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/social-proof.json
+          git commit -m "chore: update Instagram follower count"
+          git push

@@ -26,6 +26,27 @@ python -m http.server 4175
 
 Następnie otwórz `http://127.0.0.1:4175`.
 
+## Automatyczna liczba obserwujących na Instagramie
+
+Strona odczytuje liczbę obserwujących z pliku `assets/social-proof.json`. Gdy
+plik lub sieć są niedostępne, pokazuje bezpieczną wartość zapasową zapisaną w
+HTML.
+
+Workflow `.github/workflows/update-instagram-followers.yml` aktualizuje dane co
+6 godzin przez oficjalne Instagram Graph API. Aby go uruchomić:
+
+1. Konto `martyna_podroze` musi być kontem profesjonalnym obsługiwanym przez
+   Instagram Graph API.
+2. W ustawieniach repozytorium GitHub dodaj sekrety `INSTAGRAM_USER_ID` oraz
+   `INSTAGRAM_ACCESS_TOKEN`.
+3. Opcjonalnie dodaj zmienną repozytorium `META_GRAPH_API_VERSION`; bez niej
+   workflow korzysta z `v25.0`.
+4. Uruchom workflow ręcznie po pierwszej konfiguracji i sprawdź, czy zmienił
+   plik `assets/social-proof.json`.
+
+Token pozostaje wyłącznie w sekretach GitHub i nigdy nie jest wysyłany do kodu
+działającego w przeglądarce.
+
 ## Plan rozwoju
 
 1. Zastąpienie zdjęć demonstracyjnych fotografiami Martyny.
