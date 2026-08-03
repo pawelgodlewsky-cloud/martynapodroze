@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Martyna Podróże - wyniki konta</title>
+  <style>
+    :root {
+      --paper: #fbf7f2;
+      --paper-deep: #f0e3d7;
+      --ink: #302925;
+      --muted: #766b63;
+      --coral: #b86452;
+      --coral-dark: #914a3b;
+      --sage: #879383;
+      --gold: #e9b84f;
+      --white: #fffdfb;
+      --line: #e5d5c8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 1080px;
+      height: 1350px;
+      margin: 0;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .card {
+      position: relative;
+      width: 1080px;
+      height: 1350px;
+      padding: 66px 72px 52px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 92% 8%, rgba(233, 184, 79, 0.22) 0 130px, transparent 132px),
+        radial-gradient(circle at -5% 82%, rgba(135, 147, 131, 0.18) 0 210px, transparent 212px),
+        linear-gradient(145deg, #fffdfb 0%, var(--paper) 56%, #f4ebe3 100%);
+    }
+
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      border: 1px solid rgba(184, 100, 82, 0.18);
+      border-radius: 999px;
+      transform: rotate(-16deg);
+    }
+
+    .card::before {
+      width: 420px;
+      height: 190px;
+      right: -190px;
+      top: 270px;
+    }
+
+    .card::after {
+      width: 340px;
+      height: 130px;
+      left: -180px;
+      bottom: 110px;
+    }
+
+    .topbar,
+    .intro,
+    .stats,
+    .feature,
+    .footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 74px;
+    }
+
+    .logo {
+      width: 420px;
+      height: auto;
+      display: block;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 253, 251, 0.86);
+      color: var(--muted);
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .badge::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--coral);
+      box-shadow: 0 0 0 5px rgba(184, 100, 82, 0.12);
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 244px;
+      gap: 34px;
+      align-items: center;
+      margin-top: 46px;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--coral);
+      font-size: 20px;
+      font-weight: 750;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 630px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 68px;
+      font-weight: 500;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      max-width: 610px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 24px;
+      line-height: 1.42;
+    }
+
+    .portrait-wrap {
+      position: relative;
+      width: 232px;
+      height: 232px;
+      justify-self: end;
+    }
+
+    .portrait-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -12px 12px 12px -12px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .portrait {
+      position: relative;
+      width: 232px;
+      height: 232px;
+      border: 8px solid var(--white);
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 58% 77%;
+      box-shadow: 0 18px 46px rgba(73, 57, 45, 0.18);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 48px;
+    }
+
+    .stat {
+      min-height: 152px;
+      padding: 26px 30px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255, 253, 251, 0.9);
+      box-shadow: 0 12px 30px rgba(73, 57, 45, 0.06);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--coral-dark);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 51px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.035em;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 20px;
+      font-weight: 650;
+    }
+
+    .feature {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 30px;
+      align-items: center;
+      margin-top: 20px;
+      padding: 32px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, var(--coral-dark), var(--coral));
+      color: var(--white);
+      box-shadow: 0 22px 46px rgba(145, 74, 59, 0.24);
+    }
+
+    .feature-title {
+      padding-right: 26px;
+      border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .feature-kicker {
+      display: block;
+      color: #f8d7c8;
+      font-size: 16px;
+      font-weight: 750;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .feature-title strong {
+      display: block;
+      margin-top: 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 1.08;
+    }
+
+    .feature-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .feature-metric strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 31px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .feature-metric span {
+      display: block;
+      margin-top: 9px;
+      color: #f8e8e1;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-top: 34px;
+    }
+
+    .footer-copy {
+      max-width: 650px;
+    }
+
+    .footer-copy strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 29px;
+      font-weight: 500;
+    }
+
+    .footer-copy span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .handle {
+      flex: 0 0 auto;
+      padding: 14px 19px;
+      border-radius: 18px;
+      background: var(--ink);
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.025em;
+    }
+
+    .source {
+      position: absolute;
+      right: 72px;
+      bottom: 24px;
+      z-index: 1;
+      color: #9a8e85;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <header class="topbar">
+      <img class="logo" src="assets/logo-martyna-v2.png" alt="Martyna podróże">
+      <span class="badge" data-i18n="badge">Instagram · 30 dni</span>
+    </header>
+
+    <section class="intro">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">Media snapshot · lipiec 2026</p>
+        <h1 data-i18n="headline">Podróże, które angażują</h1>
+        <p class="lead" data-i18n="lead">Praktyczne podróże po Europie, realne koszty i gotowe pomysły dla polskich podróżniczek.</p>
+      </div>
+      <div class="portrait-wrap">
+        <img class="portrait" src="assets/martyna-santorini.jpg" alt="Martyna na Santorini">
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Wyniki konta">
+      <article class="stat">
+        <strong>416,6 tys.</strong>
+        <span data-i18n="views">wyświetleń</span>
+      </article>
+      <article class="stat">
+        <strong>204,4 tys.</strong>
+        <span data-i18n="reach">kont w zasięgu</span>
+      </article>
+      <article class="stat">
+        <strong>31,9 tys.</strong>
+        <span data-i18n="interactions">interakcji</span>
+      </article>
+      <article class="stat">
+        <strong>10 248</strong>
+        <span data-i18n="followers">obserwujących</span>
+      </article>
+    </section>
+
+    <section class="feature">
+      <div class="feature-title">
+        <span class="feature-kicker" data-i18n="topKicker">Najmocniejsza rolka</span>
+        <strong data-i18n="topTitle">Treść, którą chce się zapisać</strong>
+      </div>
+      <div class="feature-metrics">
+        <div class="feature-metric">
+          <strong>191,8 tys.</strong>
+          <span data-i18n="reelViews">wyświetleń</span>
+        </div>
+        <div class="feature-metric">
+          <strong>7 124</strong>
+          <span data-i18n="saves">zapisania</span>
+        </div>
+        <div class="feature-metric">
+          <strong>+4 084</strong>
+          <span data-i18n="newFollowers">nowych obserwujących</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-copy">
+        <strong data-i18n="footerTitle">Europa · praktycznie · bez przepłacania</strong>
+        <span data-i18n="footerText">Instagram 10,2 tys. · TikTok ok. 1,3 tys. · współprace: podroz.martyna@gmail.com</span>
+      </div>
+      <span class="handle">@martyna_podroze</span>
+    </footer>
+
+    <span class="source" data-i18n="source">Źródło: Instagram Insights, ostatnie 30 dni, 30.07.2026</span>
+  </main>
+
+  <script>
+    const translations = {
+      en: {
+        badge: "Instagram · 30 days",
+        eyebrow: "Media snapshot · July 2026",
+        headline: "Travel content people act on",
+        lead: "Practical European travel, honest costs and ready-to-use ideas for Polish women travellers.",
+        views: "views",
+        reach: "accounts reached",
+        interactions: "interactions",
+        followers: "followers",
+        topKicker: "Top-performing reel",
+        topTitle: "Content worth saving",
+        reelViews: "views",
+        saves: "saves",
+        newFollowers: "new followers",
+        footerTitle: "Europe · practical · budget-aware",
+        footerText: "Instagram 10.2K · TikTok approx. 1.3K · partnerships: podroz.martyna@gmail.com",
+        source: "Source: Instagram Insights, last 30 days, 30 July 2026"
+      }
+    };
+
+    const lang = new URLSearchParams(window.location.search).get("lang");
+    if (lang === "en") {
+      document.documentElement.lang = "en";
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        element.textContent = translations.en[element.dataset.i18n];
+      });
+    }
+  </script>
+</body>
+</html>
