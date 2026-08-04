@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plany podróży, ebooki i konsultacje | Martyna Podróże</title>
-  <meta name="description" content="Praktyczne plany podróży, ebooki i konsultacje dla kobiet podróżujących solo lub z rodziną. Odkrywaj Europę pewniej i bez przepłacania.">
+  <title>Plany podróży, loty i noclegi | Martyna Podróże</title>
+  <meta name="description" content="Indywidualne plany podróży, wyszukiwanie lotów i noclegów oraz praktyczne ebooki dla kobiet podróżujących solo lub z rodziną.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="theme-color" content="#fffdfb">
   <link rel="canonical" href="https://martynapodroze.pl/">
@@ -14,8 +14,8 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pl_PL">
   <meta property="og:site_name" content="Martyna Podróże">
-  <meta property="og:title" content="Plany podróży, ebooki i konsultacje | Martyna Podróże">
-  <meta property="og:description" content="Praktyczne wsparcie dla kobiet podróżujących solo lub z rodziną: gotowe przewodniki, indywidualne plany i konsultacje.">
+  <meta property="og:title" content="Plany podróży, loty i noclegi | Martyna Podróże">
+  <meta property="og:description" content="Gotowe przewodniki, indywidualne plany oraz dopasowane propozycje lotów i noclegów dla kobiet podróżujących solo lub z rodziną.">
   <meta property="og:url" content="https://martynapodroze.pl/">
   <meta property="og:image" content="https://martynapodroze.pl/assets/martyna-santorini-hero-v2.jpg">
   <meta property="og:image:width" content="1086">
@@ -23,8 +23,8 @@
   <meta property="og:image:alt" content="Martyna na Santorini, na tle białych domów, błękitnych kopuł i morza">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Plany podróży, ebooki i konsultacje | Martyna Podróże">
-  <meta name="twitter:description" content="Gotowe przewodniki, indywidualne plany i konsultacje dla kobiet, które chcą podróżować pewniej i bez przepłacania.">
+  <meta name="twitter:title" content="Plany podróży, loty i noclegi | Martyna Podróże">
+  <meta name="twitter:description" content="Gotowe przewodniki, indywidualne plany oraz propozycje lotów i noclegów dla kobiet, które chcą podróżować pewniej i bez przepłacania.">
   <meta name="twitter:image" content="https://martynapodroze.pl/assets/martyna-santorini-hero-v2.jpg">
   <meta name="twitter:image:alt" content="Martyna na Santorini">
 
@@ -40,7 +40,7 @@
           "@id": "https://martynapodroze.pl/#website",
           "url": "https://martynapodroze.pl/",
           "name": "Martyna Podróże",
-          "description": "Praktyczne ebooki, przewodniki, konsultacje i indywidualne plany podróży.",
+          "description": "Praktyczne ebooki, propozycje lotów i noclegów oraz indywidualne plany podróży.",
           "inLanguage": "pl-PL",
           "publisher": {
             "@id": "https://martynapodroze.pl/#organization"
@@ -50,8 +50,8 @@
           "@type": "WebPage",
           "@id": "https://martynapodroze.pl/#webpage",
           "url": "https://martynapodroze.pl/",
-          "name": "Plany podróży, ebooki i konsultacje | Martyna Podróże",
-          "description": "Praktyczne plany podróży, ebooki i konsultacje dla kobiet podróżujących solo lub z rodziną.",
+          "name": "Plany podróży, loty i noclegi | Martyna Podróże",
+          "description": "Indywidualne plany podróży, propozycje lotów i noclegów oraz ebooki dla kobiet podróżujących solo lub z rodziną.",
           "isPartOf": {
             "@id": "https://martynapodroze.pl/#website"
           },
@@ -143,13 +143,11 @@
               },
               {
                 "@type": "Offer",
-                "url": "https://martynapodroze.pl/#konsultacje",
-                "price": "169",
-                "priceCurrency": "PLN",
+                "url": "https://martynapodroze.pl/#lot-nocleg",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "Konsultacja podróżnicza",
-                  "description": "60 minut indywidualnej konsultacji online lub telefonicznej z podsumowaniem e-mailem.",
+                  "name": "Dobór lotu i noclegu",
+                  "description": "Porównanie propozycji lotów z różnych źródeł i dopasowanych noclegów wraz z kosztami oraz informacjami potrzebnymi do rezerwacji.",
                   "provider": {
                     "@id": "https://martynapodroze.pl/#organization"
                   },
@@ -892,7 +890,7 @@
       align-items: flex-end;
       justify-content: space-between;
       gap: 30px;
-      margin-bottom: 48px;
+      margin-bottom: 28px;
     }
 
     .text-link {
@@ -1554,7 +1552,7 @@
       }
 
       .section-head .text-link {
-        margin-top: 28px;
+        margin-top: 16px;
       }
 
       .cards-grid {
@@ -2298,6 +2296,226 @@
       text-align: center;
     }
 
+    .service-comparison {
+      margin-top: 72px;
+    }
+
+    .comparison-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(280px, 0.58fr);
+      gap: clamp(28px, 6vw, 88px);
+      align-items: end;
+      margin-bottom: 30px;
+    }
+
+    .comparison-intro h3 {
+      max-width: 720px;
+      margin-top: 10px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.65rem, 5vw, 4.8rem);
+      font-weight: 600;
+      letter-spacing: -0.045em;
+      line-height: 0.92;
+    }
+
+    .comparison-intro > p:last-child {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      line-height: 1.72;
+    }
+
+    .comparison-scroll {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 253, 251, 0.82);
+      box-shadow: 0 18px 48px rgba(73, 57, 45, 0.07);
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 18px 22px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .comparison-table tr > :last-child {
+      border-right: 0;
+    }
+
+    .comparison-table tbody tr:last-child > * {
+      border-bottom: 0;
+    }
+
+    .comparison-table thead th {
+      padding-block: 25px 23px;
+      background: #f5ece3;
+    }
+
+    .comparison-table thead th:first-child {
+      width: 25%;
+      background:
+        radial-gradient(circle at 22px 22px, rgba(169, 85, 67, 0.18) 0 4px, transparent 5px),
+        #efe3d8;
+      color: #736861;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .comparison-table thead th:last-child {
+      background: #f4e6d8;
+    }
+
+    .comparison-ticket {
+      display: block;
+      width: fit-content;
+      margin-bottom: 11px;
+      border-radius: 999px;
+      background: var(--ticket-color, #3a8ba2);
+      padding: 6px 10px;
+      color: #fff;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .comparison-ticket.is-plan {
+      --ticket-color: var(--coral-action);
+    }
+
+    .comparison-table thead strong {
+      display: block;
+      color: var(--ink);
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.65rem, 2.5vw, 2.3rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 0.98;
+    }
+
+    .comparison-table thead small {
+      display: block;
+      margin-top: 9px;
+      color: var(--ink-soft);
+      font-size: 0.72rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .comparison-table tbody th {
+      color: #766b63;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.025em;
+    }
+
+    .comparison-table tbody td {
+      color: var(--ink-soft);
+      font-size: 0.79rem;
+      line-height: 1.5;
+    }
+
+    .comparison-table tbody tr:nth-child(even) > * {
+      background: rgba(247, 240, 233, 0.45);
+    }
+
+    .comparison-yes,
+    .comparison-no {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .comparison-yes::before,
+    .comparison-no::before {
+      display: grid;
+      width: 21px;
+      height: 21px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      content: "✓";
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .comparison-yes::before {
+      background: rgba(58, 139, 162, 0.14);
+      color: #28768c;
+    }
+
+    .comparison-no::before {
+      background: #eee6df;
+      color: #9b9087;
+      content: "–";
+    }
+
+    .comparison-actions {
+      display: grid;
+      grid-template-columns: 25% 1fr 1fr;
+      border-top: 1px solid var(--line);
+      background: #fffdfb;
+    }
+
+    .comparison-actions::before {
+      content: "";
+    }
+
+    .comparison-actions a {
+      display: flex;
+      min-height: 66px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-left: 1px solid var(--line);
+      padding: 16px 22px;
+      color: #28768c;
+      font-size: 0.76rem;
+      font-weight: 800;
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .comparison-actions a:hover {
+      background: rgba(58, 139, 162, 0.1);
+      color: #1f6679;
+    }
+
+    .comparison-actions a:last-child {
+      background: var(--coral-action);
+      color: #fff;
+    }
+
+    .comparison-actions a:last-child:hover {
+      background: var(--coral-action-hover);
+      color: #fff;
+    }
+
+    .comparison-actions a span:last-child {
+      font-size: 1.15rem;
+      transition: transform 180ms ease;
+    }
+
+    .comparison-actions a:hover span:last-child {
+      transform: translateX(4px);
+    }
+
+    .comparison-hint {
+      display: none;
+    }
+
     .inquiry-section {
       padding: 116px 0;
       border-top: 1px solid var(--line);
@@ -2975,6 +3193,53 @@
       }
     }
 
+    @media (max-width: 820px) {
+      .service-comparison {
+        margin-top: 58px;
+      }
+
+      .comparison-intro {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .comparison-intro h3 {
+        font-size: clamp(2.75rem, 12vw, 4rem);
+      }
+
+      .comparison-scroll {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-color: #cdb8a8 transparent;
+        scrollbar-width: thin;
+      }
+
+      .comparison-table,
+      .comparison-actions {
+        min-width: 700px;
+      }
+
+      .comparison-hint {
+        display: block;
+        margin: 11px 4px 0;
+        color: #897d74;
+        font-size: 0.69rem;
+        text-align: right;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .comparison-table th,
+      .comparison-table td {
+        padding-inline: 17px;
+      }
+
+      .comparison-table,
+      .comparison-actions {
+        min-width: 650px;
+      }
+    }
+
     /* Dopracowanie wersji produkcyjnej. */
     :root {
       --coral-action: #a95543;
@@ -2986,7 +3251,7 @@
       scroll-padding-top: 100px;
     }
 
-    :where(#planer, #plany, #ebooki, #konsultacje, #zamowienie, #timeline, #omnie, #poradniki, #kontakt) {
+    :where(#planer, #plany, #ebooki, #lot-nocleg, #porownanie, #zamowienie, #timeline, #omnie, #poradniki, #kontakt) {
       scroll-margin-top: 100px;
     }
 
@@ -3406,7 +3671,7 @@
       <nav class="main-nav" id="main-navigation" aria-label="Główna nawigacja">
         <a href="#ebooki">Ebooki i przewodniki</a>
         <a href="#planer">Planowanie podróży</a>
-        <a href="#konsultacje">Konsultacje</a>
+        <a href="#lot-nocleg">Lot + nocleg</a>
         <a href="#omnie">O Martynie</a>
         <a href="#poradniki">Newsletter</a>
       </nav>
@@ -3434,7 +3699,7 @@
 
           <div class="hero-actions">
             <a class="primary-button" href="#ebooki">Zobacz ebooki i przewodniki <span aria-hidden="true">↓</span></a>
-            <a class="secondary-button" href="#planer">Zaplanuj podróż z Martyną</a>
+            <a class="secondary-button" href="#planer">Wybierz usługę dla siebie</a>
           </div>
 
           <div class="trust-note" role="group" aria-label="Doświadczenie Martyny">
@@ -3467,8 +3732,8 @@
       <div class="container finder-wrap" id="planer">
         <div class="finder">
           <div class="finder-head">
-            <h2>Jak mogę Ci pomóc ruszyć w drogę?</h2>
-            <p>Wybierz gotowy przewodnik, indywidualny plan albo konsultację przed podróżą.</p>
+            <h2>Czego potrzebujesz przed podróżą?</h2>
+            <p>Gotowy przewodnik, pełny plan albo dopasowane propozycje lotów i noclegów.</p>
           </div>
 
           <form id="trip-finder">
@@ -3478,7 +3743,7 @@
                 <div class="day-switcher" role="group" aria-label="Wybierz rodzaj wsparcia">
                   <button class="day-button" type="button" data-days="1" aria-pressed="true">Ebook</button>
                   <button class="day-button" type="button" data-days="2" aria-pressed="false">Plan od A do Z</button>
-                  <button class="day-button" type="button" data-days="3" aria-pressed="false">Konsultacja</button>
+                  <button class="day-button" type="button" data-days="3" aria-pressed="false">Lot + nocleg</button>
                 </div>
               </div>
 
@@ -3580,10 +3845,10 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Wybierz usługę</p>
-            <h2 class="section-title" id="kierunki">Nie musisz planować wszystkiego sama</h2>
+            <p class="eyebrow">Trzy sposoby na łatwiejszy wyjazd</p>
+            <h2 class="section-title" id="kierunki">Wybierz zakres dopasowany do Twojej podróży</h2>
           </div>
-          <a class="text-link" href="#planer">Opowiedz o swoim wyjeździe <span aria-hidden="true">↑</span></a>
+          <a class="text-link" href="#porownanie">Porównaj usługi <span aria-hidden="true">↓</span></a>
         </div>
 
         <div class="cards-grid" id="trip-results">
@@ -3617,8 +3882,8 @@
               <span class="card-location">Jeden plan dla całej grupy</span>
             </div>
             <div class="trip-card-body">
-              <h3>Wyjazd ułożony po Twojemu</h3>
-              <p class="product-summary">Otrzymujesz gotową trasę, sprawdzone propozycje i bezpośrednie linki. Ty wybierasz i samodzielnie dokonujesz rezerwacji.</p>
+              <h3>Kompletny plan Twojego wyjazdu</h3>
+              <p class="product-summary">Gotowa trasa, sprawdzone propozycje i bezpośrednie linki do rezerwacji. Każdy dzień ma dobre tempo i logiczny przebieg.</p>
               <div class="price-row">
                 <strong>od 349 zł</strong>
                 <span>2-4 dni: 349 zł<br>5-7 dni: 549 zł<br>8-10 dni: 749 zł</span>
@@ -3629,72 +3894,149 @@
                 <li>realizacja do 7 dni roboczych i jedna seria poprawek</li>
               </ul>
               <a class="trip-card-link" href="#zamowienie" data-inquiry-service="plan">
-                <span>Zapytaj o swój plan</span>
+                <span>Wybierz plan od A do Z</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
 
-          <article class="trip-card" id="konsultacje" data-days="3" data-budget="0">
+          <article class="trip-card" id="lot-nocleg" data-days="3" data-budget="0">
             <div class="card-scene scene-lisbon">
-              <span class="card-day">KONSULTACJA</span>
-              <span class="card-location">Rozmowa z Martyną</span>
+              <span class="card-day">LOT + NOCLEG</span>
+              <span class="card-location">2–3 warianty wyjazdu</span>
             </div>
             <div class="trip-card-body">
-              <h3>Godzina konkretnego planowania</h3>
-              <p class="product-summary">Rozmowa online albo telefoniczna. Razem porządkujemy kierunek, budżet, loty, noclegi i pytania, które nie dają Ci spokoju.</p>
+              <h3>Lot i nocleg bez godzin porównywania</h3>
+              <p class="product-summary">Otrzymujesz 2–3 dopasowane warianty z pełnymi kosztami. Łatwo porównasz cenę, wygodę podróży i standard pobytu.</p>
               <div class="price-row">
-                <strong>169 zł</strong>
-                <span>cena premierowa<br><del>199 zł regularnie</del></span>
+                <strong>wycena</strong>
+                <span>po krótkim<br>formularzu</span>
               </div>
               <ul class="product-features">
-                <li>krótka ankieta przed spotkaniem</li>
-                <li>60 minut rozmowy i podsumowanie e-mailem</li>
-                <li>100 zł rabatu na plan zamówiony w ciągu 7 dni</li>
+                <li>wariant najtańszy, najwygodniejszy i najlepszy jakościowo</li>
+                <li>pełne koszty, bagaż, lotniska i transfer</li>
+                <li>aktualne propozycje noclegów i jedna seria poprawek</li>
               </ul>
-              <a class="trip-card-link" href="#zamowienie" data-inquiry-service="consultation">
-                <span>Umów konsultację za 169 zł</span>
+              <a class="trip-card-link" href="#zamowienie" data-inquiry-service="flight-hotel">
+                <span>Wybierz lot + nocleg</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
         </div>
-        <p class="offer-note">Martyna przygotowuje plan oraz bezpośrednie linki do ofert. Loty, noclegi, bilety i pozostałe usługi rezerwujesz oraz opłacasz samodzielnie u wybranych dostawców. Cena planu dotyczy jednego wspólnego programu podróży. Bardziej złożone potrzeby większej grupy wyceniamy indywidualnie.</p>
+
+        <section class="service-comparison" id="porownanie" aria-labelledby="comparison-heading">
+          <div class="comparison-intro">
+            <div>
+              <p class="eyebrow">Porównanie usług</p>
+              <h3 id="comparison-heading">Porównaj zakres i wybierz właściwą usługę</h3>
+            </div>
+            <p>Potrzebujesz najlepszych propozycji lotu i noclegu? Wybierz szybki wariant. Chcesz otrzymać również trasę, atrakcje i harmonogram każdego dnia? Postaw na plan od A do Z.</p>
+          </div>
+
+          <div class="comparison-scroll" tabindex="0" aria-label="Porównanie usługi Lot plus nocleg i indywidualnego planu podróży">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th scope="col">Zakres usługi</th>
+                  <th scope="col">
+                    <span class="comparison-ticket">Szybki start</span>
+                    <strong>Lot + nocleg</strong>
+                    <small>Dla osób, które samodzielnie zaplanują pobyt, ale chcą oszczędzić czas na porównywaniu lotów i noclegów.</small>
+                  </th>
+                  <th scope="col">
+                    <span class="comparison-ticket is-plan">Pełny plan</span>
+                    <strong>Plan od A do Z</strong>
+                    <small>Dla osób, które chcą otrzymać kompletną trasę, harmonogram i praktyczne informacje w jednym miejscu.</small>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Co otrzymujesz</th>
+                  <td>2–3 gotowe warianty lotu i noclegu</td>
+                  <td>Kompletny plan podróży dzień po dniu</td>
+                </tr>
+                <tr>
+                  <th scope="row">Loty i noclegi</th>
+                  <td><span class="comparison-yes">2–3 porównane warianty</span></td>
+                  <td><span class="comparison-yes">Dopasowane do całej trasy</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Plan dzień po dniu</th>
+                  <td><span class="comparison-no">Organizujesz po swojemu</span></td>
+                  <td><span class="comparison-yes">Gotowy harmonogram</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Atrakcje i bilety</th>
+                  <td><span class="comparison-no">Po Twojej stronie</span></td>
+                  <td><span class="comparison-yes">Wpisane w plan</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Transport na miejscu</th>
+                  <td>Transfer z lotniska</td>
+                  <td>Przejazdy pomiędzy wszystkimi punktami</td>
+                </tr>
+                <tr>
+                  <th scope="row">Restauracje</th>
+                  <td><span class="comparison-no">Po Twojej stronie</span></td>
+                  <td><span class="comparison-yes">Sprawdzone propozycje</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Cena usługi</th>
+                  <td>Wycena po krótkim formularzu</td>
+                  <td>Od 349 zł, zależnie od liczby dni</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="comparison-actions">
+              <a href="#zamowienie" data-inquiry-service="flight-hotel">
+                <span>Wybierz lot + nocleg</span><span aria-hidden="true">→</span>
+              </a>
+              <a href="#zamowienie" data-inquiry-service="plan">
+                <span>Wybierz plan od A do Z</span><span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+          <p class="comparison-hint" aria-hidden="true">Przesuń, aby porównać cały zakres →</p>
+        </section>
+
+        <p class="offer-note">Każda propozycja zawiera aktualne ceny i bezpośrednie linki do ofert. Loty, noclegi, bilety i pozostałe usługi rezerwujesz oraz opłacasz zgodnie z informacją przy wybranym wariancie. Ceny mogą zmienić się do chwili rezerwacji. Cena planu dotyczy jednego wspólnego programu podróży.</p>
       </div>
     </section>
 
     <section class="inquiry-section" id="zamowienie">
       <div class="container inquiry-grid">
         <div class="inquiry-copy">
-          <p class="eyebrow">Zacznijmy od rozmowy</p>
-          <h2>Opowiedz Martynie o swojej podróży</h2>
-          <p class="inquiry-lead">Wypełnij krótki formularz. Martyna przeczyta Twoje zgłoszenie i odpowie na podany adres e-mail po zapoznaniu się ze szczegółami.</p>
+          <p class="eyebrow">Wycena bez zobowiązań</p>
+          <h2>Zacznij od krótkiego formularza</h2>
+          <p class="inquiry-lead">Podaj najważniejsze informacje o wyjeździe. Otrzymasz proponowany zakres usługi, cenę i termin realizacji.</p>
 
           <ol class="inquiry-steps">
             <li>
               <span>1</span>
               <div>
-                <strong>Opisujesz swój pomysł</strong>
-                <p>Kierunek, termin, liczba osób i to, czego najbardziej potrzebujesz.</p>
+                <strong>Podajesz szczegóły</strong>
+                <p>Kierunek, termin, liczba osób, budżet i najważniejsze oczekiwania.</p>
               </div>
             </li>
             <li>
               <span>2</span>
               <div>
-                <strong>Martyna sprawdza zakres</strong>
-                <p>Otrzymasz odpowiedź, proponowaną usługę oraz potwierdzenie ceny.</p>
+                <strong>Otrzymujesz wycenę</strong>
+                <p>Zakres usługi, ostateczna cena i możliwy termin realizacji.</p>
               </div>
             </li>
             <li>
               <span>3</span>
               <div>
-                <strong>Decydujesz bez pośpiechu</strong>
-                <p>Dopiero po Twojej akceptacji ustalacie płatność i termin realizacji.</p>
+                <strong>Potwierdzasz zamówienie</strong>
+                <p>Realizacja rozpoczyna się dopiero po Twojej akceptacji warunków.</p>
               </div>
             </li>
           </ol>
 
-          <p class="inquiry-note">Spokojnie, wysłanie formularza nie jest jeszcze rezerwacją ani płatnością ♡</p>
+          <p class="inquiry-note">Wysłanie formularza nie zobowiązuje do zakupu ani płatności.</p>
         </div>
 
         <form
@@ -3714,8 +4056,8 @@
           </label>
 
           <div class="form-heading">
-            <strong>Twoja podróż w kilku zdaniach</strong>
-            <span>Pola oznaczone gwiazdką są potrzebne, aby Martyna mogła odpowiedzieć.</span>
+            <strong>Informacje potrzebne do wyceny</strong>
+            <span>Pola oznaczone gwiazdką są wymagane do przygotowania odpowiedzi.</span>
           </div>
 
           <div class="inquiry-fields">
@@ -3723,8 +4065,8 @@
               Jakiej usługi potrzebujesz? *
               <select id="inquiry-service" name="Wybrana usługa" required>
                 <option value="">Wybierz usługę</option>
+                <option value="Dobór lotu i noclegu">Dobór lotu i noclegu</option>
                 <option value="Indywidualny plan podróży">Indywidualny plan podróży</option>
-                <option value="Konsultacja podróżnicza 60 minut">Konsultacja podróżnicza 60 minut</option>
                 <option value="Nie wiem, potrzebuję podpowiedzi">Nie wiem, potrzebuję podpowiedzi</option>
               </select>
             </label>
@@ -3763,6 +4105,20 @@
             </label>
 
             <label class="inquiry-field">
+              Skąd możesz wylecieć? *
+              <input type="text" name="Lotniska wylotowe" placeholder="np. Warszawa, Łódź lub Katowice" required>
+            </label>
+
+            <label class="inquiry-field">
+              Jak elastyczny jest termin?
+              <select name="Elastyczność terminu">
+                <option value="Termin jest stały">Termin jest stały</option>
+                <option value="Mogę przesunąć wyjazd o 1-2 dni">Mogę przesunąć wyjazd o 1–2 dni</option>
+                <option value="Szukam najtańszego terminu">Szukam najtańszego terminu</option>
+              </select>
+            </label>
+
+            <label class="inquiry-field">
               Kto podróżuje? *
               <select name="Uczestnicy podróży" required>
                 <option value="">Wybierz odpowiedź</option>
@@ -3784,9 +4140,29 @@
               <input type="number" name="Liczba dni" min="1" max="60" inputmode="numeric" placeholder="np. 5">
             </label>
 
+            <label class="inquiry-field">
+              Jaki bagaż zabieracie?
+              <select name="Bagaż">
+                <option value="Tylko mały bagaż podręczny">Tylko mały bagaż podręczny</option>
+                <option value="Bagaż kabinowy">Bagaż kabinowy</option>
+                <option value="Bagaż rejestrowany">Bagaż rejestrowany</option>
+                <option value="Jeszcze nie wiem">Jeszcze nie wiem</option>
+              </select>
+            </label>
+
+            <label class="inquiry-field">
+              Jakiego noclegu szukasz?
+              <select name="Standard noclegu">
+                <option value="Przede wszystkim dobra cena">Przede wszystkim dobra cena</option>
+                <option value="Dobry standard i lokalizacja">Dobry standard i lokalizacja</option>
+                <option value="Wyższy standard">Wyższy standard</option>
+                <option value="Nie mam preferencji">Nie mam preferencji</option>
+              </select>
+            </label>
+
             <label class="inquiry-field is-wide">
-              Co jest dla Ciebie najtrudniejsze w planowaniu? *
-              <textarea name="Opis potrzeb" minlength="20" placeholder="Napisz, czego się obawiasz, co jest już zarezerwowane i w czym Martyna powinna Ci pomóc." required></textarea>
+              Jakiego efektu oczekujesz? *
+              <textarea name="Opis potrzeb" minlength="20" placeholder="Opisz swoje priorytety, to, co jest już zarezerwowane, oraz kwestie, które trzeba uwzględnić w ofercie." required></textarea>
             </label>
 
             <label class="inquiry-consent">
@@ -3795,7 +4171,7 @@
             </label>
 
             <button class="inquiry-submit" type="submit">
-              Wyślij zgłoszenie do Martyny
+              Otrzymaj wycenę
               <span aria-hidden="true">→</span>
             </button>
 
@@ -3813,7 +4189,7 @@
         <div class="timeline-head">
           <div>
             <p class="eyebrow">Od pomysłu do spokojnego powrotu</p>
-            <h2 class="section-title">Ty wybierasz kierunek. Ja porządkuję resztę.</h2>
+            <h2 class="section-title">Ty wybierasz kierunek. Otrzymujesz uporządkowany plan.</h2>
           </div>
           <p class="section-lead">Dobra podróż nie zaczyna się na lotnisku. Zaczyna się od planu dopasowanego do Ciebie, Twojej rodziny i budżetu.</p>
         </div>
@@ -3822,14 +4198,14 @@
           <li class="timeline-step">
             <div class="timeline-dot" aria-hidden="true"></div>
             <span class="timeline-time">KROK 01</span>
-            <h3>Rozmawiamy</h3>
-            <p>O tym, kto leci, co lubicie i czego się obawiacie</p>
+            <h3>Podajesz szczegóły</h3>
+            <p>Termin, liczba osób, budżet i sposób, w jaki lubicie podróżować</p>
           </li>
           <li class="timeline-step">
             <div class="timeline-dot" aria-hidden="true"></div>
             <span class="timeline-time">KROK 02</span>
-            <h3>Szukam opcji</h3>
-            <p>Loty, noclegi i transfery w rozsądnym budżecie</p>
+            <h3>Porównuję opcje</h3>
+            <p>Loty, noclegi i transfery z uwzględnieniem pełnych kosztów</p>
           </li>
           <li class="timeline-step">
             <div class="timeline-dot" aria-hidden="true"></div>
@@ -3840,14 +4216,14 @@
           <li class="timeline-step">
             <div class="timeline-dot" aria-hidden="true"></div>
             <span class="timeline-time">KROK 04</span>
-            <h3>Dodaję konkrety</h3>
+            <h3>Uzupełniam konkrety</h3>
             <p>Jedzenie, bilety i podpowiedzi, na czym nie przepłacać</p>
           </li>
           <li class="timeline-step">
             <div class="timeline-dot" aria-hidden="true"></div>
             <span class="timeline-time">KROK 05</span>
-            <h3>Ruszacie w drogę</h3>
-            <p>Z gotowym planem i miejscem na odrobinę spontanu</p>
+            <h3>Otrzymujesz gotowy plan</h3>
+            <p>Wszystkie informacje w jednym miejscu i przestrzeń na odrobinę spontanu</p>
           </li>
         </ol>
       </div>
@@ -3918,7 +4294,7 @@
           <strong>Wybierz usługę</strong>
           <a href="#ebooki">Ebooki i przewodniki</a>
           <a href="#planer">Indywidualny plan</a>
-          <a href="#konsultacje">Konsultacja</a>
+          <a href="#lot-nocleg">Lot + nocleg</a>
         </div>
         <div class="footer-column">
           <strong>Poznaj</strong>
@@ -3972,7 +4348,7 @@
       const supportLabels = {
         1: "ebook",
         2: "plan od A do Z",
-        3: "konsultacja"
+        3: "lot + nocleg"
       };
 
       const travelPartyLabels = {
@@ -3992,13 +4368,13 @@
           { value: "plan-749", label: "Plan 8-10 dni - 749 zł" }
         ],
         3: [
-          { value: "consultation-169", label: "Konsultacja 60 min - 169 zł" }
+          { value: "flight-hotel", label: "Lot + nocleg - wycena po formularzu" }
         ]
       };
 
       const inquiryServiceValues = {
         plan: "Indywidualny plan podróży",
-        consultation: "Konsultacja podróżnicza 60 minut"
+        "flight-hotel": "Dobór lotu i noclegu"
       };
 
       function closeMenu() {
@@ -4098,7 +4474,7 @@
           mobileCta.textContent = "Powiadom mnie o premierze →";
         } else {
           mobileCta.href = "#zamowienie";
-          mobileCta.textContent = selectedDays === 2 ? "Zapytaj o swój plan →" : "Umów konsultację →";
+          mobileCta.textContent = selectedDays === 2 ? "Wybierz plan od A do Z →" : "Wybierz lot + nocleg →";
         }
       }
 
