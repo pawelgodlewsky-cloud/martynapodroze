@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="favicon-title">
+  <title id="favicon-title">Martyna Podroze - samolot</title>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="#a95543"/>
+  <circle cx="47" cy="17" r="6" fill="#e3b53d"/>
+  <path
+    fill="#fffdfb"
+    d="M14 34 26 30V16c0-4.8 2.2-8.2 6-10 3.8 1.8 6 5.2 6 10v14l12 4v5l-12-3v13l5 4v4l-11-3-11 3v-4l5-4V36l-12 3Z"
+    transform="rotate(40 32 32)"
+  />
+</svg>
