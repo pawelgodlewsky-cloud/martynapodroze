@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Propozycje wyjazdów | Martyna Podróże</title>
+  <link rel="icon" href="https://martynapodroze.pl/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./admin.css?v=1">
+  <script src="./app.js?v=1" type="module"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand-name" href="/" aria-label="Martyna Podróże — strona główna"><strong>Martyna</strong> Podróże</a>
+    <div class="topbar__actions"><span>Panel propozycji</span><button id="logout" type="button">Wyloguj</button></div>
+  </header>
+
+  <main class="shell">
+    <section id="list-view">
+      <div class="page-heading">
+        <div><p class="handwritten">Wyjazdy szyte na miarę</p><h1>Propozycje wyjazdów</h1><p>Jeden estetyczny link zamiast długiej wiadomości z rezerwacjami.</p></div>
+        <button class="button button--primary" id="new-trip" type="button">+ Nowa propozycja</button>
+      </div>
+      <div class="notice" id="list-notice" hidden></div>
+      <div class="trip-list" id="trip-list" aria-live="polite"><p class="loading">Ładowanie propozycji…</p></div>
+    </section>
+
+    <section id="form-view" hidden>
+      <div class="form-heading">
+        <button class="back-button" id="back-to-list" type="button">← Wróć do listy</button>
+        <p class="handwritten">Szybko i konkretnie</p>
+        <h1 id="form-title">Nowa propozycja</h1>
+        <p>Najważniejsze dane, lot i nocleg. Pozostałe elementy dodaj tylko wtedy, gdy są potrzebne.</p>
+      </div>
+
+      <form id="trip-form" novalidate>
+        <input type="hidden" id="trip-id">
+        <input type="hidden" id="status" value="draft">
+        <section class="form-card">
+          <div class="section-title"><span>01</span><div><h2>Podstawy</h2><p>Dokąd, kiedy i za ile?</p></div></div>
+          <div class="fields fields--three">
+            <label><span>Kierunek *</span><input id="destination" name="destination" required placeholder="Bergamo" autocomplete="off"></label>
+            <label><span>Kraj *</span><input id="country" name="country" required placeholder="Włochy" autocomplete="off"></label>
+            <label class="field--short"><span>Flaga</span><input id="country_emoji" name="country_emoji" placeholder="🇮🇹" maxlength="8" autocomplete="off"></label>
+            <label><span>Miasto wylotu *</span><input id="departure_city" name="departure_city" required placeholder="Warszawa" autocomplete="off"></label>
+            <label><span>Lotnisko</span><input id="departure_airport" name="departure_airport" placeholder="Warszawa Modlin" autocomplete="off"></label>
+            <label><span>Waluta</span><select id="currency" name="currency"><option>PLN</option><option>EUR</option><option>USD</option><option>GBP</option></select></label>
+            <label><span>Data od *</span><input id="start_date" name="start_date" type="date" required></label>
+            <label><span>Data do *</span><input id="end_date" name="end_date" type="date" required></label>
+            <label><span>Cena łącznie / osoba *</span><input id="total_price" name="total_price" type="number" min="0" step="0.01" required placeholder="571"></label>
+            <label class="field--wide"><span>Adres oferty</span><div class="slug-field"><span>martynapodroze.pl/w/</span><input id="slug" name="slug" pattern="[a-z0-9-]+" placeholder="bergamo-2-4-wrzesnia"></div><small>Tworzy się automatycznie, ale możesz go zmienić.</small></label>
+            <label><span>Wygaśnięcie (opcjonalne)</span><input id="expires_at" name="expires_at" type="datetime-local"></label>
+          </div>
+        </section>
+
+        <section class="form-card link-fields" data-type="flight">
+          <div class="section-title"><span>02</span><div><h2>Lot</h2><p>Link zostanie ukryty pod przyciskiem „Sprawdź lot”.</p></div></div>
+          <input type="hidden" data-field="id">
+          <div class="fields fields--three">
+            <label><span>Skąd *</span><input data-field="from_location" required placeholder="Warszawa Modlin"></label>
+            <label><span>Dokąd *</span><input data-field="to_location" required placeholder="Bergamo"></label>
+            <label><span>Linia lotnicza *</span><input data-field="provider" required placeholder="Ryanair"></label>
+            <label><span>Cena *</span><input data-field="price" type="number" min="0" step="0.01" required placeholder="198"></label>
+            <label class="field--wide"><span>URL lotu *</span><input data-field="url" type="url" required placeholder="https://..."></label>
+            <label class="field--wide"><span>Opcjonalna uwaga</span><textarea data-field="description" rows="2" placeholder="Np. tylko mały bagaż podręczny w cenie"></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-card link-fields" data-type="lodging">
+          <div class="section-title"><span>03</span><div><h2>Nocleg</h2><p>Nazwa, liczba nocy i krótki opis.</p></div></div>
+          <input type="hidden" data-field="id">
+          <div class="fields fields--three">
+            <label class="field--wide"><span>Nazwa *</span><input data-field="label" required placeholder="Apartment Bergamo Centro"></label>
+            <label><span>Cena *</span><input data-field="price" type="number" min="0" step="0.01" required placeholder="373"></label>
+            <label><span>Liczba nocy</span><input data-field="nights" type="number" min="0" step="1" placeholder="2"></label>
+            <label class="field--wide"><span>URL noclegu *</span><input data-field="url" type="url" required placeholder="https://..."></label>
+            <label class="field--wide"><span>Opis</span><textarea data-field="description" rows="3" placeholder="Dobra lokalizacja – około 10 minut spacerem od centrum."></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <div class="section-title"><span>04</span><div><h2>Dodatkowe elementy</h2><p>Transfer, parking, atrakcja lub inny przydatny link.</p></div></div>
+          <div id="extra-links"></div>
+          <button class="button button--secondary" id="add-extra" type="button">+ Dodaj element</button>
+        </section>
+
+        <section class="form-card">
+          <div class="section-title"><span>05</span><div><h2>Kilka słów ode mnie</h2><p>Opcjonalna, osobista wiadomość dla klientki.</p></div></div>
+          <label><span class="sr-only">Kilka słów ode mnie</span><textarea id="personal_note" name="personal_note" rows="5" placeholder="To świetny kierunek na spokojny, krótki city break…"></textarea></label>
+        </section>
+
+        <div class="notice" id="form-notice" hidden></div>
+        <div class="form-actions">
+          <button class="button button--secondary" type="submit" data-save-status="draft">Zapisz szkic</button>
+          <button class="button button--primary" type="submit" data-save-status="active">Publikuj propozycję</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

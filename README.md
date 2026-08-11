@@ -56,3 +56,10 @@ działającego w przeglądarce.
 5. SEO, analityka i dokumenty prawne.
 6. Podłączenie domeny `martynapodroze.pl`.
 7. Rozwinięcie oferty o wspólne kobiece wyjazdy z Martyną.
+
+## Indywidualne propozycje wyjazdów
+
+Repo zawiera moduł Cloudflare Worker + D1 dla chronionego panelu
+`/admin/wyjazdy`, publicznych ofert `/w/[slug]` i bezpiecznych przekierowań
+`/go/[id]`. Instrukcja konfiguracji i wdrożenia znajduje się w
+[`docs/wyjazdy-cloudflare.md`](docs/wyjazdy-cloudflare.md).

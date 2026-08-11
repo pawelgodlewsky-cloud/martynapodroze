@@ -1,0 +1,30 @@
+name = "martyna-wyjazdy"
+main = "worker/index.ts"
+compatibility_date = "2026-08-01"
+workers_dev = false
+
+# Worker obsługuje tylko nowy moduł. Obecna strona główna nadal jest
+# serwowana przez dotychczasowy origin (GitHub Pages).
+routes = [
+  { pattern = "martynapodroze.pl/admin/wyjazdy*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/api/admin/*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/w/*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/go/*", zone_name = "martynapodroze.pl" }
+]
+
+[vars]
+ADMIN_EMAIL = "podroz.martyna@gmail.com"
+
+[assets]
+directory = "./worker-public"
+binding = "ASSETS"
+run_worker_first = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "martyna-wyjazdy"
+database_id = "b1559654-57b5-4090-aed0-82996d9774a4"
+migrations_dir = "migrations"
+
+# ADMIN_PASSWORD, SESSION_SECRET i VISITOR_SALT sa sekretami Workera i nie sa
+# zapisywane w repozytorium.

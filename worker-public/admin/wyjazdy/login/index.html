@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Logowanie | Martyna Podróże</title>
+  <link rel="icon" href="https://martynapodroze.pl/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./login.css?v=1">
+  <script src="./login.js?v=1" type="module"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand-name" href="/" aria-label="Martyna Podróże — strona główna"><strong>Martyna</strong> Podróże</a>
+    <span>Panel propozycji</span>
+  </header>
+  <main>
+    <section class="login-card" aria-labelledby="login-title">
+      <p class="handwritten">Dobrze Cię widzieć</p>
+      <h1 id="login-title">Zaloguj się</h1>
+      <p class="intro">Panel indywidualnych propozycji wyjazdów.</p>
+      <form id="login-form">
+        <label><span>E-mail</span><input id="email" name="email" type="email" autocomplete="username" required autofocus></label>
+        <label><span>Hasło</span><input id="password" name="password" type="password" autocomplete="current-password" required></label>
+        <p class="notice" id="notice" role="alert" hidden></p>
+        <button type="submit">Zaloguj się</button>
+        <p class="privacy-note">Logowanie używa wyłącznie niezbędnego cookie sesyjnego. <a href="/polityka-prywatnosci.html">Prywatność i cookies</a></p>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
