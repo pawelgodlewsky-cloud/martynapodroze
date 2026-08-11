@@ -123,7 +123,7 @@ export function renderPublicTrip(trip: TripWithLinks, requestUrl: string): strin
   </main>
   <footer><p>Ceny i dostępność mogą się zmienić. Rezerwacji dokonujesz bezpośrednio u wskazanego dostawcy na jego warunkach.</p><nav><a href="/polityka-prywatnosci.html">Prywatność i cookies</a><button type="button" data-cookie-settings>Ustawienia cookies</button></nav></footer>
   <script src="/assets/cookie-consent.js?v=1"></script>
-  <script src="/assets/trip-newsletter.js?v=1"></script>
+  <script src="/assets/trip-newsletter.js?v=2"></script>
 </body>
 </html>`;
 }

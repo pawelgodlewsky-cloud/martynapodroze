@@ -28,7 +28,7 @@ describe("public trip newsletter", () => {
 
     expect(html).toContain('id="trip-newsletter-form"');
     expect(html).toContain('name="consent" type="checkbox" required');
-    expect(html).toContain('/assets/trip-newsletter.js?v=1');
+    expect(html).toContain('/assets/trip-newsletter.js?v=2');
     expect(html).toContain('/polityka-prywatnosci.html');
   });
 });

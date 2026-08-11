@@ -32,7 +32,7 @@ import { parseTripInput, validateHttpUrl, ValidationError } from "../src/trips";
 import type { Env } from "../src/types";
 
 const ADMIN_CSP = "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl data:; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
-const PUBLIC_CSP = "default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
+const PUBLIC_CSP = "default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self'; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
 
 function notFound(): Response {
   return new Response("Nie znaleziono strony.", { status: 404, headers: securityHeaders("text/plain; charset=utf-8") });
