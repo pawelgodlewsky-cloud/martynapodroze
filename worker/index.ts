@@ -21,6 +21,12 @@ import {
 } from "../src/db";
 import { recordEvent, visitorForRequest } from "../src/events";
 import { errorJson, json, requestJson, securityHeaders } from "../src/http";
+import {
+  NewsletterValidationError,
+  parseNewsletterInput,
+  subscribeWithMailerLite,
+  takeNewsletterRateLimit
+} from "../src/newsletter";
 import { renderPublicTrip } from "../src/public-page";
 import { parseTripInput, validateHttpUrl, ValidationError } from "../src/trips";
 import type { Env } from "../src/types";
@@ -146,6 +152,26 @@ async function adminApi(request: Request, env: Env, pathname: string): Promise<R
   return errorJson("Nie znaleziono endpointu.", 404);
 }
 
+async function newsletterApi(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") return errorJson("Nieobsługiwana metoda.", 405);
+  if (!validSameOrigin(request)) return errorJson("Żądanie ma nieprawidłowe źródło.", 403);
+  if (!databaseReady(env)) return errorJson("Newsletter jest chwilowo niedostępny.", 503);
+  try {
+    const input = parseNewsletterInput(await requestJson(request));
+    if (input.isBot) return json({ ok: true }, 202);
+    if (!(await takeNewsletterRateLimit(request, env))) {
+      return errorJson("Zbyt wiele prób. Spróbuj ponownie później.", 429);
+    }
+    const result = await subscribeWithMailerLite(input.email, env);
+    if (result === "invalid") return errorJson("Podaj poprawny adres e-mail.", 422);
+    if (result === "unavailable") return errorJson("Newsletter jest chwilowo niedostępny. Spróbuj ponownie później.", 503);
+    return json({ ok: true, message: "Sprawdź skrzynkę i potwierdź zapis do newslettera." }, 202);
+  } catch (error) {
+    if (error instanceof NewsletterValidationError) return errorJson(error.message, 422);
+    return errorJson("Nieprawidłowe dane formularza.", 400);
+  }
+}
+
 async function publicTrip(request: Request, env: Env, slug: string, context: ExecutionContext): Promise<Response> {
   if (!databaseReady(env)) return new Response("Moduł jest chwilowo niedostępny.", { status: 503 });
   const trip = await getPublicTripBySlug(env, slug);
@@ -198,6 +224,7 @@ export default {
         return adminAsset(request, env);
       }
       if (url.pathname === "/api/admin/session") return adminSession(request, env);
+      if (url.pathname.replace(/\/$/, "") === "/api/newsletter/subscribe") return newsletterApi(request, env);
       if (url.pathname === "/api/admin/trips" || url.pathname.startsWith("/api/admin/trips/")) {
         if (!(await authorizeAdmin(request, env))) return errorJson("Sesja wygasła. Zaloguj się ponownie.", 401);
         return adminApi(request, env, url.pathname.replace(/\/$/, ""));

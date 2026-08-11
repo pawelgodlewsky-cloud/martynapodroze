@@ -21,6 +21,8 @@ export interface Env {
   ADMIN_PASSWORD?: string;
   SESSION_SECRET?: string;
   VISITOR_SALT?: string;
+  MAILERLITE_API_TOKEN?: string;
+  MAILERLITE_GROUP_ID?: string;
   ALLOW_LOCAL_ADMIN?: string;
 }
 

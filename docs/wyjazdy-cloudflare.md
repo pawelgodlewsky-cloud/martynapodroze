@@ -12,6 +12,11 @@ wyłącznie trasy:
 Worker korzysta z D1 przez binding `DB`. R2 nie jest potrzebne — moduł nie
 przyjmuje uploadów i używa istniejących zasobów marki.
 
+Publiczny endpoint `/api/newsletter/subscribe` łączy formularz strony z
+MailerLite. Token `MAILERLITE_API_TOKEN` jest sekretem Workera, a identyfikator
+grupy znajduje się w `wrangler.toml`. Zapisy trafiają do MailerLite ze statusem
+`unconfirmed`; aktywacja następuje dopiero po double opt-in.
+
 ## Pierwsze wdrożenie
 
 1. Zainstaluj zależności:

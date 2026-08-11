@@ -1330,7 +1330,7 @@
       gap: 9px;
     }
 
-    .signup input {
+    .signup input[type="email"] {
       min-width: 0;
       flex: 1;
       min-height: 58px;
@@ -1356,6 +1356,48 @@
       margin: 0;
       font-size: 0.75rem;
       font-weight: 700;
+    }
+
+    .signup button:disabled {
+      cursor: wait;
+      opacity: 0.68;
+    }
+
+    .signup .signup-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-family: "Manrope", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 1.5;
+      text-transform: none;
+    }
+
+    .signup-consent input {
+      width: 17px;
+      height: 17px;
+      flex: none;
+      margin: 2px 0 0;
+      accent-color: var(--ink);
+    }
+
+    .signup-consent a {
+      color: inherit;
+      text-underline-offset: 2px;
+    }
+
+    .signup-honeypot {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .signup-message.is-error {
+      color: #7c251f;
     }
 
     .site-footer {
@@ -3017,7 +3059,7 @@
       font-weight: 600;
     }
 
-    .signup input {
+    .signup input[type="email"] {
       border-color: #cbbbad;
     }
 
@@ -4274,9 +4316,11 @@
           <form class="signup" id="newsletter-form">
             <label for="email">Twój adres e-mail</label>
             <div class="signup-row">
-              <input id="email" name="email" type="email" placeholder="np. ola@email.pl" required>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="np. ola@email.pl" required>
               <button type="submit">Powiadom mnie o premierze →</button>
             </div>
+            <label class="signup-consent"><input id="newsletter-consent" name="consent" type="checkbox" required><span>Chcę otrzymywać informacje o premierze przewodnika, cotygodniowe propozycje tanich lotów i praktyczne wskazówki. Mogę wypisać się w każdej chwili. <a href="/polityka-prywatnosci.html">Polityka prywatności</a>.</span></label>
+            <label class="signup-honeypot" aria-hidden="true">Strona internetowa<input id="newsletter-website" name="website" type="text" tabindex="-1" autocomplete="off"></label>
             <p class="signup-message" id="signup-message" aria-live="polite"></p>
           </form>
         </div>
@@ -4569,14 +4613,32 @@
         document.getElementById("plany").scrollIntoView({ behavior: "smooth" });
       });
 
-      newsletter.addEventListener("submit", (event) => {
+      newsletter.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const subject = encodeURIComponent("Powiadom mnie o premierze przewodnika po Lombardii");
-        const body = encodeURIComponent(
-          `Proszę o informację o premierze przewodnika po Lombardii.\n\nMój adres e-mail: ${email.value}`
-        );
-        signupMessage.textContent = "Otwieramy wiadomość do Martyny. Wyślij ją, aby zapisać się na listę premiery.";
-        window.location.href = `mailto:podroz.martyna@gmail.com?subject=${subject}&body=${body}`;
+        const submitButton = newsletter.querySelector("button[type='submit']");
+        submitButton.disabled = true;
+        signupMessage.classList.remove("is-error");
+        signupMessage.textContent = "Zapisuję…";
+        try {
+          const response = await fetch("/api/newsletter/subscribe", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email.value,
+              consent: document.getElementById("newsletter-consent").checked,
+              website: document.getElementById("newsletter-website").value
+            })
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(payload.error || "Nie udało się zapisać. Spróbuj ponownie.");
+          newsletter.reset();
+          signupMessage.textContent = payload.message || "Sprawdź skrzynkę i potwierdź zapis do newslettera.";
+        } catch (error) {
+          signupMessage.classList.add("is-error");
+          signupMessage.textContent = error instanceof Error ? error.message : "Nie udało się zapisać. Spróbuj ponownie.";
+        } finally {
+          submitButton.disabled = false;
+        }
       });
 
       async function updateInstagramFollowers() {
