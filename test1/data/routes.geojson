@@ -215,6 +215,25 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          9.5843823,
+          45.6991237
+        ]
+      },
+      "properties": {
+        "id": "co-ponte-san-pietro",
+        "day": 2,
+        "order": 2,
+        "time": "wg wybranego połączenia",
+        "name": "Ponte San Pietro — z autobusu na pociąg",
+        "type": "transport",
+        "address": "Stazione di Ponte San Pietro, Via Sabotino"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           9.3933781,
           45.8563651
         ]
@@ -222,9 +241,9 @@
       "properties": {
         "id": "co-lecco",
         "day": 2,
-        "order": 2,
-        "time": "07:10",
-        "name": "Lecco — przesiadka",
+        "order": 3,
+        "time": "wg wybranego połączenia",
+        "name": "Lecco — drugi pociąg do Varenna",
         "type": "transport",
         "address": "Piazza Stazione, Lecco"
       }
@@ -241,7 +260,7 @@
       "properties": {
         "id": "co-varenna-station",
         "day": 2,
-        "order": 3,
+        "order": 4,
         "time": "08:05",
         "name": "Varenna-Esino",
         "type": "transport",
@@ -260,7 +279,7 @@
       "properties": {
         "id": "co-lovers",
         "day": 2,
-        "order": 4,
+        "order": 5,
         "time": "08:25",
         "name": "Passeggiata degli Innamorati",
         "type": "photospot",
@@ -279,7 +298,7 @@
       "properties": {
         "id": "co-san-giorgio",
         "day": 2,
-        "order": 5,
+        "order": 6,
         "time": "09:00",
         "name": "Piazza San Giorgio i uliczki Varenna",
         "type": "attraction",
@@ -298,7 +317,7 @@
       "properties": {
         "id": "co-villa-monastero",
         "day": 2,
-        "order": 6,
+        "order": 7,
         "time": "10:00",
         "name": "Villa Monastero",
         "type": "attraction",
@@ -317,7 +336,7 @@
       "properties": {
         "id": "co-ferry-varenna",
         "day": 2,
-        "order": 7,
+        "order": 8,
         "time": "11:30",
         "name": "Imbarcadero di Varenna — główna przystań",
         "type": "transport",
@@ -336,7 +355,7 @@
       "properties": {
         "id": "co-bellagio",
         "day": 2,
-        "order": 8,
+        "order": 9,
         "time": "12:20",
         "name": "Bellagio — przystań",
         "type": "transport",
@@ -355,7 +374,7 @@
       "properties": {
         "id": "co-salita",
         "day": 2,
-        "order": 9,
+        "order": 10,
         "time": "12:40",
         "name": "Salita Serbelloni",
         "type": "photospot",
@@ -374,7 +393,7 @@
       "properties": {
         "id": "co-basilica",
         "day": 2,
-        "order": 10,
+        "order": 11,
         "time": "13:10",
         "name": "Basilica di San Giacomo",
         "type": "attraction",
@@ -393,7 +412,7 @@
       "properties": {
         "id": "co-spartivento",
         "day": 2,
-        "order": 11,
+        "order": 12,
         "time": "13:40",
         "name": "Punta Spartivento",
         "type": "photospot",
@@ -412,7 +431,7 @@
       "properties": {
         "id": "co-pescallo",
         "day": 2,
-        "order": 12,
+        "order": 13,
         "time": "15:20",
         "name": "Pescallo",
         "type": "attraction",
@@ -431,7 +450,7 @@
       "properties": {
         "id": "co-return",
         "day": 2,
-        "order": 13,
+        "order": 14,
         "time": "16:30",
         "name": "Prom do Varenna i pociąg do Bergamo",
         "type": "transport",
@@ -920,6 +939,10 @@
             45.6903836
           ],
           [
+            9.5843823,
+            45.6991237
+          ],
+          [
             9.3933781,
             45.8563651
           ],
@@ -932,10 +955,10 @@
       "properties": {
         "id": "d2-a",
         "day": 2,
-        "label": "Dojazd — Bergamo → Varenna-Esino",
+        "label": "Dojazd — autobus zastępczy + dwa pociągi",
         "mode": "transit",
         "minutes": 110,
-        "distance": "kolej przez Lecco"
+        "distance": "Bergamo → Ponte San Pietro → Lecco → Varenna"
       }
     },
     {

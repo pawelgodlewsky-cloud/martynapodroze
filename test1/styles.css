@@ -494,6 +494,11 @@ body.companion-active { padding-bottom: calc(148px + var(--safe-bottom)); }
 .rail-pass { display: grid; gap: 13px; margin: 12px 0 16px; padding: 18px; border: 1px solid #a9b6a3; border-radius: 12px; background: linear-gradient(115deg,rgba(235,241,230,.96),rgba(255,253,249,.9)); }
 .rail-pass h3 { margin: 3px 0 7px; font-family: var(--font-heading); font-size: 24px; font-weight: 600; line-height: 1.05; }
 .rail-pass-copy p { margin: 0; color: #526052; font-size: 11px; line-height: 1.6; }
+.rail-ticket-options { display: grid; gap: 8px; }
+.rail-ticket-options > div { padding: 12px; border: 1px solid rgba(113,128,108,.35); border-radius: 8px; background: rgba(255,255,255,.72); }
+.rail-ticket-options span { display: block; margin-bottom: 4px; color: var(--color-brand-primary); font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.rail-ticket-options b { display: block; font-size: 11px; }
+.rail-ticket-options p { margin: 5px 0 0; color: #526052; font-size: 10px; line-height: 1.5; }
 .rail-pass-prices { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
 .rail-pass-prices span { display: flex; justify-content: space-between; gap: 8px; padding: 9px 10px; border: 1px solid rgba(113,128,108,.35); border-radius: 7px; background: rgba(255,255,255,.7); color: #425043; font-size: 10px; }
 .rail-pass-prices b { font-size: 9px; text-transform: uppercase; }
@@ -695,9 +700,11 @@ body.companion-active { padding-bottom: calc(148px + var(--safe-bottom)); }
   .rail-date-stack { grid-column: auto; justify-content: flex-end; max-width: 235px; }
   .rail-route { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; overflow: visible; }
   .rail-route > span { min-width: 0; }
-  .rail-pass { grid-template-columns: minmax(0,1.2fr) minmax(280px,.8fr); align-items: center; padding: 22px; }
+  .rail-pass { grid-template-columns: minmax(0,.8fr) minmax(340px,1.2fr); align-items: center; padding: 22px; }
+  .rail-ticket-options { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .rail-pass-prices { grid-column: 1 / -1; grid-template-columns: repeat(4,minmax(0,1fr)); }
   .rail-pass-warning { grid-column: 1 / 2; }
-  .rail-pass > a { grid-column: 2 / 3; grid-row: 2; justify-self: end; }
+  .rail-pass > a { grid-column: 2 / 3; grid-row: 3; justify-self: end; }
   .rail-checklist { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px 24px; }
   .rail-actions { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .point-card { margin-left: 64px; grid-template-columns: minmax(240px,34%) minmax(0,1fr); gap: 34px; padding: 32px 0; }

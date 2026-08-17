@@ -1,4 +1,4 @@
-const CACHE = "lombardia-v24-varenna-guide";
+const CACHE = "lombardia-v25-ponte-transfer";
 const LOCAL = [
   "./", "index.html", "styles.css", "app.js", "manifest.webmanifest",
   "assets/bergamo.webp", "assets/como.webp", "assets/milano.webp", "assets/logo-martyna.png", "assets/logo-martyna.webp", "assets/app-icon.svg",

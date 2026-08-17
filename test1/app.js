@@ -436,13 +436,17 @@ function renderDayTravelNotice() {
     </div>
     <p class="rail-intro">Pociągi nie kursują między Bergamo a Ponte San Pietro. Pierwszy odcinek pokonujesz autobusem zastępczym, a potem przesiadasz się na pociągi przez Lecco.</p>
     <div class="rail-route" aria-label="Trasa: Bergamo, Ponte San Pietro, Lecco, Varenna-Esino">
-      <span><i>1</i><b>Bergamo</b><small>biały autokar</small></span><em aria-hidden="true">→</em>
-      <span><i>2</i><b>Ponte S. Pietro</b><small>przesiadka</small></span><em aria-hidden="true">→</em>
-      <span><i>3</i><b>Lecco</b><small>zmiana pociągu</small></span><em aria-hidden="true">→</em>
-      <span><i>4</i><b>Varenna-Esino</b><small>cel</small></span>
+      <span><i>1</i><b>Bergamo</b><small>autobus zastępczy</small></span><em aria-hidden="true">→</em>
+      <span><i>2</i><b>Ponte S. Pietro</b><small>pociąg do Lecco</small></span><em aria-hidden="true">→</em>
+      <span><i>3</i><b>Lecco</b><small>drugi pociąg</small></span><em aria-hidden="true">→</em>
+      <span><i>4</i><b>Varenna-Esino</b><small>wysiadasz</small></span>
     </div>
     <div class="rail-pass">
-      <div class="rail-pass-copy"><span class="kicker">Najprostszy bilet</span><h3>Jeden bilet na całą trasę lądową</h3><p><b>IVOL — Io Viaggio Ovunque in Lombardia</b> obejmuje autobus zastępczy, pociągi regionalne i lokalny transport publiczny w Lombardii. Kupisz go w aplikacji Trenord; przy bilecie cyfrowym wybierasz dzień rozpoczęcia i nie musisz go kasować.</p></div>
+      <div class="rail-pass-copy"><span class="kicker">Bilet bez nieporozumień</span><h3>Wybierz jedną z dwóch opcji</h3><p>Obie pozwalają przejechać autobusami zastępczymi i pociągami regionalnymi. Nie kupujesz ich jednocześnie.</p></div>
+      <div class="rail-ticket-options">
+        <div><span>Opcja A</span><b>Zwykły bilet odcinkowy</b><p>W aplikacji wybierz relację <strong>Bergamo → Varenna-Esino</strong>. Jeden bilet obejmuje wskazany przez planer autobus zastępczy oraz pociągi na tej trasie.</p></div>
+        <div><span>Opcja B</span><b>IVOL — przejazdy bez limitu</b><p>Dobry, jeśli tego samego dnia korzystasz też z innych pociągów, autobusów lub komunikacji miejskiej w Lombardii.</p></div>
+      </div>
       <div class="rail-pass-prices" aria-label="Ceny biletu IVOL"><span><b>1 dzień</b>17,50 €</span><span><b>2 dni</b>29 €</span><span><b>3 dni</b>35 €</span><span><b>7 dni</b>46,50 €</span></div>
       <p class="rail-pass-warning"><b>Ważne:</b> IVOL nie zastępuje biletu na prom Varenna ↔ Bellagio — prom kupujesz osobno.</p>
       <a href="https://www.trenord.it/en/tickets/travel-titles/daily-tickets/" target="_blank" rel="noopener">Sprawdź IVOL w Trenord ↗</a>
@@ -450,10 +454,10 @@ function renderDayTravelNotice() {
     <div class="rail-key-note"><b>Jak znaleźć właściwy autobus?</b><p>Standardowo odjeżdża z <strong>Piazzale Guglielmo Marconi</strong>, przed dworcem kolejowym. Stań plecami do głównego wejścia — wiata jest po prawej, obok foodtrucka i parkingu rowerowego. Szukaj białego autokaru NorisViaggi z kartką „Ponte S. Pt”. To nie jest autobus miejski ATB i nie jedzie bezpośrednio do Lecco.</p></div>
     ${extraWorksActive ? `<div class="rail-temporary"><span>Do 21.08.2026</span><p>Trwają dodatkowe prace między Calolziocorte a Ponte San Pietro. Dla części zmienionych kursów RFI wskazuje <b>pensilinę 10 Autostazione przy Via Bartolomeo Bono</b>, a autobus może jechać do Calolziocorte lub — 21 sierpnia — aż do Lecco. Dokładny wariant z planera Trenord ma pierwszeństwo.</p></div>` : ""}
     <ol class="rail-checklist">
-      <li><b>Kup jedną relację:</b> Bergamo → Varenna-Esino; bilet kolejowy obejmuje autobus zastępczy.</li>
-      <li><b>Przyjdź 30 minut wcześniej:</b> biały autokar może stać poza zwykłym peronem.</li>
-      <li><b>W Ponte San Pietro:</b> wejdź na stację i sprawdź pociąg do Lecco; najczęściej używany jest peron 2, ale zawsze potwierdź go na tablicy.</li>
-      <li><b>W Lecco:</b> wybierz pociąg w kierunku Colico, Sondrio lub Tirano i wysiądź na Varenna-Esino.</li>
+      <li><b>Wybierz bilet:</b> zwykły Bergamo → Varenna-Esino albo IVOL. Jeden z nich wystarczy na całą trasę lądową.</li>
+      <li><b>W Bergamo:</b> przyjdź 30 minut wcześniej i znajdź biały autokar z kartką „Ponte S. Pt”.</li>
+      <li><b>W Ponte San Pietro:</b> po wyjściu z autobusu odwróć się do stacji, wejdź i skręć w prawo. Obejdź tory dookoła do pociągu jadącego do Lecco — najczęściej odjeżdża z peronu 2, ale potwierdź go na tablicy.</li>
+      <li><b>W Lecco:</b> przesiądź się do drugiego pociągu. Na tablicy szukaj Varenna-Esino; zwykle będzie to kierunek Colico, Sondrio albo Tirano.</li>
     </ol>
     <div class="rail-actions"><a href="https://mediolanbergamo.pl/autobus-z-bergamo-do-lecco/" target="_blank" rel="noopener">Zobacz opis i zdjęcia przystanku ↗</a><a href="https://www.trenord.it/en/routes-and-timetables/journey/" target="_blank" rel="noopener">Sprawdź połączenie w Trenord ↗</a></div>
     <p class="rail-source-note">Lokalizacja i wygląd autobusu: MediolanBergamo.pl. Termin remontu i zmiany ruchu: RFI. Rozkład sprawdź ponownie dzień wcześniej i rano.</p>
@@ -743,7 +747,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=24", "app.js?v=24", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=25", "app.js?v=25", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
@@ -971,7 +975,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=24", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=25", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }
