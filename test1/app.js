@@ -509,6 +509,7 @@ function pointCard(point, disabledMode = null) {
       ${point.travelAlert ? `<div class="travel-alert" role="alert"><span class="travel-alert-date">${escapeHtml(point.travelAlert.until)}</span><b>${escapeHtml(point.travelAlert.title)}</b><p>${escapeHtml(point.travelAlert.body)}</p><a href="${point.travelAlert.url}" target="_blank" rel="noopener">Oficjalny komunikat RFI ↗</a></div>` : ""}
       <div class="status-row">${(point.statuses || []).map(status => `<span class="status">${escapeHtml(status)}</span>`).join("")}</div>
       <p class="point-desc">${escapeHtml(point.description)}</p>
+      ${point.travelAlternative ? `<aside class="travel-alternative" aria-label="Alternatywny wariant podróży"><div class="travel-alternative-icon" aria-hidden="true">⚓</div><div><span>${escapeHtml(point.travelAlternative.label)}</span><b>${escapeHtml(point.travelAlternative.title)}</b><p>${escapeHtml(point.travelAlternative.body)}</p><small>${escapeHtml(point.travelAlternative.note)}</small><a href="${point.travelAlternative.url}" target="_blank" rel="noopener">Sprawdź aktualny rozkład Navigazione Laghi ↗</a></div></aside>` : ""}
       <div class="point-facts">
         <div><span>czas na miejscu</span><b>${shortened ? `około ${shortened} min · skrócone` : escapeHtml(point.visit)}</b></div><div><span>koszt</span><b>${escapeHtml(point.cost)}</b></div>
         <div><span>godziny</span><b>${escapeHtml(point.opening)}</b></div><div><span>rezerwacja</span><b>${escapeHtml(point.reservation)}</b></div>
@@ -747,7 +748,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=25", "app.js?v=25", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=26", "app.js?v=26", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
@@ -975,7 +976,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=25", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=26", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }
