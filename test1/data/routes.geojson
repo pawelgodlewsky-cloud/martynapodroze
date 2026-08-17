@@ -1,0 +1,1195 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6749975,
+          45.6903836
+        ]
+      },
+      "properties": {
+        "id": "bg-station",
+        "day": 1,
+        "order": 1,
+        "time": "09:00",
+        "name": "BGY → Stazione di Bergamo",
+        "type": "transport",
+        "address": "Piazzale Guglielmo Marconi, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.66984,
+          45.69484
+        ]
+      },
+      "properties": {
+        "id": "bg-porta-nuova",
+        "day": 1,
+        "order": 2,
+        "time": "09:20",
+        "name": "Porta Nuova",
+        "type": "attraction",
+        "address": "Largo Porta Nuova, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.66662,
+          45.70072
+        ]
+      },
+      "properties": {
+        "id": "bg-funicular",
+        "day": 1,
+        "order": 3,
+        "time": "10:00",
+        "name": "Funicolare Città Alta — dolna stacja",
+        "type": "transport",
+        "address": "Viale Vittorio Emanuele II 64, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6652545,
+          45.7030956
+        ]
+      },
+      "properties": {
+        "id": "bg-mercato",
+        "day": 1,
+        "order": 4,
+        "time": "10:30",
+        "name": "Piazza Mercato delle Scarpe",
+        "type": "attraction",
+        "address": "Piazza Mercato delle Scarpe, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6628983,
+          45.704038
+        ]
+      },
+      "properties": {
+        "id": "bg-piazza-vecchia",
+        "day": 1,
+        "order": 5,
+        "time": "10:50",
+        "name": "Piazza Vecchia",
+        "type": "attraction",
+        "address": "Piazza Vecchia, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6622224,
+          45.7032098
+        ]
+      },
+      "properties": {
+        "id": "bg-basilica",
+        "day": 1,
+        "order": 6,
+        "time": "11:20",
+        "name": "Santa Maria Maggiore + Cappella Colleoni",
+        "type": "attraction",
+        "address": "Piazza Duomo, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.663136,
+          45.704278
+        ]
+      },
+      "properties": {
+        "id": "bg-campanone",
+        "day": 1,
+        "order": 7,
+        "time": "12:15",
+        "name": "Campanone",
+        "type": "attraction",
+        "address": "Piazza Vecchia, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6583772,
+          45.7064546
+        ]
+      },
+      "properties": {
+        "id": "bg-colle-aperto",
+        "day": 1,
+        "order": 8,
+        "time": "13:25",
+        "name": "Colle Aperto — food stop",
+        "type": "food",
+        "address": "Largo Colle Aperto, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6507907,
+          45.7091983
+        ]
+      },
+      "properties": {
+        "id": "bg-san-vigilio",
+        "day": 1,
+        "order": 9,
+        "time": "15:00",
+        "name": "Castello di San Vigilio",
+        "type": "attraction",
+        "address": "Via al Castello, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.663021,
+          45.70124
+        ]
+      },
+      "properties": {
+        "id": "bg-porta-san-giacomo",
+        "day": 1,
+        "order": 10,
+        "time": "17:15",
+        "name": "Mury i Porta San Giacomo",
+        "type": "photospot",
+        "address": "Via Sant’Alessandro, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6749975,
+          45.6903836
+        ]
+      },
+      "properties": {
+        "id": "co-bergamo",
+        "day": 2,
+        "order": 1,
+        "time": "06:15",
+        "name": "Stazione di Bergamo",
+        "type": "transport",
+        "address": "Piazzale Guglielmo Marconi, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.3933781,
+          45.8563651
+        ]
+      },
+      "properties": {
+        "id": "co-lecco",
+        "day": 2,
+        "order": 2,
+        "time": "07:10",
+        "name": "Lecco — przesiadka",
+        "type": "transport",
+        "address": "Piazza Stazione, Lecco"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2862321,
+          46.0150939
+        ]
+      },
+      "properties": {
+        "id": "co-varenna-station",
+        "day": 2,
+        "order": 3,
+        "time": "08:05",
+        "name": "Varenna-Esino",
+        "type": "transport",
+        "address": "Piazza della Stazione, Perledo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2832,
+          46.0126
+        ]
+      },
+      "properties": {
+        "id": "co-lovers",
+        "day": 2,
+        "order": 4,
+        "time": "08:25",
+        "name": "Passeggiata degli Innamorati",
+        "type": "photospot",
+        "address": "Passeggiata degli Innamorati, Varenna"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2841741,
+          46.0100965
+        ]
+      },
+      "properties": {
+        "id": "co-san-giorgio",
+        "day": 2,
+        "order": 5,
+        "time": "09:00",
+        "name": "Piazza San Giorgio i uliczki Varenna",
+        "type": "attraction",
+        "address": "Piazza San Giorgio, Varenna"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2828845,
+          46.0140275
+        ]
+      },
+      "properties": {
+        "id": "co-ferry-varenna",
+        "day": 2,
+        "order": 6,
+        "time": "10:30",
+        "name": "Imbarcadero di Varenna",
+        "type": "transport",
+        "address": "Via Imbarcadero, Varenna"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.261,
+          45.9875
+        ]
+      },
+      "properties": {
+        "id": "co-bellagio",
+        "day": 2,
+        "order": 7,
+        "time": "11:20",
+        "name": "Bellagio — przystań",
+        "type": "transport",
+        "address": "Piazza Giuseppe Mazzini, Bellagio"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2616008,
+          45.9865966
+        ]
+      },
+      "properties": {
+        "id": "co-salita",
+        "day": 2,
+        "order": 8,
+        "time": "11:40",
+        "name": "Salita Serbelloni",
+        "type": "photospot",
+        "address": "Salita Serbelloni, Bellagio"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2616,
+          45.9873
+        ]
+      },
+      "properties": {
+        "id": "co-basilica",
+        "day": 2,
+        "order": 9,
+        "time": "12:15",
+        "name": "Basilica di San Giacomo",
+        "type": "attraction",
+        "address": "Piazza della Chiesa, Bellagio"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2655266,
+          45.9912785
+        ]
+      },
+      "properties": {
+        "id": "co-spartivento",
+        "day": 2,
+        "order": 10,
+        "time": "12:50",
+        "name": "Punta Spartivento",
+        "type": "photospot",
+        "address": "Via Eugenio Vitali, Bellagio"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2634726,
+          45.9828104
+        ]
+      },
+      "properties": {
+        "id": "co-pescallo",
+        "day": 2,
+        "order": 11,
+        "time": "15:00",
+        "name": "Pescallo",
+        "type": "attraction",
+        "address": "Pescallo, Bellagio"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.261,
+          45.9875
+        ]
+      },
+      "properties": {
+        "id": "co-return",
+        "day": 2,
+        "order": 12,
+        "time": "16:00",
+        "name": "Prom do Varenna i pociąg do Bergamo",
+        "type": "transport",
+        "address": "Piazza Giuseppe Mazzini, Bellagio"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.2042617,
+          45.4858786
+        ]
+      },
+      "properties": {
+        "id": "mi-centrale",
+        "day": 3,
+        "order": 1,
+        "time": "08:30",
+        "name": "Milano Centrale",
+        "type": "transport",
+        "address": "Piazza Duca d’Aosta, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1916121,
+          45.4641669
+        ]
+      },
+      "properties": {
+        "id": "mi-duomo",
+        "day": 3,
+        "order": 2,
+        "time": "09:00",
+        "name": "Duomo di Milano",
+        "type": "attraction",
+        "address": "Piazza del Duomo, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1878339,
+          45.4627042
+        ]
+      },
+      "properties": {
+        "id": "mi-san-satiro",
+        "day": 3,
+        "order": 3,
+        "time": "10:50",
+        "name": "Santa Maria presso San Satiro",
+        "type": "attraction",
+        "address": "Via Torino 17/19, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1900266,
+          45.4656804
+        ]
+      },
+      "properties": {
+        "id": "mi-galleria",
+        "day": 3,
+        "order": 4,
+        "time": "11:20",
+        "name": "Galleria Vittorio Emanuele II",
+        "type": "photospot",
+        "address": "Piazza del Duomo, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1891136,
+          45.4676041
+        ]
+      },
+      "properties": {
+        "id": "mi-scala",
+        "day": 3,
+        "order": 5,
+        "time": "11:50",
+        "name": "Teatro alla Scala",
+        "type": "attraction",
+        "address": "Piazza della Scala, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1884071,
+          45.4722421
+        ]
+      },
+      "properties": {
+        "id": "mi-brera",
+        "day": 3,
+        "order": 6,
+        "time": "12:20",
+        "name": "Brera",
+        "type": "attraction",
+        "address": "Via Brera 28, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1780912,
+          45.4703009
+        ]
+      },
+      "properties": {
+        "id": "mi-castello",
+        "day": 3,
+        "order": 7,
+        "time": "14:00",
+        "name": "Castello Sforzesco",
+        "type": "attraction",
+        "address": "Piazza Castello, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1769672,
+          45.4729964
+        ]
+      },
+      "properties": {
+        "id": "mi-sempione",
+        "day": 3,
+        "order": 8,
+        "time": "15:00",
+        "name": "Parco Sempione",
+        "type": "attraction",
+        "address": "Parco Sempione, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1789568,
+          45.4654089
+        ]
+      },
+      "properties": {
+        "id": "mi-san-maurizio",
+        "day": 3,
+        "order": 9,
+        "time": "15:35",
+        "name": "San Maurizio al Monastero Maggiore",
+        "type": "attraction",
+        "address": "Corso Magenta 15, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1711319,
+          45.4659764
+        ]
+      },
+      "properties": {
+        "id": "mi-grazie",
+        "day": 3,
+        "order": 10,
+        "time": "16:25",
+        "name": "Santa Maria delle Grazie / Ostatnia Wieczerza",
+        "type": "attraction",
+        "address": "Piazza Santa Maria delle Grazie 2, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1810449,
+          45.4582265
+        ]
+      },
+      "properties": {
+        "id": "mi-colonne",
+        "day": 3,
+        "order": 11,
+        "time": "18:00",
+        "name": "Colonne di San Lorenzo",
+        "type": "attraction",
+        "address": "Corso di Porta Ticinese, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1785725,
+          45.4529111
+        ]
+      },
+      "properties": {
+        "id": "mi-navigli",
+        "day": 3,
+        "order": 12,
+        "time": "18:50",
+        "name": "Darsena + Navigli",
+        "type": "food",
+        "address": "Darsena, Milano"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6749975,
+          45.6903836
+        ]
+      },
+      "properties": {
+        "id": "d4-station",
+        "day": 4,
+        "order": 1,
+        "time": "09:30",
+        "name": "Stazione di Bergamo",
+        "type": "transport",
+        "address": "Piazzale Guglielmo Marconi, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.67357,
+          45.70067
+        ]
+      },
+      "properties": {
+        "id": "d4-pignolo",
+        "day": 4,
+        "order": 2,
+        "time": "10:00",
+        "name": "Borgo Pignolo i San Bernardino",
+        "type": "attraction",
+        "address": "Via Pignolo 57, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6758086,
+          45.7042459
+        ]
+      },
+      "properties": {
+        "id": "d4-carrara",
+        "day": 4,
+        "order": 3,
+        "time": "11:05",
+        "name": "Accademia Carrara",
+        "type": "attraction",
+        "address": "Piazza Giacomo Carrara 82, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6764261,
+          45.7036527
+        ]
+      },
+      "properties": {
+        "id": "d4-gamec",
+        "day": 4,
+        "order": 4,
+        "time": "13:15",
+        "name": "GAMeC",
+        "type": "attraction",
+        "address": "Via San Tomaso 53, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6771699,
+          45.7017041
+        ]
+      },
+      "properties": {
+        "id": "d4-suardi",
+        "day": 4,
+        "order": 5,
+        "time": "13:30",
+        "name": "Parco Suardi",
+        "type": "attraction",
+        "address": "Via San Giovanni, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.66984,
+          45.69484
+        ]
+      },
+      "properties": {
+        "id": "d4-porta-nuova",
+        "day": 4,
+        "order": 6,
+        "time": "14:10",
+        "name": "Città Bassa — lunch",
+        "type": "food",
+        "address": "Largo Porta Nuova, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.6749975,
+          45.6903836
+        ]
+      },
+      "properties": {
+        "id": "d4-bus",
+        "day": 4,
+        "order": 7,
+        "time": "15:30",
+        "name": "Airport Bus ATB 1 — dworzec",
+        "type": "transport",
+        "address": "Piazzale Guglielmo Marconi, Bergamo"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.7042,
+          45.6739
+        ]
+      },
+      "properties": {
+        "id": "d4-airport",
+        "day": 4,
+        "order": 8,
+        "time": "16:15–16:30",
+        "name": "Milan Bergamo Airport — BGY",
+        "type": "transport",
+        "address": "Via Aeroporto 13, Orio al Serio"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.6749975,
+            45.6903836
+          ],
+          [
+            9.66984,
+            45.69484
+          ],
+          [
+            9.66662,
+            45.70072
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d1-a",
+        "day": 1,
+        "label": "Trasa A — dworzec i Città Bassa",
+        "mode": "walking",
+        "minutes": 35,
+        "distance": "2,2 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.6652545,
+            45.7030956
+          ],
+          [
+            9.6628983,
+            45.704038
+          ],
+          [
+            9.6622224,
+            45.7032098
+          ],
+          [
+            9.663136,
+            45.704278
+          ],
+          [
+            9.6583772,
+            45.7064546
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d1-b",
+        "day": 1,
+        "label": "Trasa B — serce Città Alta",
+        "mode": "walking",
+        "minutes": 35,
+        "distance": "2,0 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.6507907,
+            45.7091983
+          ],
+          [
+            9.6583772,
+            45.7064546
+          ],
+          [
+            9.663021,
+            45.70124
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d1-c",
+        "day": 1,
+        "label": "Trasa C — San Vigilio i mury",
+        "mode": "walking",
+        "minutes": 55,
+        "distance": "3,4 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.6749975,
+            45.6903836
+          ],
+          [
+            9.3933781,
+            45.8563651
+          ],
+          [
+            9.2862321,
+            46.0150939
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d2-a",
+        "day": 2,
+        "label": "Dojazd — Bergamo → Varenna-Esino",
+        "mode": "transit",
+        "minutes": 110,
+        "distance": "kolej przez Lecco"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.2862321,
+            46.0150939
+          ],
+          [
+            9.2832,
+            46.0126
+          ],
+          [
+            9.2841741,
+            46.0100965
+          ],
+          [
+            9.2828845,
+            46.0140275
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d2-b",
+        "day": 2,
+        "label": "Varenna — stacja, promenada i prom",
+        "mode": "walking",
+        "minutes": 35,
+        "distance": "2,1 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.261,
+            45.9875
+          ],
+          [
+            9.2616008,
+            45.9865966
+          ],
+          [
+            9.2616,
+            45.9873
+          ],
+          [
+            9.2655266,
+            45.9912785
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d2-c",
+        "day": 2,
+        "label": "Bellagio — centrum i Punta Spartivento",
+        "mode": "walking",
+        "minutes": 25,
+        "distance": "1,6 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.2655266,
+            45.9912785
+          ],
+          [
+            9.2634726,
+            45.9828104
+          ],
+          [
+            9.261,
+            45.9875
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d2-d",
+        "day": 2,
+        "label": "Bellagio — Punta Spartivento → Pescallo → prom",
+        "mode": "walking",
+        "minutes": 48,
+        "distance": "3,1 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.1916121,
+            45.4641669
+          ],
+          [
+            9.1878339,
+            45.4627042
+          ],
+          [
+            9.1900266,
+            45.4656804
+          ],
+          [
+            9.1891136,
+            45.4676041
+          ],
+          [
+            9.1884071,
+            45.4722421
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d3-a",
+        "day": 3,
+        "label": "Trasa A — Duomo, Galleria i Brera",
+        "mode": "walking",
+        "minutes": 33,
+        "distance": "2,3 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.1884071,
+            45.4722421
+          ],
+          [
+            9.1780912,
+            45.4703009
+          ],
+          [
+            9.1769672,
+            45.4729964
+          ],
+          [
+            9.1789568,
+            45.4654089
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d3-b",
+        "day": 3,
+        "label": "Trasa B — Brera, Castello i San Maurizio",
+        "mode": "walking",
+        "minutes": 35,
+        "distance": "2,5 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.1711319,
+            45.4659764
+          ],
+          [
+            9.1810449,
+            45.4582265
+          ],
+          [
+            9.1785725,
+            45.4529111
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d3-c",
+        "day": 3,
+        "label": "Trasa C — Santa Maria delle Grazie → Navigli",
+        "mode": "walking",
+        "minutes": 42,
+        "distance": "3,0 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.6749975,
+            45.6903836
+          ],
+          [
+            9.67357,
+            45.70067
+          ],
+          [
+            9.6758086,
+            45.7042459
+          ],
+          [
+            9.6764261,
+            45.7036527
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d4-a",
+        "day": 4,
+        "label": "Trasa A — Pignolo i muzea",
+        "mode": "walking",
+        "minutes": 37,
+        "distance": "2,6 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.6771699,
+            45.7017041
+          ],
+          [
+            9.66984,
+            45.69484
+          ],
+          [
+            9.6749975,
+            45.6903836
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d4-b",
+        "day": 4,
+        "label": "Trasa B — Parco Suardi → Porta Nuova → dworzec",
+        "mode": "walking",
+        "minutes": 28,
+        "distance": "2,0 km"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.6749975,
+            45.6903836
+          ],
+          [
+            9.7042,
+            45.6739
+          ]
+        ]
+      },
+      "properties": {
+        "id": "d4-c",
+        "day": 4,
+        "label": "Dojazd — dworzec Bergamo → BGY",
+        "mode": "transit",
+        "minutes": 25,
+        "distance": "Airport Bus"
+      }
+    }
+  ]
+}

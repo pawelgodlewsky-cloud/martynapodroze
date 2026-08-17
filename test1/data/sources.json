@@ -1,0 +1,18 @@
+{
+  "updated":"2026-08-15",
+  "notice":"Ceny i rozkłady są orientacyjne. Przed zakupem sprawdź warunki na oficjalnej stronie.",
+  "links":[
+    {"label":"ATB Bergamo — bilety","url":"https://www.atb.bergamo.it/en/transport/tickets"},
+    {"label":"Trenord — rozkład","url":"https://www.trenord.it/en/"},
+    {"label":"RFI — remont Bergamo–Ponte San Pietro do 31.12.2026","url":"https://www.rfi.it/it/news-e-media/infomobilita/avvisi/2024/2/5/linee-milano---bergamo--via-carnate---lecco---bergamo-.html"},
+    {"label":"RFI — dodatkowe prace Lecco–Bergamo do 21.08.2026","url":"https://www.rfi.it/it/news-e-media/infomobilita/avvisi/2026/7/20/linea-lecco---bergamo-.html"},
+    {"label":"Trenitalia — rozkład","url":"https://www.trenitalia.com/en.html"},
+    {"label":"Navigazione Laghi — Como","url":"https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/"},
+    {"label":"ATM Milano — bilety","url":"https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/default.aspx"},
+    {"label":"Duomo Milano — bilety","url":"https://ticket.duomomilano.it/en/"},
+    {"label":"Cenacolo Vinciano — bilety","url":"https://cenacolovinciano.vivaticket.it/"},
+    {"label":"Accademia Carrara — godziny i bilety","url":"https://lacarrara.it/visita/biglietti-e-orari/"},
+    {"label":"Trenord — komunikaty i strajki","url":"https://www.trenord.it/news/trenord-informa/avvisi/sciopero/"},
+    {"label":"Cenacolo Vinciano — zasady wizyty","url":"https://cenacolovinciano.org/en/info/"}
+  ]
+}
