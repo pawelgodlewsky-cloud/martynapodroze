@@ -407,6 +407,7 @@ function renderDay() {
     note.hidden = false;
     note.innerHTML = `<b>Dopasowane tempo:</b> mniej ważne lub bardziej męczące miejsca pozostają widoczne, ale nawigacja do nich jest wyłączona.`;
   } else note.hidden = true;
+  renderDayTravelNotice();
   renderDayAssistant();
   $("#dayTimeline").innerHTML = allPoints.map(point => pointCard(point, disabledModeFor(point))).join("");
   const emergency = data.emergency.find(item => item.day === state.day);
@@ -417,6 +418,40 @@ function renderDay() {
     <article class="info-card warning"><span class="kicker">Możesz odpuścić</span><h3>Oszczędź czas</h3><p>${escapeHtml(day.skip)}</p></article>
     <article class="info-card"><span class="kicker">Zmęczenie</span><h3>${escapeHtml(day.intensity)}</h3><p>${escapeHtml(day.elevation)}</p></article>`;
   renderRoutes();
+}
+
+function renderDayTravelNotice() {
+  const target = $("#dayTravelNotice");
+  if (!target) return;
+  if (state.day !== 2) {
+    target.innerHTML = "";
+    return;
+  }
+  const extraWorksActive = Date.now() <= Date.parse("2026-08-21T21:59:59Z");
+  target.innerHTML = `<article class="rail-works-card" aria-labelledby="railWorksTitle">
+    <div class="rail-works-head">
+      <span class="rail-alert-mark" aria-hidden="true">!</span>
+      <div><span class="kicker">Ważne przed wyjazdem nad Como</span><h2 id="railWorksTitle">Do Varenny jedziesz przez remont</h2></div>
+      <div class="rail-date-stack"><span>autobus zastępczy</span><b>planowane do 31.12.2026</b></div>
+    </div>
+    <p class="rail-intro">Pociągi nie kursują między Bergamo a Ponte San Pietro. Pierwszy odcinek pokonujesz autobusem zastępczym, a potem przesiadasz się na pociągi przez Lecco.</p>
+    <div class="rail-route" aria-label="Trasa: Bergamo, Ponte San Pietro, Lecco, Varenna-Esino">
+      <span><i>1</i><b>Bergamo</b><small>biały autokar</small></span><em aria-hidden="true">→</em>
+      <span><i>2</i><b>Ponte S. Pietro</b><small>przesiadka</small></span><em aria-hidden="true">→</em>
+      <span><i>3</i><b>Lecco</b><small>zmiana pociągu</small></span><em aria-hidden="true">→</em>
+      <span><i>4</i><b>Varenna-Esino</b><small>cel</small></span>
+    </div>
+    <div class="rail-key-note"><b>Jak znaleźć właściwy autobus?</b><p>Standardowo odjeżdża z <strong>Piazzale Guglielmo Marconi</strong>, przed dworcem kolejowym. Stań plecami do głównego wejścia — wiata jest po prawej, obok foodtrucka i parkingu rowerowego. Szukaj białego autokaru NorisViaggi z kartką „Ponte S. Pt”. To nie jest autobus miejski ATB i nie jedzie bezpośrednio do Lecco.</p></div>
+    ${extraWorksActive ? `<div class="rail-temporary"><span>Do 21.08.2026</span><p>Trwają dodatkowe prace między Calolziocorte a Ponte San Pietro. Dla części zmienionych kursów RFI wskazuje <b>pensilinę 10 Autostazione przy Via Bartolomeo Bono</b>, a autobus może jechać do Calolziocorte lub — 21 sierpnia — aż do Lecco. Dokładny wariant z planera Trenord ma pierwszeństwo.</p></div>` : ""}
+    <ol class="rail-checklist">
+      <li><b>Kup jedną relację:</b> Bergamo → Varenna-Esino; bilet kolejowy obejmuje autobus zastępczy.</li>
+      <li><b>Przyjdź 30 minut wcześniej:</b> biały autokar może stać poza zwykłym peronem.</li>
+      <li><b>W Ponte San Pietro:</b> wejdź na stację i sprawdź pociąg do Lecco; najczęściej używany jest peron 2, ale zawsze potwierdź go na tablicy.</li>
+      <li><b>W Lecco:</b> wybierz pociąg w kierunku Colico, Sondrio lub Tirano i wysiądź na Varenna-Esino.</li>
+    </ol>
+    <div class="rail-actions"><a href="https://mediolanbergamo.pl/autobus-z-bergamo-do-lecco/" target="_blank" rel="noopener">Zobacz opis i zdjęcia przystanku ↗</a><a href="https://www.trenord.it/en/routes-and-timetables/journey/" target="_blank" rel="noopener">Sprawdź połączenie w Trenord ↗</a></div>
+    <p class="rail-source-note">Lokalizacja i wygląd autobusu: MediolanBergamo.pl. Termin remontu i zmiany ruchu: RFI. Rozkład sprawdź ponownie dzień wcześniej i rano.</p>
+  </article>`;
 }
 
 function disabledModeFor(point) {
@@ -702,7 +737,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=22", "app.js?v=22", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=23", "app.js?v=23", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
@@ -930,7 +965,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=22", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=23", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }
