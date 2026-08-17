@@ -1,4 +1,4 @@
-const DATA_FILES = ["destinations", "points", "routes", "restaurants", "budget", "tips", "transport", "glossary", "food", "sources", "emergency"];
+const DATA_FILES = ["destinations", "points", "routes", "restaurants", "budget", "tips", "transport", "glossary", "food", "sources", "emergency", "attractions"];
 const storageKey = "lombardia-ebook-v1";
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -10,6 +10,9 @@ const guideLink = point => `https://www.google.com/maps/dir/?api=1&destination=$
 let data = {};
 let leafletMapInstance = null;
 let leafletAnimationFrame = 0;
+let placeReturnScroll = 0;
+let placeTrigger = null;
+let placeHistoryOwned = false;
 let state = {
   day: 1,
   view: "home",
@@ -62,6 +65,8 @@ function enrichPoint(point) {
   const estimatedCost = point.estimatedCost ?? firstNumber(point.cost, 0);
   return {
     ...point,
+    detail: data.attractions?.[point.id] || null,
+    pointKind: data.attractions?.[point.id] ? "major" : "supporting",
     priority,
     plannedMinutes,
     minimumMinutes,
@@ -86,6 +91,10 @@ function firstNumber(value, fallback = 0) {
 
 function pointsForDay(day = state.day) {
   return data.points.filter(point => point.day === Number(day)).sort((a, b) => a.order - b.order);
+}
+
+function majorPointsForDay(day = state.day) {
+  return pointsForDay(day).filter(point => point.pointKind === "major");
 }
 
 function dayInfo(day = state.day) {
@@ -499,7 +508,7 @@ function pointCard(point, disabledMode = null) {
   const recommendation = recommendationFor(point);
   const isCurrent = state.currentPoint[point.day] === point.id;
   const shortened = state.delayPlans[point.day]?.shortened?.[point.id];
-  return `<article class="point-card ${done ? "completed" : ""} ${isCurrent ? "is-current" : ""} ${disabled ? `mode-disabled ${disabledMode}-disabled` : ""}" data-order="${point.order}" id="point-${point.id}" style="--point-accent:${day.accent}" ${disabled ? `aria-disabled="true"` : ""}>
+  return `<article class="point-card ${point.pointKind === "major" ? "major-point" : "supporting-point"} ${done ? "completed" : ""} ${isCurrent ? "is-current" : ""} ${disabled ? `mode-disabled ${disabledMode}-disabled` : ""}" data-order="${point.order}" id="point-${point.id}" style="--point-accent:${day.accent}" ${disabled ? `aria-disabled="true"` : ""}>
     <img class="point-image" src="${point.image || day.hero}" style="object-position:${point.position || "center"}" alt="${escapeHtml(point.name)}" loading="lazy">
     <div class="point-content">
       ${done ? `<span class="completion-badge" role="status">✓ Ukończone</span>` : ""}
@@ -515,6 +524,7 @@ function pointCard(point, disabledMode = null) {
         <div><span>godziny</span><b>${escapeHtml(point.opening)}</b></div><div><span>rezerwacja</span><b>${escapeHtml(point.reservation)}</b></div>
       </div>
       <div class="why-box"><b>Dlaczego warto:</b> ${escapeHtml(point.why)}</div>
+      ${point.detail ? `<button class="place-button" data-action="open-place" data-id="${point.id}"><span>Zobacz miejsce</span><span aria-hidden="true">→</span></button>` : ""}
       ${point.officialUrl ? `<a class="official-link" href="${point.officialUrl}" target="_blank" rel="noopener">Sprawdź dziś / bilety ↗</a>` : ""}
       ${point.audio?.url ? `<div class="audio-tip"><b>Martyna mówi · ${escapeHtml(point.audio.duration || "krótkie audio")}</b><audio controls preload="none" src="${point.audio.url}" aria-label="${escapeHtml(point.audio.title || `Audio o ${point.name}`)}"></audio></div>` : ""}
       ${point.photoSpot?.instruction ? `<div class="photo-spot"><b>Najlepszy kadr</b><p>${escapeHtml(point.photoSpot.instruction)}</p>${point.photoSpot.bestTime ? `<small>Wskazówka: ${escapeHtml(point.photoSpot.bestTime)}</small>` : ""}${disabled ? "" : `<a href="${point.photoSpot.mapsUrl || guideLink(point)}" target="_blank" rel="noopener">Otwórz punkt ↗</a>`}</div>` : ""}
@@ -527,6 +537,164 @@ function pointCard(point, disabledMode = null) {
     </div>
     ${disabled ? `<div class="next-leg mode-skip ${disabledMode}-skip"><span>${disabledCopy.skip}</span><span aria-hidden="true">${disabledCopy.icon}</span></div>` : point.next && nextPoint ? `<div class="next-leg"><span>Dalej: <b>${escapeHtml(nextPoint.name)}</b></span><span>${modeIcon(point.next.mode)} ${point.next.minutes} min · ${escapeHtml(point.next.distance)}</span></div>` : ""}
   </article>`;
+}
+
+function renderPlace(point) {
+  const detail = point.detail;
+  if (!detail) return;
+  const day = dayInfo(point.day);
+  const majorPoints = majorPointsForDay(point.day);
+  const index = majorPoints.findIndex(item => item.id === point.id);
+  const previous = majorPoints[index - 1] || null;
+  const next = majorPoints[index + 1] || null;
+  const completed = majorPoints.filter(item => state.done.includes(item.id)).length;
+  const percent = majorPoints.length ? Math.round(completed / majorPoints.length * 100) : 0;
+  const done = state.done.includes(point.id);
+  const images = detail.images?.length ? detail.images : [{ src: point.image || day.hero, alt: point.name, position: point.position || "center" }];
+  const hero = images[0];
+  const quickInfo = [
+    ["Ile czasu", detail.duration || point.visit],
+    ["Koszt", detail.price || point.cost],
+    ["Lokalizacja", detail.address || point.address],
+    ["Czy warto", detail.worthIt],
+    ["Wysiłek", detail.effort],
+    ["Dzieci", detail.kids],
+    ["Godziny", point.opening],
+    ["Rezerwacja", point.reservation]
+  ].filter(([, value]) => value);
+  const descriptions = Array.isArray(detail.description) ? detail.description : [detail.description || point.description, point.why].filter(Boolean);
+  const directNext = next && point.next?.to === next.id ? point.next : null;
+
+  $("#placeContent").innerHTML = `<div class="place-shell" style="--place-accent:${day.accent}">
+    <header class="place-topbar">
+      <button class="place-back" data-action="close-place" aria-label="Wróć do planu dnia"><span aria-hidden="true">←</span><span>Dzień ${day.day} · ${escapeHtml(day.city)}</span></button>
+      <button class="place-close" data-action="close-place" aria-label="Zamknij kartę miejsca">×</button>
+    </header>
+
+    <main class="place-main">
+      <section class="place-hero">
+        <button class="place-hero-image" data-action="open-image" data-src="${hero.src}" data-alt="${escapeHtml(hero.alt || point.name)}" aria-label="Powiększ zdjęcie: ${escapeHtml(point.name)}">
+          <img src="${hero.src}" alt="${escapeHtml(hero.alt || point.name)}" style="object-position:${hero.position || "center"}" fetchpriority="high">
+          <span class="place-zoom" aria-hidden="true">Powiększ</span>
+        </button>
+        <div class="place-route-mark" aria-hidden="true"><b>${String(index + 1).padStart(2, "0")}</b><span>/ ${String(majorPoints.length).padStart(2, "0")}</span></div>
+      </section>
+
+      <div class="place-copy">
+        <div class="place-heading">
+          ${detail.tag ? `<span class="place-tag">${escapeHtml(detail.tag)}</span>` : ""}
+          <p class="place-location">${escapeHtml(day.city)} · punkt ${point.order} na trasie</p>
+          <h1 id="placeTitle">${escapeHtml(point.name)}</h1>
+        </div>
+
+        <section class="place-progress" aria-label="Postęp ważnych miejsc dnia">
+          <div><span>Postęp dnia</span><b>${completed} / ${majorPoints.length} ważnych miejsc</b></div>
+          <div class="progress-line" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}" aria-valuetext="Odwiedzono ${completed} z ${majorPoints.length} ważnych miejsc"><i style="width:${percent}%"></i></div>
+        </section>
+
+        ${percent === 100 ? `<section class="place-day-complete" role="status"><span>Dzień ${day.day}</span><h2>${escapeHtml(day.city)} zaliczone</h2><p>${completed} z ${majorPoints.length} ważnych miejsc oznaczonych jako odwiedzone.</p></section>` : ""}
+
+        <section class="place-description" aria-label="O miejscu">
+          ${descriptions.map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+        </section>
+
+        ${quickInfo.length ? `<section class="place-section" aria-labelledby="quickInfoTitle"><div class="place-section-heading"><span>Na miejscu</span><h2 id="quickInfoTitle">Najważniejsze informacje</h2></div><dl class="quick-info">${quickInfo.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl></section>` : ""}
+
+        ${detail.tip ? `<aside class="martyna-place-tip"><div><img src="assets/logo-martyna.webp" alt="" aria-hidden="true"><span>Tip Martyny</span></div><blockquote>${escapeHtml(detail.tip)}</blockquote></aside>` : ""}
+
+        ${detail.photoTip ? `<section class="place-note"><span>Zdjęcie zrób tutaj</span><h2>Najlepszy kadr</h2><p>${escapeHtml(detail.photoTip)}</p></section>` : ""}
+
+        ${detail.shortVisit ? `<section class="place-note short-visit"><span>Gdy masz mało czasu</span><h2>Zobacz sedno</h2><p>${escapeHtml(detail.shortVisit)}</p></section>` : ""}
+
+        ${detail.highlights?.length ? `<section class="place-section highlights-section"><div class="place-section-heading"><span>Krótka lista</span><h2>Nie przegap</h2></div><ol>${detail.highlights.slice(0, 5).map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section>` : ""}
+
+        ${images.length > 1 ? `<section class="place-section gallery-section" aria-labelledby="galleryTitle"><div class="place-section-heading"><span>${images.length} zdjęcia</span><h2 id="galleryTitle">Galeria</h2></div><div class="place-gallery">${images.map((image, imageIndex) => `<button data-action="open-image" data-src="${image.src}" data-alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}"><img src="${image.src}" alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}" style="object-position:${image.position || "center"}" loading="lazy"></button>`).join("")}</div></section>` : ""}
+
+        <nav class="place-sequence" aria-label="Poprzednie i następne ważne miejsce">
+          ${previous ? `<button data-action="place-nav" data-id="${previous.id}"><span>← Poprzednie</span><b>${escapeHtml(previous.name)}</b></button>` : `<span></span>`}
+          ${next ? `<button class="next" data-action="place-nav" data-id="${next.id}"><span>Następne →</span><b>${escapeHtml(next.name)}</b>${directNext ? `<small>${directNext.minutes} min · ${escapeHtml(directNext.distance)}</small>` : ""}</button>` : `<span></span>`}
+        </nav>
+      </div>
+    </main>
+
+    <div class="place-actions-bar">
+      <a href="${guideLink(point)}" target="_blank" rel="noopener"><span aria-hidden="true">→</span>Prowadź mnie</a>
+      <button class="${done ? "active" : ""}" data-action="toggle-done" data-id="${point.id}"><span aria-hidden="true">${done ? "✓" : "○"}</span>${done ? "Byłam tutaj" : "Byłam tutaj"}</button>
+    </div>
+  </div>`;
+}
+
+function setPlaceUrl(id, mode = "replace") {
+  const url = new URL(location.href);
+  url.searchParams.set("place", id);
+  history[mode === "push" ? "pushState" : "replaceState"]({ place: id }, "", url);
+}
+
+function togglePageInert(inert) {
+  [$(".topbar"), $("#main"), $(".bottom-nav"), $("#companionDock")].filter(Boolean).forEach(element => {
+    element.inert = inert;
+    if (inert) element.setAttribute("aria-hidden", "true");
+    else element.removeAttribute("aria-hidden");
+  });
+}
+
+function openPlace(id, { historyMode = "push" } = {}) {
+  const point = data.points.find(item => item.id === id && item.detail);
+  if (!point) return;
+  const overlay = $("#placeOverlay");
+  if (overlay.hidden) {
+    placeReturnScroll = window.scrollY;
+    placeTrigger = document.activeElement;
+  }
+  state.day = point.day;
+  saveState();
+  renderPlace(point);
+  overlay.hidden = false;
+  document.body.classList.add("place-open");
+  togglePageInert(true);
+  overlay.scrollTop = 0;
+  if (historyMode === "push") {
+    placeHistoryOwned = true;
+    setPlaceUrl(id, "push");
+  } else if (historyMode === "replace") setPlaceUrl(id, "replace");
+  requestAnimationFrame(() => $("#placeDialog").focus());
+}
+
+function hidePlace({ restoreScroll = true } = {}) {
+  if ($("#placeOverlay").hidden) return;
+  $("#imageLightbox").hidden = true;
+  $("#placeOverlay").hidden = true;
+  document.body.classList.remove("place-open");
+  togglePageInert(false);
+  if (restoreScroll) window.scrollTo({ top: placeReturnScroll, behavior: "auto" });
+  if (placeTrigger?.isConnected) placeTrigger.focus({ preventScroll: true });
+  placeTrigger = null;
+}
+
+function closePlace() {
+  if (placeHistoryOwned && new URL(location.href).searchParams.has("place")) {
+    placeHistoryOwned = false;
+    history.back();
+    return;
+  }
+  const url = new URL(location.href);
+  url.searchParams.delete("place");
+  history.replaceState({}, "", url);
+  hidePlace();
+}
+
+function openImage(button) {
+  const image = $("#lightboxImage");
+  image.src = button.dataset.src;
+  image.alt = button.dataset.alt || "";
+  $("#imageLightbox").hidden = false;
+  $(".image-lightbox-close").focus();
+}
+
+function closeImage() {
+  $("#imageLightbox").hidden = true;
+  $("#lightboxImage").src = "";
+  $("#placeDialog").focus();
 }
 
 function modeIcon(mode) {
@@ -857,6 +1025,11 @@ document.addEventListener("click", event => {
   if (!button) return;
   if (button.dataset.view) return showView(button.dataset.view);
   const action = button.dataset.action;
+  if (action === "open-place") openPlace(button.dataset.id);
+  if (action === "close-place") closePlace();
+  if (action === "place-nav") openPlace(button.dataset.id, { historyMode: "replace" });
+  if (action === "open-image") openImage(button);
+  if (action === "close-image") closeImage();
   if (action === "home") showView("home");
   if (action === "open-day" || action === "switch-day") switchDay(button.dataset.day);
   if (action === "print") window.print();
@@ -919,7 +1092,11 @@ document.addEventListener("click", event => {
     state.done = state.done.includes(id) ? state.done.filter(item => item !== id) : [...state.done,id];
     const point = data.points.find(item => item.id === id);
     if (state.done.includes(id) && point) state.currentPoint[point.day] = id;
-    saveState(); renderDay(); toast(state.done.includes(id) ? "Punkt ukończony" : "Cofnięto oznaczenie");
+    saveState(); renderDay();
+    const openId = new URL(location.href).searchParams.get("place");
+    const openPoint = data.points.find(item => item.id === openId && item.detail);
+    if (openPoint && !$("#placeOverlay").hidden) renderPlace(openPoint);
+    toast(state.done.includes(id) ? "Oznaczono: byłam tutaj" : "Cofnięto oznaczenie");
   }
   if (action === "budget") {
     const checkbox = button;
@@ -959,7 +1136,33 @@ document.addEventListener("click", event => {
 });
 
 $("#sheetBackdrop").addEventListener("click", event => { if (event.target.id === "sheetBackdrop") sheetClose(); });
-document.addEventListener("keydown", event => { if (event.key === "Escape" && !$("#sheetBackdrop").hidden) sheetClose(); });
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    if (!$("#imageLightbox").hidden) return closeImage();
+    if (!$("#placeOverlay").hidden) return closePlace();
+    if (!$("#sheetBackdrop").hidden) sheetClose();
+  }
+  if (event.key === "Tab" && !$("#placeOverlay").hidden) {
+    const focusable = $$('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])', $("#placeDialog")).filter(element => !element.closest("[hidden]"));
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+});
+
+window.addEventListener("popstate", event => {
+  const id = new URL(location.href).searchParams.get("place");
+  const point = data.points?.find(item => item.id === id && item.detail);
+  if (point) {
+    placeHistoryOwned = Boolean(event.state?.place);
+    openPlace(id, { historyMode: "none" });
+  } else {
+    placeHistoryOwned = false;
+    hidePlace();
+  }
+});
 
 function updateNetwork() {
   const status = $("#networkStatus");
@@ -972,11 +1175,18 @@ async function init() {
   try {
     await loadData();
     renderHome();
-    showView("home");
+    const linkedPlaceId = new URL(location.href).searchParams.get("place");
+    const linkedPoint = data.points.find(item => item.id === linkedPlaceId && item.detail);
+    if (linkedPoint) {
+      state.day = linkedPoint.day;
+      state.view = "day";
+      showView("day");
+      openPlace(linkedPoint.id, { historyMode: "none" });
+    } else showView("home");
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=26", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=27", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }

@@ -1,9 +1,9 @@
-const CACHE = "lombardia-v26-lecco-boat";
+const CACHE = "lombardia-v27-attraction-guides";
 const LOCAL = [
   "./", "index.html", "styles.css", "app.js", "manifest.webmanifest",
   "assets/bergamo.webp", "assets/como.webp", "assets/milano.webp", "assets/logo-martyna.png", "assets/logo-martyna.webp", "assets/app-icon.svg",
   "data/destinations.json", "data/points.json", "data/routes.json", "data/restaurants.json", "data/budget.json",
-  "data/tips.json", "data/transport.json", "data/glossary.json", "data/food.json", "data/sources.json", "data/emergency.json", "data/routes.geojson",
+  "data/tips.json", "data/transport.json", "data/glossary.json", "data/food.json", "data/sources.json", "data/emergency.json", "data/attractions.json", "data/routes.geojson",
   "qr/d1-a.svg", "qr/d1-b.svg", "qr/d1-c.svg", "qr/d2-a.svg", "qr/d2-b.svg", "qr/d2-c.svg", "qr/d2-d.svg",
   "qr/d3-a.svg", "qr/d3-b.svg", "qr/d3-c.svg", "qr/d4-a.svg", "qr/d4-b.svg", "qr/d4-c.svg"
 ];
