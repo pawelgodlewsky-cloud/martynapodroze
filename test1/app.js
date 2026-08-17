@@ -441,6 +441,12 @@ function renderDayTravelNotice() {
       <span><i>3</i><b>Lecco</b><small>zmiana pociągu</small></span><em aria-hidden="true">→</em>
       <span><i>4</i><b>Varenna-Esino</b><small>cel</small></span>
     </div>
+    <div class="rail-pass">
+      <div class="rail-pass-copy"><span class="kicker">Najprostszy bilet</span><h3>Jeden bilet na całą trasę lądową</h3><p><b>IVOL — Io Viaggio Ovunque in Lombardia</b> obejmuje autobus zastępczy, pociągi regionalne i lokalny transport publiczny w Lombardii. Kupisz go w aplikacji Trenord; przy bilecie cyfrowym wybierasz dzień rozpoczęcia i nie musisz go kasować.</p></div>
+      <div class="rail-pass-prices" aria-label="Ceny biletu IVOL"><span><b>1 dzień</b>17,50 €</span><span><b>2 dni</b>29 €</span><span><b>3 dni</b>35 €</span><span><b>7 dni</b>46,50 €</span></div>
+      <p class="rail-pass-warning"><b>Ważne:</b> IVOL nie zastępuje biletu na prom Varenna ↔ Bellagio — prom kupujesz osobno.</p>
+      <a href="https://www.trenord.it/en/tickets/travel-titles/daily-tickets/" target="_blank" rel="noopener">Sprawdź IVOL w Trenord ↗</a>
+    </div>
     <div class="rail-key-note"><b>Jak znaleźć właściwy autobus?</b><p>Standardowo odjeżdża z <strong>Piazzale Guglielmo Marconi</strong>, przed dworcem kolejowym. Stań plecami do głównego wejścia — wiata jest po prawej, obok foodtrucka i parkingu rowerowego. Szukaj białego autokaru NorisViaggi z kartką „Ponte S. Pt”. To nie jest autobus miejski ATB i nie jedzie bezpośrednio do Lecco.</p></div>
     ${extraWorksActive ? `<div class="rail-temporary"><span>Do 21.08.2026</span><p>Trwają dodatkowe prace między Calolziocorte a Ponte San Pietro. Dla części zmienionych kursów RFI wskazuje <b>pensilinę 10 Autostazione przy Via Bartolomeo Bono</b>, a autobus może jechać do Calolziocorte lub — 21 sierpnia — aż do Lecco. Dokładny wariant z planera Trenord ma pierwszeństwo.</p></div>` : ""}
     <ol class="rail-checklist">
@@ -737,7 +743,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=23", "app.js?v=23", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=24", "app.js?v=24", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
@@ -965,7 +971,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=23", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=24", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }

@@ -291,6 +291,25 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          9.2880038,
+          46.0076624
+        ]
+      },
+      "properties": {
+        "id": "co-villa-monastero",
+        "day": 2,
+        "order": 6,
+        "time": "10:00",
+        "name": "Villa Monastero",
+        "type": "attraction",
+        "address": "Viale Giovanni Polvani 4, Varenna"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           9.2828845,
           46.0140275
         ]
@@ -298,9 +317,9 @@
       "properties": {
         "id": "co-ferry-varenna",
         "day": 2,
-        "order": 6,
-        "time": "10:30",
-        "name": "Imbarcadero di Varenna",
+        "order": 7,
+        "time": "11:30",
+        "name": "Imbarcadero di Varenna — główna przystań",
         "type": "transport",
         "address": "Via Imbarcadero, Varenna"
       }
@@ -317,8 +336,8 @@
       "properties": {
         "id": "co-bellagio",
         "day": 2,
-        "order": 7,
-        "time": "11:20",
+        "order": 8,
+        "time": "12:20",
         "name": "Bellagio — przystań",
         "type": "transport",
         "address": "Piazza Giuseppe Mazzini, Bellagio"
@@ -336,8 +355,8 @@
       "properties": {
         "id": "co-salita",
         "day": 2,
-        "order": 8,
-        "time": "11:40",
+        "order": 9,
+        "time": "12:40",
         "name": "Salita Serbelloni",
         "type": "photospot",
         "address": "Salita Serbelloni, Bellagio"
@@ -355,8 +374,8 @@
       "properties": {
         "id": "co-basilica",
         "day": 2,
-        "order": 9,
-        "time": "12:15",
+        "order": 10,
+        "time": "13:10",
         "name": "Basilica di San Giacomo",
         "type": "attraction",
         "address": "Piazza della Chiesa, Bellagio"
@@ -374,8 +393,8 @@
       "properties": {
         "id": "co-spartivento",
         "day": 2,
-        "order": 10,
-        "time": "12:50",
+        "order": 11,
+        "time": "13:40",
         "name": "Punta Spartivento",
         "type": "photospot",
         "address": "Via Eugenio Vitali, Bellagio"
@@ -393,8 +412,8 @@
       "properties": {
         "id": "co-pescallo",
         "day": 2,
-        "order": 11,
-        "time": "15:00",
+        "order": 12,
+        "time": "15:20",
         "name": "Pescallo",
         "type": "attraction",
         "address": "Pescallo, Bellagio"
@@ -412,8 +431,8 @@
       "properties": {
         "id": "co-return",
         "day": 2,
-        "order": 12,
-        "time": "16:00",
+        "order": 13,
+        "time": "16:30",
         "name": "Prom do Varenna i pociąg do Bergamo",
         "type": "transport",
         "address": "Piazza Giuseppe Mazzini, Bellagio"
@@ -937,6 +956,10 @@
             46.0100965
           ],
           [
+            9.2880038,
+            46.0076624
+          ],
+          [
             9.2828845,
             46.0140275
           ]
@@ -945,10 +968,10 @@
       "properties": {
         "id": "d2-b",
         "day": 2,
-        "label": "Varenna — stacja, promenada i prom",
+        "label": "Varenna — promenada, Villa Monastero i prom",
         "mode": "walking",
-        "minutes": 35,
-        "distance": "2,1 km"
+        "minutes": 50,
+        "distance": "2,6 km"
       }
     },
     {
