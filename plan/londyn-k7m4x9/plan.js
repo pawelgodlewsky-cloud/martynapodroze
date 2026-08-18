@@ -1,5 +1,5 @@
-// Uzupełnij wyłącznie to pole, kiedy klientka potwierdzi lotnisko powrotne.
-const departureAirport = "";
+// Potwierdzone lotnisko powrotne klienta.
+const departureAirport = "London Stansted Airport (STN)";
 
 (() => {
   const airportNode = document.querySelector("#departure-airport");

@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1">
-  <script src="plan.js?v=1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script src="plan.js?v=2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#plan">Przejdź do planu</a>
@@ -74,10 +74,19 @@
           <div><time datetime="2026-08-21">21.08</time><p><strong>Londyn nad Tamizą + Arsenal</strong><span>Najdłuższy spacer i mecz o 20:00.</span></p></div>
           <div><time datetime="2026-08-22">22.08</time><p><strong>Arsenal Museum + West End</strong><span>Covent Garden, Chinatown i spokojny powrót.</span></p></div>
         </div>
-        <div class="important compact">
-          <div class="important-icon" aria-hidden="true">i</div>
-          <div><strong>Dwie rzeczy do potwierdzenia</strong><p>Sprawdźcie godzinę wejścia do Arsenal Museum na bilecie oraz lotnisko powrotne. Plan nie zakłada, że wracacie ze Stansted.</p></div>
-        </div>
+        <section class="trip-alerts" aria-labelledby="trip-alerts-title">
+          <div class="trip-alerts-heading">
+            <p class="section-kicker">Sprawdzone 18.08</p>
+            <h3 id="trip-alerts-title">Ważne w dniach Waszego wyjazdu</h3>
+          </div>
+          <div class="trip-alert-list">
+            <article><time datetime="2026-08-20">20.08</time><div><strong>Piccadilly Line jest zamknięta między Cockfosters i Uxbridge.</strong><p>Nie psuje to planu: do Westminsteru i Euston jedziecie innymi liniami. W instrukcji poniżej zostawiłam trasę omijającą zamknięcie.</p></div></article>
+            <article><time datetime="2026-08-21">21.08</time><div><strong>Dojazd na Arsenal pozostaje możliwy.</strong><p>Pociągi Piccadilly w kierunku stadionu nie zatrzymują się na Caledonian Road, ale przejeżdżają dalej do Arsenal. Zamknięcie całej linii dotyczy dopiero nocnego kursowania po meczu.</p></div></article>
+            <article><time datetime="2026-08-22">22.08</time><div><strong>Poranne prace nie przecinają Waszej trasy.</strong><p>Circle, District i Hammersmith &amp; City nie kursują do 10:30. Hotel → Arsenal i Arsenal → West End można przejechać Northern i Piccadilly. Stansted Express nie zgłasza utrudnień na ten dzień.</p></div></article>
+          </div>
+          <p class="alerts-note">W oficjalnych komunikatach sprawdzonych 18.08 nie ma zapowiedzi strajku, który przecinałby te trasy. Przed każdym ważnym transferem uruchomcie jednak aktualną trasę — bieżące opóźnienia mogą pojawić się już w dniu przejazdu.</p>
+          <div class="alert-links"><a href="https://content.tfl.gov.uk/planned-track-closures.pdf" target="_blank" rel="noopener">Planowane prace TfL ↗</a><a href="https://www.stanstedexpress.com/travel-information/planned-service-alterations/" target="_blank" rel="noopener">Zmiany Stansted Express ↗</a></div>
+        </section>
       </div>
     </section>
 
@@ -89,22 +98,32 @@
           <p>Po przylocie nie dokładamy atrakcji „na siłę”. Najważniejszy jest spokojny start i dotarcie do studia bez nerwowego patrzenia na zegarek.</p>
         </header>
 
+        <section class="watch-today" aria-labelledby="watch-day1">
+          <div><span aria-hidden="true">✓</span><h3 id="watch-day1">Dzisiaj pilnujemy</h3></div>
+          <ol><li><strong>14:10</strong><span>najpóźniej ruszcie z Westminsteru</span></li><li><strong>16:40</strong><span>wejście do Warner Bros.</span></li><li><strong>16:10–16:20</strong><span>najlepiej być przy studiu</span></li></ol>
+          <a class="weather-link" href="https://weather.metoffice.gov.uk/forecast/gcpvj0v07" target="_blank" rel="noopener">Sprawdź pogodę na dziś ↗</a>
+        </section>
+
         <div class="day-route-label">Hotel → Westminster → Euston → Watford Junction → Warner Bros.</div>
 
         <article class="stop">
           <div class="stop-time"><time datetime="2026-08-20T09:30">09:30</time><span>przylot</span></div>
           <div class="stop-content">
             <h3>Stansted i dojazd do hotelu</h3>
-            <p>Macie już bilet i zaplanowany dojazd. Po dotarciu do <strong>Travelodge London Central City Road</strong> zostawcie bagaże w recepcji — hotel potwierdza przechowalnię między 09:00 a 17:00, zależnie od dostępności.</p>
+            <p>Macie już bilet i zaplanowany dojazd. Ze Stansted jedźcie do Liverpool Street, a stamtąd do <strong>Travelodge London Central City Road</strong>.</p>
             <dl class="facts">
               <div><dt>Czas</dt><dd>zależny od transferu</dd></div>
               <div><dt>Adres</dt><dd>1–23 City Road, EC1Y 1AG</dd></div>
               <div><dt>Najbliższa stacja</dt><dd>Old Street, ok. 4 min pieszo</dd></div>
             </dl>
             <div class="actions">
+              <a class="button primary" href="https://www.google.com/maps/dir/?api=1&amp;origin=London+Stansted+Airport&amp;destination=Travelodge+London+Central+City+Road%2C+1-23+City+Road%2C+London&amp;travelmode=transit" target="_blank" rel="noopener"><span aria-hidden="true">⌖</span> Prowadź: Stansted → hotel</a>
               <a class="button primary" href="https://www.google.com/maps/search/?api=1&amp;query=Travelodge+London+Central+City+Road%2C+1-23+City+Road%2C+London" target="_blank" rel="noopener"><span aria-hidden="true">⌖</span> Otwórz hotel w Google Maps</a>
               <a class="text-link" href="https://www.travelodge.co.uk/hotels/340/London-Central-City-Road-hotel" target="_blank" rel="noopener">Informacje hotelu ↗</a>
             </div>
+            <aside class="luggage-note">
+              <span aria-hidden="true">🧳</span><div><h4>Bagaże – ważne</h4><p>Jeśli pokój nie będzie gotowy, poproście recepcję o przechowanie bagaży. Od razu potwierdźcie, czy możecie odebrać je dopiero po późnym powrocie z Warner Bros. Hotel oficjalnie podaje usługę 09:00–17:00 i zależność od dostępności.</p><p><strong>Plan B:</strong> jeśli recepcja nie zgodzi się na późny odbiór, zostawcie bagaże w płatnej przechowalni na Liverpool Street. Oficjalnie działa codziennie 07:00–23:00; po Warner Bros. odbierzecie je przed powrotem do hotelu.</p><a href="https://www.stanstedexpress.com/travel-information/station-information/london-liverpool-street/" target="_blank" rel="noopener">Sprawdź przechowalnię na Liverpool Street ↗</a></div>
+            </aside>
           </div>
         </article>
 
@@ -133,6 +152,15 @@
           <div><strong>Najpóźniej o 14:10 ruszcie w stronę London Euston</strong><p>Celujcie w przyjazd na Watford Junction około 15:20–15:30. Oficjalna rekomendacja Warner Bros. to być na miejscu 20 minut przed godziną z biletu; mój plan zostawia większy bufor na pociąg, kolejkę do shuttle busa i kontrolę bezpieczeństwa.</p></div>
         </div>
 
+        <section class="now-card" aria-labelledby="now-warner">
+          <p class="now-label">Teraz</p>
+          <h3 id="now-warner"><strong>14:10</strong> → jedźcie na London Euston</h3>
+          <p class="now-route">Westminster <span>↓</span> Green Park <span>↓</span> London Euston <span>↓</span> Watford Junction <span>↓</span> Warner Bros. Shuttle</p>
+          <p class="now-note">Jubilee Line do Green Park, potem Victoria Line do Euston. Ta trasa omija zamkniętą Piccadilly Line.</p>
+          <a class="button primary" href="https://www.google.com/maps/dir/?api=1&amp;origin=Westminster+Station%2C+London&amp;destination=London+Euston+Station&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź do Euston</a>
+          <dl><div><dt>Najpóźniej ruszcie</dt><dd>14:10</dd></div><div><dt>Wejście</dt><dd>16:40</dd></div><div><dt>Cel</dt><dd>Studio 16:10–16:20</dd></div></dl>
+        </section>
+
         <article class="stop featured-stop">
           <div class="stop-time"><time datetime="2026-08-20T14:10">14:10</time><span>wyjazd</span></div>
           <div class="stop-content">
@@ -141,9 +169,12 @@
             <p><strong>Wejście macie na 16:40.</strong> Z Westminsteru jedźcie na London Euston, stamtąd bezpośrednim pociągiem do Watford Junction. Przy stacji szukajcie oznaczonego shuttle busa Warner Bros.</p>
             <ol class="travel-steps">
               <li><span>1</span><div><strong>Westminster → London Euston</strong><p>Metro, orientacyjnie 15–25 min wraz z przesiadką i dojściem.</p></div></li>
-              <li><span>2</span><div><strong>Euston → Watford Junction</strong><p>Wybierzcie połączenie bezpośrednie; najszybsze jedzie ok. 20 min.</p></div></li>
-              <li><span>3</span><div><strong>Watford Junction → Studio Tour</strong><p>Elektryczny shuttle bus jedzie ok. 15 min, kursuje co najmniej co 30 min i jest wliczony w bilet.</p></div></li>
+              <li><span>2</span><div><strong>Euston → Watford Junction</strong><p>Na tablicy szukajcie pociągu zatrzymującego się na <strong>Watford Junction</strong>. Wybierzcie szybkie połączenie bezpośrednie; najszybsze jedzie ok. 20 min.</p></div></li>
+              <li><span>3</span><div><strong>Watford Junction → Studio Tour</strong><p>Po wyjściu z pociągu kierujcie się oznaczeniami <strong>Warner Bros. Studio Tour / shuttle bus</strong>. Przejazd trwa ok. 15 min, kursuje co najmniej co 30 min i jest wliczony w bilet.</p></div></li>
             </ol>
+            <aside class="checked-by-martyna dark">
+              <h4>Martyna sprawdziła:</h4><ul><li>bilet jest kupiony</li><li>wejście macie o 16:40</li><li>najlepiej być 20–30 minut wcześniej</li><li>shuttle odjeżdża z Watford Junction</li><li>nie trzeba nic ponownie rezerwować</li></ul>
+            </aside>
             <div class="ticket-grid">
               <div><span>🎟</span><p><small>Bilet</small><strong>już kupiony</strong></p></div>
               <div><span>💷</span><p><small>Cena dla daty wizyty</small><strong>£51.19 dorosły / £41.13 dziecko</strong></p></div>
@@ -154,6 +185,7 @@
             <div class="actions">
               <a class="button primary" href="https://www.google.com/maps/dir/?api=1&amp;origin=London+Euston+Station&amp;destination=Watford+Junction+Station&amp;travelmode=transit" target="_blank" rel="noopener"><span aria-hidden="true">⌖</span> Trasa Euston → Watford</a>
               <a class="button soft" href="https://www.google.com/maps/search/?api=1&amp;query=Warner+Bros.+Studio+Tour+London%2C+Studio+Tour+Drive%2C+Leavesden+WD25+7LR" target="_blank" rel="noopener">Otwórz Studio Tour w Mapach</a>
+              <a class="button soft" href="https://www.google.com/maps/dir/?api=1&amp;origin=Warner+Bros.+Studio+Tour+London%2C+Leavesden&amp;destination=Travelodge+London+Central+City+Road&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź po zwiedzaniu do hotelu</a>
               <a class="text-link" href="https://www.wbstudiotour.co.uk/getting-here/" target="_blank" rel="noopener">Oficjalny dojazd i shuttle bus ↗</a>
               <a class="text-link" href="https://www.wbstudiotour.co.uk/when-you-arrive/" target="_blank" rel="noopener">Informacje przed wejściem ↗</a>
             </div>
@@ -165,8 +197,8 @@
           <p class="section-kicker">Bez tracenia czasu</p>
           <h3 id="food-day1">Gdzie zjeść tego dnia?</h3>
           <div class="food-options two">
-            <article><span class="food-type">Przed wyjazdem · £</span><h4>itsu Victoria Street</h4><p>Sushi, zupy, ryż i lekkie dania na wynos. Otwiera w czwartek o 11:00; wybierzcie tę opcję tylko wtedy, gdy jesteście w Westminsterze zgodnie z planem.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=itsu%2C+163+Victoria+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.itsu.com/location/central-london/victoria-street-163/" target="_blank" rel="noopener">Menu / godziny ↗</a></div></article>
-            <article><span class="food-type">W środku · ££</span><h4>Backlot Café</h4><p>Najwygodniejsza opcja z dzieckiem: burgery, hot dogi i sałatki w połowie zwiedzania, bez schodzenia z trasy.</p><a href="https://www.wbstudiotour.co.uk/food-drink/" target="_blank" rel="noopener">Menu i informacje ↗</a></article>
+            <article><span class="food-type">⚡ Na szybko · £</span><h4>itsu Victoria Street</h4><p>Sushi, zupy, ryż i lekkie dania na wynos. Otwiera w czwartek o 11:00; wybierzcie tę opcję tylko wtedy, gdy jesteście w Westminsterze zgodnie z planem.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=itsu%2C+163+Victoria+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.itsu.com/location/central-london/victoria-street-163/" target="_blank" rel="noopener">Menu / godziny ↗</a></div></article>
+            <article><span class="food-type">👨‍👩‍👧 Najłatwiej z dzieckiem · ££</span><h4>Backlot Café</h4><p>Najwygodniejsza opcja z dzieckiem: burgery, hot dogi i sałatki w połowie zwiedzania, bez schodzenia z trasy.</p><a href="https://www.wbstudiotour.co.uk/food-drink/" target="_blank" rel="noopener">Menu i informacje ↗</a></article>
           </div>
         </section>
 
@@ -184,6 +216,12 @@
           <h2 id="day2-title">Londyn nad Tamizą <em>+ Arsenal</em></h2>
           <p>Dzisiaj idziecie niemal cały czas w jednym kierunku: od St Paul’s na południowy brzeg Tamizy, dalej do Tower Bridge, a potem metrem prosto na stadion.</p>
         </header>
+
+        <section class="watch-today" aria-labelledby="watch-day2">
+          <div><span aria-hidden="true">✓</span><h3 id="watch-day2">Dzisiaj pilnujemy</h3></div>
+          <ol><li><strong>16:15</strong><span>bezwzględny koniec spaceru nad Tamizą</span></li><li><strong>17:15–17:30</strong><span>przyjazd pod Emirates Stadium</span></li><li><strong>20:00</strong><span>pierwszy gwizdek</span></li></ol>
+          <a class="weather-link" href="https://weather.metoffice.gov.uk/forecast/gcpvj0v07" target="_blank" rel="noopener">Sprawdź pogodę na dziś ↗</a>
+        </section>
 
         <div class="route-launch">
           <div><span>Gotowa trasa · część 1</span><strong>St Paul’s → Millennium Bridge → Tate Modern → Globe → Borough Market</strong></div>
@@ -244,9 +282,9 @@
           <p class="section-kicker">Lunch przy trasie</p>
           <h3 id="food-day2">Co wybrałabym na Borough Market?</h3>
           <div class="food-options">
-            <article><span class="food-type">Na szybko · £</span><h4>Kappacasein</h4><p>Słynny tost serowy albo raclette. W piątek stoisko działa 10:00–17:00; dobra opcja, jeśli chcecie szybko wrócić na trasę.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Kappacasein%2C+Borough+Market%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://boroughmarket.org.uk/traders/kappacasein/" target="_blank" rel="noopener">Informacje ↗</a></div></article>
-            <article><span class="food-type">Jeśli chcecie usiąść · ££</span><h4>Padella</h4><p>Świeży makaron od 11:30. Nie przyjmuje rezerwacji — po 11:00 można dołączyć do wirtualnej kolejki. Jeśli czas oczekiwania przekracza 25 minut, wybierzcie stoisko.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Padella+Borough+Market%2C+6+Southwark+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.padella.co/borough-market/" target="_blank" rel="noopener">Menu / kolejka ↗</a></div></article>
-            <article><span class="food-type">Dobra z dzieckiem · ££</span><h4>Fish!</h4><p>Klasyczne fish &amp; chips i stoliki przy Southwark Cathedral. Otwiera o 11:30; wygodniejsze niż jedzenie na stojąco.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Fish%21+Borough+Market%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://boroughmarket.org.uk/traders/fish-restaurant/" target="_blank" rel="noopener">Informacje ↗</a></div></article>
+            <article><span class="food-type">⚡ Na szybko · £</span><h4>Kappacasein</h4><p>Słynny tost serowy albo raclette. W piątek stoisko działa 10:00–17:00; dobra opcja, jeśli chcecie szybko wrócić na trasę.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Kappacasein%2C+Borough+Market%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://boroughmarket.org.uk/traders/kappacasein/" target="_blank" rel="noopener">Informacje ↗</a></div></article>
+            <article><span class="food-type">🍽 Jeśli chcecie usiąść · ££</span><h4>Padella</h4><p>Świeży makaron od 11:30. Nie przyjmuje rezerwacji — po 11:00 można dołączyć do wirtualnej kolejki. Jeśli czas oczekiwania przekracza 25 minut, wybierzcie stoisko.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Padella+Borough+Market%2C+6+Southwark+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.padella.co/borough-market/" target="_blank" rel="noopener">Menu / kolejka ↗</a></div></article>
+            <article><span class="food-type">👨‍👩‍👧 Najłatwiej z dzieckiem · ££</span><h4>Fish!</h4><p>Klasyczne fish &amp; chips i stoliki przy Southwark Cathedral. Otwiera o 11:30; wygodniejsze niż jedzenie na stojąco.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Fish%21+Borough+Market%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://boroughmarket.org.uk/traders/fish-restaurant/" target="_blank" rel="noopener">Informacje ↗</a></div></article>
           </div>
         </section>
 
@@ -278,6 +316,15 @@
           <div><strong>O 16:15 kończycie spacer i ruszacie na Arsenal</strong><p>Z Tower Hill jedźcie District/Circle Line do King’s Cross St Pancras, potem Piccadilly Line do Arsenal. Planowany przyjazd pod stadion: ok. 17:15–17:30.</p></div>
         </div>
 
+        <section class="now-card" aria-labelledby="now-arsenal">
+          <p class="now-label">Teraz</p>
+          <h3 id="now-arsenal"><strong>16:15</strong> → kończycie spacer i jedziecie na Emirates</h3>
+          <p class="now-route">Tower of London <span>↓</span> Tower Hill <span>↓</span> King’s Cross St Pancras <span>↓</span> Arsenal Station <span>↓</span> Emirates Stadium</p>
+          <p class="now-note">Na Piccadilly Line pociąg ominie Caledonian Road, ale jedzie dalej do Arsenal — nie wysiadajcie wcześniej.</p>
+          <a class="button primary" href="https://www.google.com/maps/dir/?api=1&amp;origin=Tower+of+London&amp;destination=Emirates+Stadium%2C+London&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź na Emirates Stadium</a>
+          <dl><div><dt>Wyjazd</dt><dd>16:15</dd></div><div><dt>Przyjazd</dt><dd>17:15–17:30</dd></div><div><dt>Mecz</dt><dd>20:00</dd></div></dl>
+        </section>
+
         <article class="stop arsenal-stop">
           <div class="stop-time"><time datetime="2026-08-21T17:15">17:15</time><span>stadion</span></div>
           <div class="stop-content">
@@ -287,6 +334,9 @@
               <span>Arsenal</span><strong>20:00</strong><span>Coventry City</span>
             </div>
             <p>Premier League potwierdza rozpoczęcie meczu <strong>w piątek 21.08 o 20:00 czasu londyńskiego</strong>. Przyjedźcie wcześniej, obejdźcie stadion i bądźcie przy właściwym kołowrotku, gdy otworzą bramy.</p>
+            <aside class="checked-by-martyna dark">
+              <h4>Martyna sprawdziła:</h4><ul><li>mecz zaczyna się o 20:00</li><li>najbliżej jest ze stacji Arsenal</li><li>standardowe bramy otwierają się o 18:00</li><li>torba musi być mniejsza niż A4</li><li>stadion działa bezgotówkowo</li></ul>
+            </aside>
             <div class="stadium-grid">
               <div><small>17:15–17:30</small><strong>rekomendowany przyjazd</strong></div>
               <div><small>17:30</small><strong>Club &amp; Box Level</strong></div>
@@ -304,6 +354,7 @@
             <div class="actions">
               <a class="button primary" href="https://www.google.com/maps/search/?api=1&amp;query=Emirates+Stadium%2C+Hornsey+Road%2C+London+N7+7AJ" target="_blank" rel="noopener"><span aria-hidden="true">⌖</span> Otwórz Emirates Stadium w Mapach</a>
               <a class="button soft" href="https://www.google.com/maps/dir/?api=1&amp;origin=Tower+of+London&amp;destination=Emirates+Stadium%2C+London&amp;travelmode=transit" target="_blank" rel="noopener">Dojazd z Tower Hill</a>
+              <a class="button soft" href="https://www.google.com/maps/dir/?api=1&amp;origin=Emirates+Stadium%2C+London&amp;destination=Travelodge+London+Central+City+Road&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź po meczu do hotelu</a>
               <a class="text-link" href="https://www.premierleague.com/en/match/2645195/arsenal-vs-coventry-city" target="_blank" rel="noopener">Oficjalna karta meczu ↗</a>
               <a class="text-link" href="https://help.arsenal.com/support/solutions/articles/101000579323-at-the-stadium" target="_blank" rel="noopener">Zasady stadionu i godziny bram ↗</a>
               <a class="text-link" href="https://www.arsenal.com/media/299079/download" target="_blank" rel="noopener">Pełna lista zakazanych przedmiotów ↗</a>
@@ -327,9 +378,15 @@
           <p>Rano wracacie na Emirates, a potem przenosicie się do zwartego fragmentu West Endu. Wszystkie punkty od Covent Garden do Piccadilly mieszczą się w jednym spacerze.</p>
         </header>
 
+        <section class="watch-today" aria-labelledby="watch-day3">
+          <div><span aria-hidden="true">✓</span><h3 id="watch-day3">Dzisiaj pilnujemy</h3></div>
+          <ol><li><strong>10:00</strong><span>Arsenal Museum — godzina z biletu ma pierwszeństwo</span></li><li><strong>14:00</strong><span>koniec West Endu</span></li><li><strong>do 15:45</strong><span>bagaże odebrane i wyjazd z Liverpool Street</span></li></ol>
+          <a class="weather-link" href="https://weather.metoffice.gov.uk/forecast/gcpvj0v07" target="_blank" rel="noopener">Sprawdź pogodę na dziś ↗</a>
+        </section>
+
         <div class="important compact">
           <div class="important-icon" aria-hidden="true">i</div>
-          <div><strong>Rano zostawcie bagaże w hotelu</strong><p>Hotel przechowuje je 09:00–17:00, zależnie od dostępności. Potwierdźcie usługę w recepcji poprzedniego wieczoru i wróćcie po bagaże najpóźniej około 14:30–15:00.</p></div>
+          <div><strong>Rano zostawcie bagaże w hotelu</strong><p>Hotel przechowuje je 09:00–17:00, zależnie od dostępności. Potwierdźcie usługę w recepcji poprzedniego wieczoru i wróćcie po bagaże około 14:30–14:40.</p></div>
         </div>
 
         <article class="stop">
@@ -338,6 +395,9 @@
             <p class="moment-label">Godzina z biletu ma pierwszeństwo</p>
             <h3>Arsenal Museum</h3>
             <p>Zaplanowałam wejście na 10:00. Oficjalny help centre potwierdza, że muzeum działa 7 dni w tygodniu, ale wydarzenia stadionowe mogą zmieniać godziny. <strong>Sprawdźcie godzinę na bilecie i w mailu dzień wcześniej</strong>; jeśli jest inna, przesuńcie poranek.</p>
+            <aside class="checked-by-martyna">
+              <h4>Martyna sprawdziła:</h4><ul><li>bilet jest kupiony</li><li>planujemy wejście około 10:00</li><li>godzina z biletu ma pierwszeństwo</li><li>zwiedzanie trwa około 30 minut</li><li>wejście jest naprzeciwko turnstile E</li></ul>
+            </aside>
             <div class="ticket-grid museum-grid">
               <div><span>🎟</span><p><small>Bilet</small><strong>już kupiony</strong></p></div>
               <div><span>💷</span><p><small>Cena regularna</small><strong>£10 dorosły / £7 dziecko</strong></p></div>
@@ -346,6 +406,7 @@
             </div>
             <p>Muzeum znajduje się w Northern Triangle Building obok Ken Friar Bridge, około 5 minut od wejścia do Stadium Tour. Po wyjściu idźcie na stację Arsenal albo Highbury &amp; Islington i jedźcie do Covent Garden.</p>
             <div class="actions">
+              <a class="button soft" href="https://www.google.com/maps/dir/?api=1&amp;origin=Travelodge+London+Central+City+Road&amp;destination=Arsenal+Museum%2C+London&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź: hotel → muzeum</a>
               <a class="button primary" href="https://www.google.com/maps/search/?api=1&amp;query=Arsenal+Museum%2C+Emirates+Stadium%2C+London" target="_blank" rel="noopener"><span aria-hidden="true">⌖</span> Otwórz muzeum w Google Maps</a>
               <a class="button soft" href="https://www.google.com/maps/dir/?api=1&amp;origin=Arsenal+Museum%2C+London&amp;destination=Covent+Garden%2C+London&amp;travelmode=transit" target="_blank" rel="noopener">Dojazd do Covent Garden</a>
               <a class="text-link" href="https://help.arsenal.com/support/solutions/articles/101000584157-stadium-tour-and-museum-opening-hours" target="_blank" rel="noopener">Sprawdź oficjalne godziny ↗</a>
@@ -353,6 +414,15 @@
             </div>
           </div>
         </article>
+
+        <section class="now-card" aria-labelledby="now-west-end">
+          <p class="now-label">Teraz</p>
+          <h3 id="now-west-end">Po muzeum → jedźcie do Covent Garden</h3>
+          <p class="now-route">Arsenal Museum <span>↓</span> Arsenal Station <span>↓</span> Covent Garden <span>↓</span> West End pieszo</p>
+          <p class="now-note">Piccadilly Line działa na tym odcinku. Zamknięty fragment Hyde Park Corner–Acton Town leży dalej na zachód i nie dotyczy Waszego przejazdu.</p>
+          <a class="button primary" href="https://www.google.com/maps/dir/?api=1&amp;origin=Arsenal+Museum%2C+London&amp;destination=Covent+Garden%2C+London&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź do Covent Garden</a>
+          <dl><div><dt>Po muzeum</dt><dd>około 10:35</dd></div><div><dt>West End</dt><dd>11:20–14:00</dd></div><div><dt>Koniec</dt><dd>14:00</dd></div></dl>
+        </section>
 
         <div class="route-launch">
           <div><span>Gotowy spacer · ok. 2,5 km</span><strong>Covent Garden → Neal’s Yard → Chinatown → Leicester Square → Piccadilly Circus</strong></div>
@@ -392,30 +462,42 @@
           <p class="section-kicker">Lunch przed lotem</p>
           <h3 id="food-day3">Gdzie zjeść w Chinatown?</h3>
           <div class="food-options">
-            <article><span class="food-type">Kuchnia malezyjska · ££</span><h4>Rasa Sayang</h4><p>Nasi lemak, makarony i dania, które łatwo podzielić. W sobotę otwiera o 11:30; adres leży dokładnie przy Waszej trasie.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Rasa+Sayang%2C+5+Macclesfield+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.rasasayangfood.com/food-menu/" target="_blank" rel="noopener">Menu ↗</a></div></article>
-            <article><span class="food-type">Dim sum i bao · ££</span><h4>BaoziInn Soho</h4><p>Kolorowe pierożki i bao przy 24 Romilly Street. Otwiera o 12:00; dobry wybór, jeśli chcecie spróbować kilku rzeczy wspólnie.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=BaoziInn+Soho%2C+24+Romilly+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://baoziinn.com/menus?menu=dinner-menu" target="_blank" rel="noopener">Menu ↗</a></div></article>
-            <article><span class="food-type">Najprościej z dzieckiem · ££</span><h4>Shake Shack Leicester Square</h4><p>Burgery, frytki i shake’i, bez ryzyka długiego wybierania. Otwiera o 11:00 i ma toalety; jest na końcu spaceru.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Shake+Shack+Leicester+Square%2C+1-2+Coventry+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.shakeshack.co.uk/locations/leicester-square/" target="_blank" rel="noopener">Menu / godziny ↗</a></div></article>
+            <article><span class="food-type">🍽 Jeśli chcecie usiąść · ££</span><h4>Rasa Sayang</h4><p>Nasi lemak, makarony i dania, które łatwo podzielić. W sobotę otwiera o 11:30; adres leży dokładnie przy Waszej trasie.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Rasa+Sayang%2C+5+Macclesfield+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.rasasayangfood.com/food-menu/" target="_blank" rel="noopener">Menu ↗</a></div></article>
+            <article><span class="food-type">🍽 Do dzielenia · ££</span><h4>BaoziInn Soho</h4><p>Kolorowe pierożki i bao przy 24 Romilly Street. Otwiera o 12:00; dobry wybór, jeśli chcecie spróbować kilku rzeczy wspólnie.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=BaoziInn+Soho%2C+24+Romilly+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://baoziinn.com/menus?menu=dinner-menu" target="_blank" rel="noopener">Menu ↗</a></div></article>
+            <article><span class="food-type">👨‍👩‍👧 Najłatwiej z dzieckiem · ££</span><h4>Shake Shack Leicester Square</h4><p>Burgery, frytki i shake’i, bez ryzyka długiego wybierania. Otwiera o 11:00 i ma toalety; jest na końcu spaceru.</p><div><a href="https://www.google.com/maps/search/?api=1&amp;query=Shake+Shack+Leicester+Square%2C+1-2+Coventry+Street%2C+London" target="_blank" rel="noopener">Google Maps ↗</a><a href="https://www.shakeshack.co.uk/locations/leicester-square/" target="_blank" rel="noopener">Menu / godziny ↗</a></div></article>
           </div>
         </section>
 
         <section class="return-card" aria-labelledby="return-title">
           <div class="return-plane" aria-hidden="true">✈</div>
           <div>
-            <p class="section-kicker">Powrót</p>
-            <h3 id="return-title">Lot o 19:45</h3>
-            <p class="airport-status">Lotnisko powrotne: <strong id="departure-airport">wymaga potwierdzenia</strong></p>
-            <p id="departure-guidance">Nie zakładam, że wracacie ze Stansted. Dlatego najpóźniej o <strong>14:00 kończycie zwiedzanie</strong>, do około 14:30 wracacie po bagaże i dopiero po potwierdzeniu lotniska wybieracie właściwe połączenie. To celowo zachowawczy plan.</p>
-            <div class="return-times">
-              <div><span>14:00</span><small>koniec zwiedzania</small></div>
-              <div><span>14:30</span><small>powrót po bagaże</small></div>
-              <div><span>19:45</span><small>odlot</small></div>
+            <p class="section-kicker">Teraz</p>
+            <h3 id="return-title">Powrót na Stansted</h3>
+            <p class="airport-status">Lotnisko: <strong id="departure-airport">London Stansted Airport (STN)</strong> · lot <strong>19:45</strong></p>
+            <p>O <strong>14:00 kończycie zwiedzanie</strong>. Zostawiłam Wam zapas na odbiór bagaży, dojście do Liverpool Street, ewentualne opóźnienie i kontrolę bezpieczeństwa. Nie czekajcie na ostatni możliwy pociąg.</p>
+            <ol class="return-steps">
+              <li><span>1</span><p><strong>14:00 · zakończenie zwiedzania</strong><small>Piccadilly Circus jest opcjonalny — jeśli czas ucieka, pomińcie go.</small></p></li>
+              <li><span>2</span><p><strong>14:00–14:40 · West End → hotel</strong><small>Jedźcie od razu po bagaże. Przycisk poniżej rozpocznie trasę z Waszej aktualnej lokalizacji.</small></p></li>
+              <li><span>3</span><p><strong>14:40–15:00 · odbiór bagażu</strong><small>Sprawdźcie pokój i recepcję, potem ruszajcie bez dodatkowych przystanków.</small></p></li>
+              <li><span>4</span><p><strong>15:00–15:30 · hotel → Liverpool Street</strong><small>Możecie podejść pieszo albo wybrać aktualną trasę w Mapach.</small></p></li>
+              <li><span>5</span><p><strong>najpóźniej ok. 15:45 · Stansted Express</strong><small>Wybierzcie pierwszy wygodny pociąg. Oficjalny czas przejazdu to około 48 minut.</small></p></li>
+              <li><span>6</span><p><strong>około 16:35–16:50 · Stansted Airport</strong><small>Macie niemal 3 godziny do lotu o 19:45.</small></p></li>
+            </ol>
+            <div class="actions return-actions">
+              <a class="button primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=Travelodge+London+Central+City+Road&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź: West End → hotel</a>
+              <a class="button soft" href="https://www.google.com/maps/dir/?api=1&amp;origin=Travelodge+London+Central+City+Road&amp;destination=London+Liverpool+Street+Station&amp;travelmode=walking" target="_blank" rel="noopener">Prowadź: hotel → Liverpool Street</a>
+              <a class="button soft" href="https://www.google.com/maps/dir/?api=1&amp;origin=London+Liverpool+Street+Station&amp;destination=London+Stansted+Airport&amp;travelmode=transit" target="_blank" rel="noopener">Prowadź: Liverpool Street → Stansted Airport</a>
             </div>
+            <aside class="checked-by-martyna">
+              <h4>Martyna sprawdziła:</h4><ul><li>powrót jest na Stansted (STN)</li><li>Stansted Express nie zgłasza prac na 22.08</li><li>w dzień pociągi kursują zwykle co 15 minut</li><li>przejazd z Liverpool Street trwa około 48 minut</li><li>plan daje niemal 3 godziny na lotnisku</li></ul>
+              <a href="https://www.stanstedexpress.com/travel-information/timetables" target="_blank" rel="noopener">Oficjalny rozkład Stansted Express ↗</a>
+            </aside>
           </div>
         </section>
 
         <details class="plan-b">
           <summary>Plan B na dzień 3 <span>inna godzina muzeum · zmęczenie</span></summary>
-          <div><p><strong>Jeśli muzeum jest później:</strong> skróćcie Covent Garden do 30 minut i wybierzcie tylko Chinatown + Leicester Square.</p><p><strong>Jeśli macie opóźnienie:</strong> pomińcie Piccadilly Circus. Nie przesuwajcie końca zwiedzania po 14:00, dopóki lotnisko nie zostanie potwierdzone.</p><p><strong>Jeśli dziecko będzie zmęczone:</strong> zjedzcie od razu przy Leicester Square i wróćcie do hotelu metrem z Piccadilly Circus lub Leicester Square.</p></div>
+          <div><p><strong>Jeśli muzeum jest później:</strong> skróćcie Covent Garden do 30 minut i wybierzcie tylko Chinatown + Leicester Square.</p><p><strong>Jeśli macie opóźnienie:</strong> pomińcie Piccadilly Circus. O 14:00 kończycie zwiedzanie, wracacie po bagaże i jedziecie na Stansted.</p><p><strong>Jeśli dziecko będzie zmęczone:</strong> zjedzcie od razu przy Leicester Square i wróćcie do hotelu metrem z Piccadilly Circus lub Leicester Square.</p></div>
         </details>
       </div>
     </section>
@@ -428,7 +510,7 @@
           <article><span>01</span><h3>Dorośli: contactless</h3><p>Każda osoba używa własnej karty albo urządzenia. Zawsze przykładajcie ten sam nośnik przy wejściu i wyjściu — karta i telefon powiązane z tym samym kontem są liczone oddzielnie.</p></article>
           <article><span>02</span><h3>Dziecko 10 lat</h3><p>Podróżuje bezpłatnie autobusami i tramwajami oraz metrem, DLR, Overground i Elizabeth line, gdy towarzyszy płacącemu dorosłemu. Jednemu dorosłemu może towarzyszyć do czworga dzieci poniżej 11 lat.</p></article>
           <article><span>03</span><h3>Bramki i autobusy</h3><p>W metrze dotykacie czytnika przy wejściu i wyjściu. W autobusie tylko przy wejściu. Szukajcie szerszej bramki, żeby łatwiej przejść razem z dzieckiem.</p></article>
-          <article><span>04</span><h3>Oyster tylko w razie potrzeby</h3><p>Jeśli polska karta nalicza opłaty walutowe lub nie działa z contactless, kupcie Oyster. TfL pobiera £7 za standardową kartę, do której dodaje się środki.</p></article>
+          <article><span>04</span><h3>Oyster tylko w razie potrzeby</h3><p>Jeśli polska karta nalicza opłaty walutowe lub nie działa z contactless, kupcie Oyster. Od marca 2026 TfL pobiera <strong>£10.50</strong> za nową standardową kartę, do której dodaje się środki. Dla dorosłych pierwszym wyborem nadal jest contactless.</p></article>
         </div>
         <div class="actions centered">
           <a class="button primary" href="https://tfl.gov.uk/travel-information/visiting-london/getting-around-london/best-ways-for-visitors-to-pay" target="_blank" rel="noopener">Oficjalne zasady TfL</a>
@@ -451,10 +533,29 @@
             <li><a href="https://www.wbstudiotour.co.uk/when-you-arrive/" target="_blank" rel="noopener">Warner Bros. Studio Tour — przyjazd i kontrola</a></li>
             <li><a href="https://www.wbstudiotour.co.uk/great-british-summer-savings/" target="_blank" rel="noopener">Warner Bros. Studio Tour — ceny dla sierpnia 2026</a></li>
             <li><a href="https://tfl.gov.uk/travel-information/visiting-london/getting-around-london/best-ways-for-visitors-to-pay" target="_blank" rel="noopener">TfL — contactless, Oyster i podróż z dzieckiem</a></li>
+            <li><a href="https://foi.tfl.gov.uk/FOI-0778-2627/Fees%20and%20Charges%202026-27%20-%20Commissioner%20decision%20paper%20%28approved%29.pdf" target="_blank" rel="noopener">TfL — opłata £10.50 za nową kartę Oyster od marca 2026</a></li>
+            <li><a href="https://content.tfl.gov.uk/planned-track-closures.pdf" target="_blank" rel="noopener">TfL — planowane zamknięcia 20–22.08.2026</a></li>
+            <li><a href="https://www.stanstedexpress.com/travel-information/timetables" target="_blank" rel="noopener">Stansted Express — częstotliwość i czas przejazdu</a></li>
+            <li><a href="https://www.stanstedexpress.com/travel-information/planned-service-alterations/" target="_blank" rel="noopener">Stansted Express — planowane zmiany w kursowaniu</a></li>
+            <li><a href="https://www.stanstedexpress.com/travel-information/station-information/london-liverpool-street/" target="_blank" rel="noopener">Liverpool Street — oficjalna informacja o przechowalni bagażu</a></li>
             <li><a href="https://boroughmarket.org.uk/visit-us/" target="_blank" rel="noopener">Borough Market — godziny i dojazd</a></li>
             <li><a href="https://www.travelodge.co.uk/hotels/340/London-Central-City-Road-hotel" target="_blank" rel="noopener">Travelodge — adres, przechowalnia bagażu i najbliższa stacja</a></li>
+            <li><a href="https://weather.metoffice.gov.uk/forecast/gcpvj0v07" target="_blank" rel="noopener">Met Office — aktualna prognoza dla Londynu</a></li>
           </ul>
         </details>
+      </div>
+    </section>
+
+    <section class="recovery-section" aria-labelledby="recovery-title">
+      <div class="guide-shell">
+        <p class="section-kicker">Krótki plan awaryjny</p>
+        <h2 id="recovery-title">Jeśli coś pójdzie nie tak</h2>
+        <div class="recovery-grid">
+          <article><h3>Opóźniony transfer ze Stansted</h3><p>Pomińcie Westminster. Warner Bros. ma pierwszeństwo.</p></article>
+          <article><h3>Opóźnienie podczas piątkowego spaceru</h3><p>Skróćcie drugą część trasy. Wyjazd na Arsenal o 16:15 ma pierwszeństwo.</p></article>
+          <article><h3>Problem z metrem</h3><p>Uruchomcie aktualną trasę TfL lub Google Maps zamiast trzymać się sztywno nazw linii.</p></article>
+          <article><h3>Opóźnienie w sobotę</h3><p>Najpierw usuńcie Piccadilly Circus. Odbiór bagażu i Stansted mają absolutne pierwszeństwo.</p></article>
+        </div>
       </div>
     </section>
 
