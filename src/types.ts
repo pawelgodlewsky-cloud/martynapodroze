@@ -24,6 +24,11 @@ export interface Env {
   MAILERLITE_API_TOKEN?: string;
   MAILERLITE_GROUP_ID?: string;
   ALLOW_LOCAL_ADMIN?: string;
+  STRIPE_WEBHOOK_SECRET?: string;
+  STRIPE_PAYMENT_LINK_ID?: string;
+  COMMERCE_ACCESS_SECRET?: string;
+  RESEND_API_KEY?: string;
+  TRANSACTIONAL_FROM_EMAIL?: string;
 }
 
 export interface TripLinkInput {

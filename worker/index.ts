@@ -30,6 +30,7 @@ import {
 import { renderPublicTrip } from "../src/public-page";
 import { parseTripInput, validateHttpUrl, ValidationError } from "../src/trips";
 import type { Env } from "../src/types";
+import { activateGuide, protectedGuide, purchaseComplete, stripeWebhook } from "../src/commerce";
 
 const ADMIN_CSP = "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl data:; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
 const PUBLIC_CSP = "default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self'; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
@@ -225,6 +226,14 @@ export default {
       }
       if (url.pathname === "/api/admin/session") return adminSession(request, env);
       if (url.pathname.replace(/\/$/, "") === "/api/newsletter/subscribe") return newsletterApi(request, env);
+      if (url.pathname.replace(/\/$/, "") === "/api/stripe/webhook") return stripeWebhook(request, env);
+      if (url.pathname === "/dostep/lombardia" || url.pathname.startsWith("/dostep/lombardia/")) {
+        return activateGuide(request, env);
+      }
+      if (url.pathname === "/zakup/lombardia" || url.pathname.startsWith("/zakup/lombardia/")) {
+        return purchaseComplete(request, env);
+      }
+      if (url.pathname === "/como" || url.pathname.startsWith("/como/")) return protectedGuide(request, env);
       if (url.pathname === "/api/admin/trips" || url.pathname.startsWith("/api/admin/trips/")) {
         if (!(await authorizeAdmin(request, env))) return errorJson("Sesja wygasła. Zaloguj się ponownie.", 401);
         return adminApi(request, env, url.pathname.replace(/\/$/, ""));

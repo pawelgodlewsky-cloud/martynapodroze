@@ -9,6 +9,10 @@ routes = [
   { pattern = "martynapodroze.pl/admin/wyjazdy*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/api/admin/*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/api/newsletter/*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/api/stripe/*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/dostep/lombardia*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/zakup/lombardia*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/como*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/w/*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/go/*", zone_name = "martynapodroze.pl" }
 ]
@@ -16,6 +20,8 @@ routes = [
 [vars]
 ADMIN_EMAIL = "podroz.martyna@gmail.com"
 MAILERLITE_GROUP_ID = "195505150832411742"
+TRANSACTIONAL_FROM_EMAIL = "Martyna_podroze <przewodnik@martynapodroze.pl>"
+STRIPE_PAYMENT_LINK_ID = "plink_1U8PrvGma628jLpWAvxXY3uj"
 
 [assets]
 directory = "./worker-public"
@@ -28,6 +34,8 @@ database_name = "martyna-wyjazdy"
 database_id = "b1559654-57b5-4090-aed0-82996d9774a4"
 migrations_dir = "migrations"
 
-# ADMIN_PASSWORD, SESSION_SECRET, VISITOR_SALT i MAILERLITE_API_TOKEN sa
+# ADMIN_PASSWORD, SESSION_SECRET, VISITOR_SALT, MAILERLITE_API_TOKEN,
+# STRIPE_WEBHOOK_SECRET, COMMERCE_ACCESS_SECRET
+# i RESEND_API_KEY sa
 # sekretami Workera i nie sa
 # zapisywane w repozytorium.
