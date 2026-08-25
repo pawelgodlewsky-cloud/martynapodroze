@@ -1,0 +1,11 @@
+[
+  {"day":1,"dish":"Casoncelli alla bergamasca","description":"Pierogi z mięsnym farszem, masłem, szałwią i pancettą.","veg":false},
+  {"day":1,"dish":"Polenta taragna","description":"Kremowa polenta z lokalnymi serami; zapytaj o wersję bez mięsa.","veg":true},
+  {"day":1,"dish":"Stracciatella","description":"Lodowy klasyk urodzony w Bergamo.","veg":true},
+  {"day":2,"dish":"Risotto con pesce persico","description":"Risotto z okoniem, typowe dla jeziora.","veg":false},
+  {"day":2,"dish":"Toc / polenta uncia","description":"Polenta z dużą ilością sera i masła.","veg":true},
+  {"day":3,"dish":"Risotto alla milanese","description":"Szafranowe risotto; często podawane z ossobuco, ale dostępne też solo.","veg":true},
+  {"day":3,"dish":"Panzerotto","description":"Smażony pieróg z pomidorem i mozzarellą — dobry szybki lunch.","veg":true},
+  {"day":3,"dish":"Cotoletta alla milanese","description":"Cielęcy kotlet w panierce, sycąca klasyka.","veg":false},
+  {"day":4,"dish":"Scarpinocc de Par","description":"Bergamskie pierożki z serem, masłem i szałwią.","veg":true}
+]

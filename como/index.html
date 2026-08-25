@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf8f4">
+  <meta name="description" content="Cyfrowy przewodnik Martyna Podróże po Bergamo, jeziorze Como i Mediolanie — gotowe trasy, transport i praktyczne wskazówki.">
+  <title>Lombardia w 4 dni — Martyna Podróże</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="assets/como.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script>
+    (() => {
+      const release = "27";
+      const releaseKey = "lombardia-guide-release";
+      if (localStorage.getItem(releaseKey) === release) return;
+      window.addEventListener("load", async () => {
+        try {
+          const scopePath = new URL("./", location.href).pathname;
+          if ("serviceWorker" in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations
+              .filter(registration => new URL(registration.scope).pathname === scopePath)
+              .map(registration => registration.unregister()));
+          }
+          if ("caches" in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames
+              .filter(name => name.startsWith("lombardia-"))
+              .map(name => caches.delete(name)));
+          }
+          localStorage.setItem(releaseKey, release);
+          const freshUrl = new URL(location.href);
+          freshUrl.searchParams.set("v", release);
+          location.replace(freshUrl);
+        } catch (_) {}
+      }, { once: true });
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=27">
+</head>
+<body>
+  <a class="skip-link" href="#main">Przejdź do treści</a>
+
+  <header class="topbar">
+    <button class="brand" data-action="home" aria-label="Wróć na początek">
+      <img src="assets/logo-martyna.png" width="218" height="44" alt="Martyna Podróże">
+      <span class="brand-destination"><small>przewodnik</small><b>Lombardia</b></span>
+    </button>
+    <div class="top-actions">
+      <span class="offline-pill" id="networkStatus">online</span>
+      <button class="icon-button" data-action="print" aria-label="Drukuj lub zapisz PDF" title="Drukuj / PDF">PDF</button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section id="homeView" class="view home-view" aria-labelledby="heroTitle">
+      <div class="hero">
+        <img src="assets/como.webp" alt="Martyna nad jeziorem Como" width="1280" height="854">
+        <div class="hero-shade"></div>
+        <div class="hero-copy">
+          <span class="eyebrow">Twój przewodnik · Martyna Podróże</span>
+          <h1 id="heroTitle">Lombardia</h1>
+          <p class="hero-route">Bergamo · Como · Mediolan</p>
+          <p class="hero-lead">Cztery dni bez układania planu od zera. Trasy, transport i najważniejsze decyzje masz już zebrane w jednym miejscu.</p>
+          <button class="primary-button" data-action="open-day" data-day="1">Rozpocznij podróż <span>→</span></button>
+        </div>
+      </div>
+
+      <div class="home-content content-shell">
+        <section class="intro-grid" aria-label="Najważniejsze informacje">
+          <div><strong>4</strong><span>dni</span></div>
+          <div><strong>3</strong><span>miejsca</span></div>
+          <div><strong>gotowe</strong><span>trasy dzień po dniu</span></div>
+          <div><strong>offline</strong><span>plan i adresy</span></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div><span class="kicker">Twój plan</span><h2>Każdy dzień ma własny rytm</h2></div>
+            <span class="tiny-note">zapis postępu w urządzeniu</span>
+          </div>
+          <div id="dayCards" class="day-cards"></div>
+        </section>
+
+        <section class="editorial-card">
+          <div class="big-number">01</div>
+          <div>
+            <span class="kicker">Jak korzystać</span>
+            <h2>Otwórz dzień. Zaznaczaj miejsca. Prowadź się dalej.</h2>
+            <p>W każdej karcie znajdziesz czas, koszt, adres i następny odcinek. Kody QR otwierają gotowe trasy w Mapach Google na drugim telefonie.</p>
+          </div>
+        </section>
+
+        <section id="sourceNotice" class="source-notice"></section>
+      </div>
+    </section>
+
+    <section id="dayView" class="view day-view" hidden>
+      <div id="dayHero" class="day-hero"></div>
+      <div class="content-shell">
+        <div id="dayTabs" class="day-tabs" role="tablist" aria-label="Wybierz dzień"></div>
+        <div id="dayMeta" class="day-meta"></div>
+        <div class="route-mode" aria-label="Wariant trasy">
+          <button class="mode-button active" data-mode="full">Pełna trasa</button>
+          <button class="mode-button" data-mode="quick">Mam mało czasu</button>
+          <button class="mode-button" data-mode="rain">Pada deszcz</button>
+        </div>
+        <div id="routeModeNote" class="mode-note" hidden></div>
+        <section id="dayTravelNotice" class="day-travel-notice" aria-live="polite"></section>
+        <section id="dayAssistant" class="day-assistant" aria-label="Twój plan na teraz"></section>
+        <div id="dayTimeline" class="timeline"></div>
+        <div id="dayExtras" class="extras-grid"></div>
+        <section class="section-block route-section">
+          <div class="section-heading"><div><span class="kicker">Gotowe odcinki</span><h2>Otwórz trasę</h2></div><span class="tiny-note">Google Maps + lokalny QR</span></div>
+          <div id="routeCards" class="route-cards"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="mapView" class="view panel-view" hidden>
+      <div class="content-shell">
+        <div class="page-title map-page-title"><span class="kicker">Mapa dnia · il nostro giro</span><h1>Twoja włoska trasa</h1><p>Realne tło pokazuje układ dróg, wody i miejscowości. Dotknij przystanku, aby zobaczyć szczegóły i otworzyć dokładną nawigację.</p></div>
+        <div id="mapDayTabs" class="day-tabs compact"></div>
+        <div id="svgMap" class="svg-map"></div>
+        <div id="mapLegend" class="map-legend"></div>
+        <div class="location-tools">
+          <div><span class="kicker">Asystent w drodze</span><h2>Gdzie teraz jesteś?</h2></div>
+          <select id="currentPointSelect" aria-label="Wybierz obecny punkt"></select>
+          <div id="nextThree" class="next-three"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="foodView" class="view panel-view" hidden>
+      <div class="content-shell">
+        <div class="page-title"><span class="kicker">Jedzenie</span><h1>Smaki po drodze</h1><p>Lokale są przypisane do fragmentu trasy, więc nie trzeba nadrabiać kilometrów dla jednego talerza.</p></div>
+        <div id="foodDayTabs" class="day-tabs compact"></div>
+        <div class="food-actions">
+          <button class="secondary-button" data-action="nearby-food">Jestem głodna — pokaż najbliższe</button>
+          <label class="toggle"><input id="vegToggle" type="checkbox"><span>Tylko wege</span></label>
+        </div>
+        <section><div class="section-heading"><div><span class="kicker">Co zamówić</span><h2>Lokalne dania</h2></div></div><div id="dishGrid" class="dish-grid"></div></section>
+        <section><div class="section-heading"><div><span class="kicker">Sprawdzone punkty</span><h2>Przystanki na jedzenie</h2></div></div><div id="restaurantGrid" class="restaurant-grid"></div></section>
+      </div>
+    </section>
+
+    <section id="tipsView" class="view panel-view" hidden>
+      <div class="content-shell">
+        <div class="page-title"><span class="kicker">Przed wyjściem</span><h1>Małe rzeczy, duża różnica</h1><p>Transport, budżet i włoskie zwroty w jednym miejscu.</p></div>
+        <section><div class="section-heading"><div><span class="kicker">Na miejscu</span><h2>Praktyczne tipy</h2></div></div><div id="tipGrid" class="tip-grid"></div></section>
+        <section><div class="section-heading"><div><span class="kicker">Transport</span><h2>Bilety i połączenia</h2></div></div><div id="transportGrid" class="transport-grid"></div></section>
+        <section class="budget-section"><div class="section-heading"><div><span class="kicker">Kalkulator</span><h2>Twój budżet</h2></div><div id="budgetTotal" class="budget-total">0 €</div></div><div id="budgetDays" class="budget-days"></div></section>
+        <section><div class="section-heading"><div><span class="kicker">Minirozmówki</span><h2>Włoski na wyciągnięcie ręki</h2></div></div><div id="glossaryGrid" class="glossary-grid"></div></section>
+        <section id="offlineSection" class="offline-section"></section>
+        <section id="sourceList" class="source-list"></section>
+      </div>
+    </section>
+
+    <section id="savedView" class="view panel-view" hidden>
+      <div class="content-shell">
+        <div class="page-title"><span class="kicker">Twoje miejsce</span><h1>Zapisane i ukończone</h1><p>Lista jest przechowywana tylko na tym urządzeniu i działa offline.</p></div>
+        <div id="overallProgress" class="overall-progress"></div>
+        <section><div class="section-heading"><div><span class="kicker">Mój wyjazd</span><h2>Paszport Lombardii</h2></div></div><div id="tripPassport" class="trip-passport"></div></section>
+        <section><div class="section-heading"><div><span class="kicker">Dopasuj przewodnik</span><h2>Jak chcesz podróżować?</h2></div></div><div id="preferencesPanel" class="preferences-panel"></div></section>
+        <section><div class="section-heading"><div><span class="kicker">Ulubione</span><h2>Miejsca do powrotu</h2></div></div><div id="savedGrid" class="saved-grid"></div></section>
+        <button class="text-button danger" data-action="reset-progress">Wyczyść postęp i zapisane miejsca</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Główna nawigacja">
+    <button class="nav-item active" data-view="day"><span aria-hidden="true">◫</span><b>Plan</b></button>
+    <button class="nav-item" data-view="map"><span aria-hidden="true">⌖</span><b>Mapa</b></button>
+    <button class="nav-item" data-view="food"><span aria-hidden="true">♨</span><b>Jedzenie</b></button>
+    <button class="nav-item" data-view="tips"><span aria-hidden="true">✦</span><b>Tipy</b></button>
+    <button class="nav-item" data-view="saved"><span aria-hidden="true">♡</span><b>Zapisane</b></button>
+  </nav>
+
+  <aside id="companionDock" class="companion-dock" aria-label="Szybka pomoc w drodze" hidden>
+    <button class="companion-primary" data-action="whats-now"><span aria-hidden="true">⌖</span><b>Co mam zrobić teraz?</b></button>
+    <button data-action="delay-open"><span aria-hidden="true">◷</span><b>Mam opóźnienie</b></button>
+    <button data-action="sos-open"><span aria-hidden="true">+</span><b>Pomoc</b></button>
+  </aside>
+
+  <div id="sheetBackdrop" class="sheet-backdrop" hidden>
+    <section id="assistantSheet" class="assistant-sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-close" data-action="sheet-close" aria-label="Zamknij">×</button>
+      <div id="sheetContent"></div>
+    </section>
+  </div>
+
+  <div id="placeOverlay" class="place-overlay" hidden>
+    <article id="placeDialog" class="place-dialog" role="dialog" aria-modal="true" aria-labelledby="placeTitle" tabindex="-1">
+      <div id="placeContent"></div>
+    </article>
+  </div>
+
+  <div id="imageLightbox" class="image-lightbox" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie" hidden>
+    <button class="image-lightbox-close" data-action="close-image" aria-label="Zamknij zdjęcie">×</button>
+    <img id="lightboxImage" src="" alt="">
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="app.js?v=27"></script>
+</body>
+</html>

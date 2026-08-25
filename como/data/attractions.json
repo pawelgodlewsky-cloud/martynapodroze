@@ -1,0 +1,81 @@
+{
+  "bg-piazza-vecchia": {
+    "tag": "SERCE CITTÀ ALTA",
+    "description": [
+      "To najważniejszy plac górnego Bergamo i najlepszy punkt, żeby na chwilę zwolnić. W jednym kadrze masz Palazzo della Ragione, fontannę Contarini i Campanone.",
+      "Nie traktuj go tylko jako przejścia między atrakcjami. To tutaj najłatwiej złapać układ Città Alta, a kolejny ważny punkt — Santa Maria Maggiore — jest tuż obok."
+    ],
+    "worthIt": "Zdecydowanie",
+    "tip": "Po obejściu placu idź od razu w stronę Piazza Duomo. Bazylika Santa Maria Maggiore i Cappella Colleoni są około 2 minuty dalej, więc nie trzeba wracać tą samą drogą.",
+    "photoTip": "Ustaw fontannę Contarini na pierwszym planie, a Palazzo della Ragione i Campanone zostaw w tle.",
+    "shortVisit": "Obejdź plac, zatrzymaj się przy fontannie Contarini i przejdź pod Palazzo della Ragione w stronę Piazza Duomo.",
+    "highlights": [
+      "Fontanna Contarini pośrodku placu",
+      "Palazzo della Ragione",
+      "Widok na Campanone"
+    ],
+    "images": [
+      { "src": "assets/bergamo.webp", "alt": "Bergamo i zabudowa Città Alta", "position": "33% 32%" }
+    ]
+  },
+  "co-villa-monastero": {
+    "tag": "OGRÓD NAD JEZIOREM",
+    "description": [
+      "Villa Monastero warto odwiedzić przede wszystkim dla ogrodu botanicznego, który ciągnie się wzdłuż brzegu jeziora. Tarasy, loggie i roślinność tworzą tu jeden z najmocniejszych spacerów w Varennie.",
+      "Jeżeli zależy Ci także na wnętrzach, wybierz bilet łączony z Casa Museo. Gdy czas jest ważniejszy, sam ogród daje pełne poczucie tego miejsca."
+    ],
+    "worthIt": "Tak, dla ogrodu",
+    "effort": "niski",
+    "tip": "Przy krótszej wizycie wybierz sam ogród. Casa Museo dołóż tylko wtedy, gdy naprawdę chcesz zobaczyć wnętrza i masz zapas czasu przed promem.",
+    "photoTip": "Szukaj kadru z tarasu lub loggii, tak aby roślinność prowadziła wzrok w stronę jeziora.",
+    "shortVisit": "Skup się na ogrodzie nad wodą i zrezygnuj z Casa Museo. Potem wróć w stronę przystani w Varennie.",
+    "highlights": [
+      "Ogród botaniczny wzdłuż brzegu",
+      "Tarasy i loggie nad wodą",
+      "Widoki na jezioro z ogrodu"
+    ],
+    "images": [
+      { "src": "assets/como.webp", "alt": "Widok na jezioro Como", "position": "47% 48%" }
+    ]
+  },
+  "mi-duomo": {
+    "tag": "MUST SEE",
+    "description": [
+      "Duomo wymaga jednej decyzji przed przyjazdem: wybierz konkretny wariant i zarezerwuj slot. Sam plac daje dobry widok na fasadę, ale wnętrze, dach i muzeum potrzebują znacznie więcej czasu.",
+      "Największy efekt daje dach przy dobrej widoczności. Pamiętaj, że winda dojeżdża tylko na pierwszy poziom — wyższy taras i zejście nadal oznaczają schody. Na kontrolę bezpieczeństwa przyjdź 20–30 minut wcześniej."
+    ],
+    "worthIt": "Zdecydowanie",
+    "effort": "zależny od wariantu",
+    "tip": "Nie próbuj zobaczyć wszystkiego bez planu. Przy dobrej pogodzie wybierz dach, a przy deszczu wnętrze i muzeum zamiast śliskich tarasów.",
+    "photoTip": "Na placu odsuń się od fasady, żeby zmieścić w kadrze całą katedrę. Na dachu skup się na detalach iglic i panoramie centrum.",
+    "shortVisit": "Zobacz fasadę z Piazza del Duomo, obejdź katedrę z zewnątrz i przejdź dalej w stronę Gallerii. Nie ustawiaj krótkiego planu pod wejście bez rezerwacji.",
+    "highlights": [
+      "Fasada od strony Piazza del Duomo",
+      "Główna nawa katedry",
+      "Dach i detale iglic przy dobrej pogodzie"
+    ],
+    "images": [
+      { "src": "assets/milano.webp", "alt": "Duomo di Milano i centrum Mediolanu", "position": "70% 35%" }
+    ]
+  },
+  "mi-galleria": {
+    "tag": "FOTOSPOT",
+    "description": [
+      "Galleria Vittorio Emanuele II nie jest tylko efektownym przejściem przy Duomo. Łączy plac katedralny z Piazza della Scala i naturalnie prowadzi dalej przez centrum.",
+      "Przejdź całą nawę zamiast zatrzymywać się wyłącznie pod centralną kopułą. Wtedy zobaczysz zarówno skalę wnętrza, jak i jego miejsce w planie dnia."
+    ],
+    "worthIt": "Tak",
+    "effort": "niski",
+    "tip": "Wejdź od strony Piazza del Duomo i wyjdź na Piazza della Scala. W ten sposób zwiedzasz galerię bez dokładania drogi do kolejnego punktu.",
+    "photoTip": "Stań nieco poza środkiem głównej nawy, aby w kadrze zmieścić posadzkę, witryny i centralną kopułę.",
+    "shortVisit": "Przejdź główną nawą od Duomo do Piazza della Scala i zatrzymaj się na jeden szeroki kadr pod kopułą.",
+    "highlights": [
+      "Centralna szklana kopuła",
+      "Mozaikowa posadzka",
+      "Perspektywa nawy w stronę Piazza della Scala"
+    ],
+    "images": [
+      { "src": "assets/milano.webp", "alt": "Centrum Mediolanu w okolicy Duomo i Gallerii", "position": "40% 35%" }
+    ]
+  }
+}

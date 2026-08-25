@@ -1,0 +1,49 @@
+[
+  {
+    "day": 1,
+    "title": "Po wyjściu z terminala BGY",
+    "steps": [
+      "Wyjdź z hali przylotów i kieruj się za znakami BUS. Przystanki są przed terminalem; wybierz Airport Bus ATB linii 1 w kierunku Bergamo / Città Alta.",
+      "Najprościej kup bilet 24 h Intera Rete za 8,50 € w aplikacji ATB Mobile, automacie lub kartą przy zielonym czytniku Passa e Vai. Bilet obejmuje bagaż, Airport Bus, autobusy i obie funicolare.",
+      "Przyłóż bilet lub tę samą kartę do zielonego czytnika przy każdym wejściu i każdej przesiadce. Przy funicolare waliduj przy bramce.",
+      "Wysiądź na Stazione Autolinee / Stazione FS. Przejazd zwykle zajmuje około 15–25 min, autobus kursuje codziennie mniej więcej co 20 min.",
+      "Jeśli lot jest opóźniony o 2 h, pomiń Porta Nuova i Campanone. Jedź do dworca, zostaw bagaż i rozpocznij od funicolare; zachowasz najważniejszą część Città Alta."
+    ],
+    "officialUrl": "https://www.atb.bergamo.it/en/other-services/tourist-services"
+  },
+  {
+    "day": 2,
+    "title": "Promy: pięć scenariuszy",
+    "steps": [
+      "A · Kursuje: wybierz powrót Bellagio → Varenna z co najmniej 30 min zapasu do planowanego pociągu z Varenna-Esino.",
+      "B · Spóźnienie 5 min: nie próbuj nadrabiać taksówką wokół jeziora. Sprawdź kolejny bezpośredni prom i natychmiast skróć Pescallo lub lunch.",
+      "C · Odwołany: jeśli nie ma potwierdzonego kolejnego kursu, zostań w Varenna. Nie płyń do Bellagio bez pewnego powrotu. Varenna + Villa Monastero zastępują cały blok Bellagio.",
+      "D · Duża kolejka: ustaw się 30–40 min wcześniej. Gdy nie mieścisz się na kurs, przejdź od razu do wariantu B i zachowaj zapas kolejowy.",
+      "E · Inny sezon: rozkład na tablicy przystani i strona Navigazione Laghi są ważniejsze niż godziny w e-booku. Zimą wykonuj Varenna jako plan główny, Bellagio tylko po potwierdzeniu dwóch kursów powrotnych."
+    ],
+    "officialUrl": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/"
+  },
+  {
+    "day": 3,
+    "title": "Transport i rezerwacje bez stresu",
+    "steps": [
+      "Trenord to regionalny przewoźnik Lombardii; ten sam pociąg może być sprzedawany także przez Trenitalia. Patrz na numer pociągu, godzinę i stację końcową na monitorze, nie tylko logo aplikacji.",
+      "ATM to komunikacja miejska Mediolanu. Przy bramce metra możesz użyć biletu albo karty contactless; do wejścia i wyjścia używaj tej samej karty.",
+      "Duomo: zarezerwuj slot, przyjdź 20–30 min wcześniej na kontrolę bezpieczeństwa. Winda nie usuwa wszystkich schodów; zejście z dachu odbywa się schodami.",
+      "Ostatnia Wieczerza: wyłącznie opcjonalnie, z imiennym biletem na konkretny slot. Sama wizyta trwa 15 min; przyjdź co najmniej 30 min wcześniej. Bez biletu zwiedzaj kościół lub wydłuż San Maurizio.",
+      "San Maurizio jest zamknięty w poniedziałek. Wtedy idź bezpośrednio z Castello do Santa Maria delle Grazie albo wybierz Museo Archeologico po sprawdzeniu godzin."
+    ],
+    "officialUrl": "https://cenacolovinciano.org/en/info/"
+  },
+  {
+    "day": 4,
+    "title": "Lot o 20:00 — twardy plan powrotu",
+    "steps": [
+      "14:30 zakończ zwiedzanie i lunch. 15:00 odbierz bagaż. 15:30 bądź na przystanku Airport Bus przy dworcu.",
+      "Wsiądź w pierwszy rozsądny Airport Bus linii 1. Cel: terminal najpóźniej 16:30, czyli 3,5 h przed odlotem.",
+      "Jeśli autobus nie przyjeżdża przez 25 min albo kolejka nie mieści się do pojazdu, zamów oficjalną taksówkę. Nie czekaj na ostatni akceptowalny kurs.",
+      "Przy strajku sprawdź komunikaty ATB i Trenord dzień wcześniej oraz rano. Strajk kolei wpływa szczególnie na dni Como i Mediolan; dla BGY zachowaj autobus ATB lub taksówkę jako niezależny plan."
+    ],
+    "officialUrl": "https://www.atb.bergamo.it/en/other-services/tourist-services"
+  }
+]

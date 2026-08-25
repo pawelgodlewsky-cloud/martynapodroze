@@ -1,0 +1,13 @@
+{
+  "name": "Lombardia w 4 dni — Martyna Podróże",
+  "short_name": "Lombardia 4 dni",
+  "description": "Mobilny przewodnik po Bergamo, jeziorze Como i Mediolanie",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fbf8f4",
+  "theme_color": "#fbf8f4",
+  "lang": "pl",
+  "icons": [
+    {"src":"assets/app-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}

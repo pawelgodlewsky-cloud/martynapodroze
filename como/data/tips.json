@@ -1,0 +1,10 @@
+[
+  {"id":"tickets","title":"Bilety kupuj u źródła","body":"Pociągi sprawdzaj w Trenord lub Trenitalia, promy w Navigazione Laghi, a atrakcje na oficjalnych stronach. Ceny i godziny mogą zmienić się nawet po publikacji przewodnika.","icon":"ticket"},
+  {"id":"lake","title":"Jezioro reaguje na pogodę","body":"Silny wiatr, burza lub niski stan wody mogą zmienić kursy promów. Tablica na przystani i komunikaty obsługi mają pierwszeństwo przed zapisanym rozkładem.","icon":"weather"},
+  {"id":"churches","title":"Kościoły mają przerwę","body":"Wiele świątyń zamyka się w południe albo ogranicza zwiedzanie podczas nabożeństw. Zakryte ramiona i kolana oszczędzą niepotrzebnej rozmowy przy wejściu.","icon":"church"},
+  {"id":"aperitivo","title":"Aperitivo to nie zawsze kolacja","body":"Zapytaj, czy cena obejmuje przekąski, bufet czy tylko drink. W turystycznych lokalach coperto i servizio mogą być naliczone osobno.","icon":"food"},
+  {"id":"validate","title":"Kasuj bilety papierowe","body":"Bilet cyfrowy aktywuj zgodnie z instrukcją aplikacji, a papierowy skasuj przed wejściem. W pociągach regionalnych kontrola jest częsta.","icon":"train"},
+  {"id":"airport","title":"Na BGY zostaw bufor","body":"Bądź na lotnisku 2,5–3 godziny przed odlotem. Krótka trasa z Bergamo nie usuwa ryzyka korków, pełnego autobusu ani kolejki do kontroli.","icon":"plane"}
+  ,{"id":"strikes","title":"Sprawdź strajki dzień wcześniej","body":"W sekcji aktualności Trenord szukaj słowa sciopero. Przy strajku pociągów zrezygnuj z Como lub Mediolanu, jeśli nie ma potwierdzonego kursu powrotnego. Godziny gwarantowane nie oznaczają, że każdy pociąg jedzie.","icon":"warning"}
+  ,{"id":"battery","title":"Telefon na 20% = tryb awaryjny","body":"Zapisz screenshot adresu noclegu, dworca, przystani i godziny powrotu. Włącz oszczędzanie baterii, zmniejsz jasność i używaj schematu offline; Mapy Google otwieraj dopiero przy zmianie odcinka.","icon":"battery"}
+]
