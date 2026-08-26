@@ -159,6 +159,8 @@ h1, h2 { font-family: var(--font-heading); font-weight: 600; line-height: .94; }
 .travel-alternative small { color: #617066; font-size: 9px; line-height: 1.5; }
 .travel-alternative a { margin-top: 10px; color: #365f48; font-size: 10px; font-weight: 800; }
 .point-image { height: 168px; width: 100%; object-fit: cover; }
+.point-image-stack { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); height: 168px; overflow: hidden; border-radius: 150px 150px 18px 18px; }
+.point-image-stack .point-image { height: 100%; min-height: 0; border-radius: 0; }
 .point-content { padding: 18px; }
 .point-top { display: flex; justify-content: space-between; gap: 12px; }
 .point-time { color: var(--point-accent,var(--lake)); font-weight: 700; font-size: 12px; }
@@ -721,6 +723,8 @@ body.companion-active { padding-bottom: calc(148px + var(--safe-bottom)); }
   .rail-actions { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .point-card { margin-left: 64px; grid-template-columns: minmax(240px,34%) minmax(0,1fr); gap: 34px; padding: 32px 0; }
   .point-image { height: 100%; min-height: 410px; border-radius: 170px 170px 20px 20px; }
+  .point-image-stack { align-self: start; grid-template-columns: 1fr; grid-template-rows: repeat(2,minmax(0,1fr)); height: 560px; min-height: 0; border-radius: 170px 170px 20px 20px; }
+  .point-image-stack .point-image { height: 100%; min-height: 0; }
   .point-content { padding: 12px 0 24px; }
   .next-leg { grid-column: 1 / -1; }
   .extras-grid { grid-template-columns: repeat(2,1fr); gap: 0 28px; }

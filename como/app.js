@@ -508,8 +508,12 @@ function pointCard(point, disabledMode = null) {
   const recommendation = recommendationFor(point);
   const isCurrent = state.currentPoint[point.day] === point.id;
   const shortened = state.delayPlans[point.day]?.shortened?.[point.id];
+  const cardImages = point.images?.length ? point.images : [{ src: point.image || day.hero, alt: point.name, position: point.position || "center" }];
+  const cardImageMarkup = cardImages.length === 1
+    ? `<img class="point-image" src="${cardImages[0].src}" style="object-position:${cardImages[0].position || "center"}" alt="${escapeHtml(cardImages[0].alt || point.name)}" loading="lazy">`
+    : `<div class="point-image-stack" data-count="${Math.min(cardImages.length, 2)}">${cardImages.slice(0, 2).map(image => `<img class="point-image" src="${image.src}" style="object-position:${image.position || "center"}" alt="${escapeHtml(image.alt || point.name)}" loading="lazy">`).join("")}</div>`;
   return `<article class="point-card ${point.pointKind === "major" ? "major-point" : "supporting-point"} ${done ? "completed" : ""} ${isCurrent ? "is-current" : ""} ${disabled ? `mode-disabled ${disabledMode}-disabled` : ""}" data-order="${point.order}" id="point-${point.id}" style="--point-accent:${day.accent}" ${disabled ? `aria-disabled="true"` : ""}>
-    <img class="point-image" src="${point.image || day.hero}" style="object-position:${point.position || "center"}" alt="${escapeHtml(point.name)}" loading="lazy">
+    ${cardImageMarkup}
     <div class="point-content">
       ${done ? `<span class="completion-badge" role="status">✓ Ukończone</span>` : ""}
       <div class="point-top"><div><span class="point-time">${escapeHtml(point.time)}</span><h3>${escapeHtml(point.name)}</h3></div></div>
@@ -1186,7 +1190,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=27", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=28", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }
