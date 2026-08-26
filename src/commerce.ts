@@ -3,6 +3,7 @@ import type { Env } from "./types";
 
 const GUIDE_AMOUNT = 5900;
 const GUIDE_CURRENCY = "pln";
+const MAX_GUIDE_DEVICES = 3;
 const DEVICE_COOKIE = "mp_lombardia_access";
 const TOKEN_TOLERANCE_SECONDS = 300;
 const GITHUB_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/como";
@@ -131,8 +132,8 @@ async function sendAccessEmail(email: string, link: string, env: Env): Promise<b
       from: env.TRANSACTIONAL_FROM_EMAIL,
       to: [email],
       subject: "Twój przewodnik po Lombardii jest gotowy",
-      html: `<div style="background:#f5f0e7;padding:32px 16px;font-family:Arial,sans-serif;color:#20271f"><div style="max-width:600px;margin:auto;background:#fffdf8;border:1px solid #ded5c6;padding:36px"><p style="font-size:12px;letter-spacing:.14em;color:#7b573f;font-weight:700">MARTYNA_PODROZE</p><h1 style="font-family:Georgia,serif;font-weight:500">Twój przewodnik jest gotowy</h1><p style="line-height:1.6;color:#556055">Dziękuję za zakup interaktywnego przewodnika po Lombardii.</p><p style="line-height:1.6;color:#556055">Kliknij poniżej, aby aktywować dostęp. Przewodnik możesz uruchomić na maksymalnie dwóch urządzeniach.</p><p style="margin:28px 0"><a href="${htmlEscape(link)}" style="display:inline-block;background:#556247;color:#fff;text-decoration:none;padding:16px 24px;font-weight:700">Otwórz przewodnik</a></p><p style="font-size:14px;line-height:1.6;color:#6f776e">Zachowaj tę wiadomość. Jeśli przycisk nie działa, wklej ten adres do przeglądarki:<br><a href="${htmlEscape(link)}" style="color:#556247;word-break:break-all">${htmlEscape(link)}</a></p><p style="font-size:14px;line-height:1.6;color:#6f776e">W razie problemów napisz na <a href="mailto:podroz.martyna@gmail.com" style="color:#556247">podroz.martyna@gmail.com</a>.</p><p style="margin-top:28px">Miłego wyjazdu!<br>Martyna_podroze</p></div></div>`,
-      text: `Dziękuję za zakup interaktywnego przewodnika po Lombardii.\n\nAktywuj dostęp: ${link}\n\nPrzewodnik możesz uruchomić na maksymalnie dwóch urządzeniach. Zachowaj tę wiadomość.\n\nPomoc: podroz.martyna@gmail.com\n\nMiłego wyjazdu!\nMartyna_podroze`
+      html: `<div style="background:#f5f0e7;padding:32px 16px;font-family:Arial,sans-serif;color:#20271f"><div style="max-width:600px;margin:auto;background:#fffdf8;border:1px solid #ded5c6;padding:36px"><p style="font-size:12px;letter-spacing:.14em;color:#7b573f;font-weight:700">MARTYNA_PODROZE</p><h1 style="font-family:Georgia,serif;font-weight:500">Twój przewodnik jest gotowy</h1><p style="line-height:1.6;color:#556055">Dziękuję za zakup interaktywnego przewodnika po Lombardii.</p><p style="line-height:1.6;color:#556055">Kliknij poniżej, aby aktywować dostęp. Przewodnik możesz uruchomić na maksymalnie trzech urządzeniach lub przeglądarkach.</p><p style="margin:28px 0"><a href="${htmlEscape(link)}" style="display:inline-block;background:#556247;color:#fff;text-decoration:none;padding:16px 24px;font-weight:700">Otwórz przewodnik</a></p><p style="font-size:14px;line-height:1.6;color:#6f776e">Zachowaj tę wiadomość. Jeśli przycisk nie działa, wklej ten adres do przeglądarki:<br><a href="${htmlEscape(link)}" style="color:#556247;word-break:break-all">${htmlEscape(link)}</a></p><p style="font-size:14px;line-height:1.6;color:#6f776e">W razie problemów napisz na <a href="mailto:podroz.martyna@gmail.com" style="color:#556247">podroz.martyna@gmail.com</a>.</p><p style="margin-top:28px">Miłego wyjazdu!<br>Martyna_podroze</p></div></div>`,
+      text: `Dziękuję za zakup interaktywnego przewodnika po Lombardii.\n\nAktywuj dostęp: ${link}\n\nPrzewodnik możesz uruchomić na maksymalnie trzech urządzeniach lub przeglądarkach. Zachowaj tę wiadomość.\n\nPomoc: podroz.martyna@gmail.com\n\nMiłego wyjazdu!\nMartyna_podroze`
     })
   });
   return response.ok;
@@ -192,14 +193,14 @@ export async function activateGuide(request: Request, env: Env): Promise<Respons
 
   const rawDeviceToken = bytesToBase64Url(crypto.getRandomValues(new Uint8Array(32)));
   const deviceHash = await sha256(rawDeviceToken);
-  for (const slot of [1, 2]) {
+  for (let slot = 1; slot <= MAX_GUIDE_DEVICES; slot += 1) {
     const result = await env.DB.prepare("INSERT OR IGNORE INTO commerce_devices (id, order_id, slot, token_hash) VALUES (?, ?, ?, ?)").bind(crypto.randomUUID(), orderId, slot, deviceHash).run();
     if (result.meta.changes > 0) {
       const headers = new Headers({ Location: `${url.origin}/como/`, "Cache-Control": "no-store", "Set-Cookie": deviceCookie(rawDeviceToken) });
       return new Response(null, { status: 302, headers });
     }
   }
-  return page("Limit urządzeń", "Dostęp jest już aktywny na dwóch urządzeniach", '<p>Otwórz przewodnik na wcześniej używanym telefonie lub komputerze.</p><p>Jeżeli zmieniłaś urządzenie, napisz na <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>. Pomożemy zresetować dostęp.</p>', 403);
+  return page("Limit urządzeń", "Dostęp jest już aktywny na trzech urządzeniach lub przeglądarkach", '<p>Otwórz przewodnik w jednej z wcześniej używanych przeglądarek.</p><p>Jeżeli zmieniłaś urządzenie, napisz na <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>. Pomożemy zresetować dostęp.</p>', 403);
 }
 
 export async function purchaseComplete(request: Request, env: Env): Promise<Response> {
