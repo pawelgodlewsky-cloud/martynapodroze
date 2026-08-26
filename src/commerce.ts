@@ -6,6 +6,19 @@ const GUIDE_CURRENCY = "pln";
 const DEVICE_COOKIE = "mp_lombardia_access";
 const TOKEN_TOLERANCE_SECONDS = 300;
 const GITHUB_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/como";
+const GUIDE_CSP = [
+  "default-src 'self'",
+  "script-src 'self' https://unpkg.com",
+  "style-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com",
+  "img-src 'self' data: https://unpkg.com https://*.basemaps.cartocdn.com",
+  "connect-src 'self'",
+  "worker-src 'self'",
+  "manifest-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'none'"
+].join("; ");
 
 interface StripeCheckoutSession {
   id?: string;
@@ -225,9 +238,14 @@ export async function protectedGuide(request: Request, env: Env): Promise<Respon
   const headers = new Headers(upstream.headers);
   headers.set("Content-Type", contentType(relative));
   headers.set("Cache-Control", relative.endsWith("index.html") ? "private, no-store" : "private, max-age=3600");
+  headers.set("Content-Security-Policy", GUIDE_CSP);
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Frame-Options", "DENY");
   headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
   headers.delete("Access-Control-Allow-Origin");
+  headers.delete("Cross-Origin-Resource-Policy");
   return new Response(request.method === "HEAD" ? null : upstream.body, { status: upstream.status, headers });
 }
 
