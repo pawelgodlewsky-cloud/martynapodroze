@@ -43,6 +43,7 @@ interface OrderRow {
   customer_email: string;
   status: string;
   email_sent_at: string | null;
+  access_disabled_at: string | null;
 }
 
 function htmlEscape(value: string): string {
@@ -139,6 +140,18 @@ async function sendAccessEmail(email: string, link: string, env: Env): Promise<b
   return response.ok;
 }
 
+export async function sendGuideAccessForOrder(orderId: string, env: Env, force = false): Promise<boolean> {
+  if (!env.COMMERCE_ACCESS_SECRET || !env.DB) return false;
+  const order = await env.DB.prepare(`SELECT id, customer_email, status, email_sent_at, access_disabled_at
+    FROM commerce_orders WHERE id = ?`).bind(orderId).first<OrderRow>();
+  if (!order || order.status !== "paid" || order.access_disabled_at || (!force && order.email_sent_at)) return false;
+  const sent = await sendAccessEmail(order.customer_email, await guideAccessLink(order.id, env.COMMERCE_ACCESS_SECRET), env);
+  if (sent) {
+    await env.DB.prepare("UPDATE commerce_orders SET email_sent_at=CURRENT_TIMESTAMP, updated_at=CURRENT_TIMESTAMP WHERE id = ?").bind(order.id).run();
+  }
+  return sent;
+}
+
 export async function stripeWebhook(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") return new Response("Method not allowed", { status: 405 });
   if (!env.STRIPE_WEBHOOK_SECRET || !env.COMMERCE_ACCESS_SECRET || !env.DB) return new Response("Commerce is not configured", { status: 503 });
@@ -162,13 +175,12 @@ export async function stripeWebhook(request: Request, env: Env): Promise<Respons
   await env.DB.prepare(`INSERT INTO commerce_orders (id, payment_intent_id, customer_email, amount_total, currency, payment_link_id)
     VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET payment_intent_id=excluded.payment_intent_id, customer_email=excluded.customer_email, updated_at=CURRENT_TIMESTAMP`)
     .bind(session.id, session.payment_intent ?? null, email, session.amount_total, session.currency.toLowerCase(), session.payment_link ?? null).run();
-  const order = await env.DB.prepare("SELECT id, customer_email, status, email_sent_at FROM commerce_orders WHERE id = ?").bind(session.id).first<OrderRow>();
+  const order = await env.DB.prepare("SELECT id, customer_email, status, email_sent_at, access_disabled_at FROM commerce_orders WHERE id = ?").bind(session.id).first<OrderRow>();
   if (!order || order.status !== "paid") return new Response("Order unavailable", { status: 409 });
 
   if (!order.email_sent_at) {
-    const sent = await sendAccessEmail(order.customer_email, await guideAccessLink(order.id, env.COMMERCE_ACCESS_SECRET), env);
+    const sent = await sendGuideAccessForOrder(order.id, env);
     if (!sent) return new Response("Email delivery failed", { status: 503 });
-    await env.DB.prepare("UPDATE commerce_orders SET email_sent_at=CURRENT_TIMESTAMP, updated_at=CURRENT_TIMESTAMP WHERE id = ?").bind(order.id).run();
   }
   await env.DB.prepare("INSERT OR IGNORE INTO commerce_webhook_events (id, event_type) VALUES (?, ?)").bind(event.id, event.type).run();
   return new Response("ok");
@@ -181,8 +193,8 @@ export async function activateGuide(request: Request, env: Env): Promise<Respons
   if (!token) return page("Dostęp do przewodnika", "Otwórz link z wiadomości", '<p>Po zakupie otrzymasz wiadomość z indywidualnym linkiem aktywacyjnym.</p><p>Nie widzisz wiadomości? Sprawdź folder spam lub napisz na <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>.</p>');
   const orderId = await validAccessToken(token, env.COMMERCE_ACCESS_SECRET);
   if (!orderId) return page("Nieprawidłowy link", "Ten link nie działa", '<p>Otwórz link bezpośrednio z wiadomości po zakupie albo skontaktuj się z nami.</p><p><a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a></p>', 403);
-  const order = await env.DB.prepare("SELECT id, customer_email, status, email_sent_at FROM commerce_orders WHERE id = ?").bind(orderId).first<OrderRow>();
-  if (!order || order.status !== "paid") return page("Brak dostępu", "Nie znaleźliśmy aktywnego zakupu", '<p>Jeśli płatność została pobrana, napisz na <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>.</p>', 403);
+  const order = await env.DB.prepare("SELECT id, customer_email, status, email_sent_at, access_disabled_at FROM commerce_orders WHERE id = ?").bind(orderId).first<OrderRow>();
+  if (!order || order.status !== "paid" || order.access_disabled_at) return page("Brak dostępu", "Ten dostęp nie jest aktywny", '<p>Jeśli potrzebujesz pomocy, napisz na <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>.</p>', 403);
 
   const currentDevice = cookieValue(request, DEVICE_COOKIE);
   if (currentDevice) {
@@ -194,7 +206,10 @@ export async function activateGuide(request: Request, env: Env): Promise<Respons
   const rawDeviceToken = bytesToBase64Url(crypto.getRandomValues(new Uint8Array(32)));
   const deviceHash = await sha256(rawDeviceToken);
   for (let slot = 1; slot <= MAX_GUIDE_DEVICES; slot += 1) {
-    const result = await env.DB.prepare("INSERT OR IGNORE INTO commerce_devices (id, order_id, slot, token_hash) VALUES (?, ?, ?, ?)").bind(crypto.randomUUID(), orderId, slot, deviceHash).run();
+    const result = await env.DB.prepare(`INSERT INTO commerce_devices (id, order_id, slot, token_hash) VALUES (?, ?, ?, ?)
+      ON CONFLICT(order_id, slot) DO UPDATE SET id=excluded.id, token_hash=excluded.token_hash,
+      created_at=CURRENT_TIMESTAMP, last_used_at=CURRENT_TIMESTAMP, revoked_at=NULL
+      WHERE commerce_devices.revoked_at IS NOT NULL`).bind(crypto.randomUUID(), orderId, slot, deviceHash).run();
     if (result.meta.changes > 0) {
       const headers = new Headers({ Location: `${url.origin}/como/`, "Cache-Control": "no-store", "Set-Cookie": deviceCookie(rawDeviceToken) });
       return new Response(null, { status: 302, headers });
@@ -206,7 +221,7 @@ export async function activateGuide(request: Request, env: Env): Promise<Respons
 export async function purchaseComplete(request: Request, env: Env): Promise<Response> {
   const sessionId = new URL(request.url).searchParams.get("session_id") ?? "";
   const order = /^cs_(?:live|test)_[A-Za-z0-9]+$/.test(sessionId) && env.DB
-    ? await env.DB.prepare("SELECT id FROM commerce_orders WHERE id = ? AND status = 'paid'").bind(sessionId).first()
+    ? await env.DB.prepare("SELECT id FROM commerce_orders WHERE id = ? AND status = 'paid' AND access_disabled_at IS NULL").bind(sessionId).first()
     : null;
   const detail = order
     ? "<p>Płatność została potwierdzona. Link aktywacyjny wysłaliśmy na adres podany przy płatności.</p>"
@@ -226,7 +241,7 @@ export async function protectedGuide(request: Request, env: Env): Promise<Respon
   if (!deviceToken || !env.DB) return Response.redirect(`${new URL(request.url).origin}/dostep/lombardia/`, 302);
   const deviceHash = await sha256(deviceToken);
   const device = await env.DB.prepare(`SELECT d.id FROM commerce_devices d JOIN commerce_orders o ON o.id=d.order_id
-    WHERE d.token_hash=? AND d.revoked_at IS NULL AND o.status='paid'`).bind(deviceHash).first<{ id: string }>();
+    WHERE d.token_hash=? AND d.revoked_at IS NULL AND o.status='paid' AND o.access_disabled_at IS NULL`).bind(deviceHash).first<{ id: string }>();
   if (!device) return Response.redirect(`${new URL(request.url).origin}/dostep/lombardia/`, 302);
   await env.DB.prepare("UPDATE commerce_devices SET last_used_at=CURRENT_TIMESTAMP WHERE id = ?").bind(device.id).run();
 

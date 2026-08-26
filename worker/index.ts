@@ -31,6 +31,15 @@ import { renderPublicTrip } from "../src/public-page";
 import { parseTripInput, validateHttpUrl, ValidationError } from "../src/trips";
 import type { Env } from "../src/types";
 import { activateGuide, protectedGuide, purchaseComplete, stripeWebhook } from "../src/commerce";
+import {
+  listGuideAccessCustomers,
+  resendGuideAccess,
+  resetGuideDevices,
+  revokeGuideDevice,
+  setGuideAccessEnabled,
+  validCommerceDeviceId,
+  validCommerceOrderId
+} from "../src/commerce-admin";
 
 const ADMIN_CSP = "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl data:; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
 const PUBLIC_CSP = "default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self'; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
@@ -102,6 +111,41 @@ async function adminApi(request: Request, env: Env, pathname: string): Promise<R
   if (!databaseReady(env)) return errorJson("Brak powiązania D1 o nazwie DB.", 503);
   if (String(env.ALLOW_LOCAL_ADMIN) !== "1" && !validSameOrigin(request)) {
     return errorJson("Żądanie ma nieprawidłowe źródło.", 403);
+  }
+
+  if (pathname === "/api/admin/guide-access") {
+    if (request.method !== "GET") return errorJson("Nieobsługiwana metoda.", 405);
+    return json({ customers: await listGuideAccessCustomers(env) });
+  }
+
+  const guideDeviceMatch = pathname.match(/^\/api\/admin\/guide-access\/([^/]+)\/devices\/([^/]+)\/revoke$/);
+  if (guideDeviceMatch) {
+    if (request.method !== "POST") return errorJson("Nieobsługiwana metoda.", 405);
+    const orderId = guideDeviceMatch[1] ?? "";
+    const deviceId = guideDeviceMatch[2] ?? "";
+    if (!validCommerceOrderId(orderId) || !validCommerceDeviceId(deviceId)) return errorJson("Nieprawidłowy identyfikator.", 400);
+    return await revokeGuideDevice(env, orderId, deviceId)
+      ? json({ ok: true })
+      : errorJson("Urządzenie nie jest już aktywne.", 404);
+  }
+
+  const guideActionMatch = pathname.match(/^\/api\/admin\/guide-access\/([^/]+)\/(enable|disable|reset-devices|resend)$/);
+  if (guideActionMatch) {
+    if (request.method !== "POST") return errorJson("Nieobsługiwana metoda.", 405);
+    const orderId = guideActionMatch[1] ?? "";
+    const action = guideActionMatch[2] ?? "";
+    if (!validCommerceOrderId(orderId)) return errorJson("Nieprawidłowy identyfikator zamówienia.", 400);
+    if (action === "enable" || action === "disable") {
+      return await setGuideAccessEnabled(env, orderId, action === "enable")
+        ? json({ ok: true })
+        : errorJson("Nie znaleziono aktywnego zakupu.", 404);
+    }
+    if (action === "reset-devices") {
+      return await resetGuideDevices(env, orderId) ? json({ ok: true }) : errorJson("Nie znaleziono zakupu.", 404);
+    }
+    return await resendGuideAccess(env, orderId)
+      ? json({ ok: true })
+      : errorJson("Nie udało się wysłać wiadomości. Sprawdź, czy dostęp jest aktywny.", 409);
   }
 
   if (pathname === "/api/admin/trips") {
@@ -234,7 +278,8 @@ export default {
         return purchaseComplete(request, env);
       }
       if (url.pathname === "/como" || url.pathname.startsWith("/como/")) return protectedGuide(request, env);
-      if (url.pathname === "/api/admin/trips" || url.pathname.startsWith("/api/admin/trips/")) {
+      if (url.pathname === "/api/admin/trips" || url.pathname.startsWith("/api/admin/trips/") ||
+          url.pathname === "/api/admin/guide-access" || url.pathname.startsWith("/api/admin/guide-access/")) {
         if (!(await authorizeAdmin(request, env))) return errorJson("Sesja wygasła. Zaloguj się ponownie.", 401);
         return adminApi(request, env, url.pathname.replace(/\/$/, ""));
       }

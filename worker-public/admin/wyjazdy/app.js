@@ -3,12 +3,18 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 const listView = $("#list-view");
 const formView = $("#form-view");
+const accessView = $("#access-view");
 const form = $("#trip-form");
 const list = $("#trip-list");
 const extraLinks = $("#extra-links");
 const listNotice = $("#list-notice");
 const formNotice = $("#form-notice");
+const accessNotice = $("#access-notice");
+const accessList = $("#access-list");
+const accessSummary = $("#access-summary");
 let trips = [];
+let accessCustomers = [];
+let accessLoaded = false;
 let slugTouched = false;
 
 const statusLabels = { active: "Aktywna", draft: "Szkic", disabled: "Wyłączona", expired: "Wygasła" };
@@ -64,6 +70,15 @@ function updateAutomaticSlug() {
 
 function formatPrice(value, currency = "PLN") {
   return new Intl.NumberFormat("pl-PL", { style: "currency", currency, maximumFractionDigits: 2 }).format(Number(value));
+}
+
+function formatCommercePrice(value, currency = "PLN") {
+  return formatPrice(Number(value) / 100, currency.toUpperCase());
+}
+
+function formatDateTime(value) {
+  if (!value) return "brak";
+  return new Intl.DateTimeFormat("pl-PL", { dateStyle: "medium", timeStyle: "short" }).format(new Date(`${value.replace(" ", "T")}Z`));
 }
 
 function formatDateRange(start, end, year = true) {
@@ -161,6 +176,185 @@ async function loadTrips() {
   } catch (error) {
     list.replaceChildren();
     showNotice(listNotice, error.message);
+  }
+}
+
+function activeDevices(customer) {
+  return customer.devices.filter((device) => !device.revoked_at);
+}
+
+function summaryItem(label, value, note) {
+  const item = document.createElement("div");
+  item.className = "access-summary__item";
+  const strong = document.createElement("strong");
+  strong.textContent = String(value);
+  const span = document.createElement("span");
+  span.textContent = label;
+  const small = document.createElement("small");
+  small.textContent = note;
+  item.append(strong, span, small);
+  return item;
+}
+
+function renderAccessSummary() {
+  const enabled = accessCustomers.filter((customer) => !customer.access_disabled_at).length;
+  const devices = accessCustomers.reduce((total, customer) => total + activeDevices(customer).length, 0);
+  const disabled = accessCustomers.length - enabled;
+  accessSummary.replaceChildren(
+    summaryItem("klientów", accessCustomers.length, "wszystkie zakupy"),
+    summaryItem("aktywnych dostępów", enabled, "mogą otworzyć przewodnik"),
+    summaryItem("urządzeń", devices, "aktywne przeglądarki"),
+    summaryItem("wyłączonych", disabled, "dostęp zablokowany")
+  );
+}
+
+function accessButton(label, action, orderId, danger = false, deviceId = "") {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = label;
+  button.dataset.accessAction = action;
+  button.dataset.orderId = orderId;
+  if (deviceId) button.dataset.deviceId = deviceId;
+  if (danger) button.className = "danger";
+  return button;
+}
+
+function deviceRow(device, customer) {
+  const row = document.createElement("li");
+  const copy = document.createElement("div");
+  const strong = document.createElement("strong");
+  strong.textContent = `Urządzenie / przeglądarka ${device.slot}`;
+  const small = document.createElement("small");
+  small.textContent = `Aktywacja: ${formatDateTime(device.created_at)} · ostatnio: ${formatDateTime(device.last_used_at)}`;
+  copy.append(strong, small);
+  row.append(copy, accessButton("Odłącz", "revoke", customer.id, true, device.id));
+  return row;
+}
+
+function renderAccessCustomers() {
+  accessList.replaceChildren();
+  const query = $("#access-search").value.trim().toLowerCase();
+  const customers = accessCustomers.filter((customer) => customer.customer_email.toLowerCase().includes(query));
+  if (!customers.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = query ? "Nie znaleziono adresu pasującego do wyszukiwania." : "Nie ma jeszcze żadnych zakupów przewodnika.";
+    accessList.append(empty);
+    return;
+  }
+
+  customers.forEach((customer) => {
+    const devices = activeDevices(customer);
+    const disabled = Boolean(customer.access_disabled_at);
+    const card = document.createElement("article");
+    card.className = `access-card${disabled ? " is-disabled" : ""}`;
+
+    const header = document.createElement("div");
+    header.className = "access-card__header";
+    const identity = document.createElement("div");
+    const email = document.createElement("h2");
+    email.textContent = customer.customer_email;
+    const details = document.createElement("p");
+    details.textContent = `Zakup: ${formatDateTime(customer.created_at)} · ${formatCommercePrice(customer.amount_total, customer.currency)} · e-mail: ${customer.email_sent_at ? "wysłany" : "niewysłany"}`;
+    identity.append(email, details);
+    const badge = document.createElement("span");
+    badge.className = `access-status ${disabled ? "access-status--disabled" : "access-status--active"}`;
+    badge.textContent = disabled ? "Dostęp wyłączony" : "Dostęp aktywny";
+    header.append(identity, badge);
+
+    const meter = document.createElement("div");
+    meter.className = "device-meter";
+    const meterCopy = document.createElement("div");
+    const meterStrong = document.createElement("strong");
+    meterStrong.textContent = `${devices.length}/3`;
+    const meterLabel = document.createElement("span");
+    meterLabel.textContent = "aktywne urządzenia lub przeglądarki";
+    meterCopy.append(meterStrong, meterLabel);
+    const slots = document.createElement("div");
+    slots.className = "device-slots";
+    for (let slot = 1; slot <= 3; slot += 1) {
+      const marker = document.createElement("span");
+      marker.textContent = String(slot);
+      marker.classList.toggle("is-active", devices.some((device) => device.slot === slot));
+      marker.setAttribute("aria-label", `Slot ${slot}: ${marker.classList.contains("is-active") ? "aktywny" : "wolny"}`);
+      slots.append(marker);
+    }
+    meter.append(meterCopy, slots);
+
+    const deviceList = document.createElement("ul");
+    deviceList.className = "device-list";
+    if (devices.length) devices.forEach((device) => deviceList.append(deviceRow(device, customer)));
+    else deviceList.append(Object.assign(document.createElement("li"), { className: "device-list__empty", textContent: "Brak aktywnych urządzeń. Link z e-maila aktywuje pierwszy wolny slot." }));
+
+    const actions = document.createElement("div");
+    actions.className = "access-actions";
+    actions.append(
+      accessButton("Wyślij link ponownie", "resend", customer.id),
+      accessButton("Resetuj urządzenia", "reset", customer.id),
+      accessButton(disabled ? "Włącz dostęp" : "Wyłącz dostęp", disabled ? "enable" : "disable", customer.id, !disabled)
+    );
+    card.append(header, meter, deviceList, actions);
+    accessList.append(card);
+  });
+}
+
+async function loadAccessCustomers() {
+  accessList.replaceChildren(Object.assign(document.createElement("p"), { className: "loading", textContent: "Ładowanie dostępów…" }));
+  accessNotice.hidden = true;
+  try {
+    const result = await api("/api/admin/guide-access");
+    accessCustomers = result.customers;
+    accessLoaded = true;
+    renderAccessSummary();
+    renderAccessCustomers();
+  } catch (error) {
+    accessList.replaceChildren();
+    showNotice(accessNotice, error.message);
+  }
+}
+
+function showPanel(panel) {
+  const access = panel === "access";
+  formView.hidden = true;
+  listView.hidden = access;
+  accessView.hidden = !access;
+  $$("[data-panel]").forEach((button) => {
+    const active = button.dataset.panel === panel;
+    button.classList.toggle("is-active", active);
+    if (active) button.setAttribute("aria-current", "page"); else button.removeAttribute("aria-current");
+  });
+  if (access && !accessLoaded) loadAccessCustomers();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function runAccessAction(button) {
+  const action = button.dataset.accessAction;
+  const orderId = button.dataset.orderId;
+  const deviceId = button.dataset.deviceId;
+  const confirmations = {
+    revoke: "Odłączyć tę przeglądarkę? Link można później aktywować ponownie.",
+    reset: "Odłączyć wszystkie urządzenia tego klienta? Indywidualny link pozwoli aktywować je ponownie.",
+    disable: "Wyłączyć dostęp do przewodnika dla tego adresu e-mail?",
+    enable: "Ponownie włączyć dostęp do przewodnika?",
+    resend: "Wysłać ponownie indywidualny link na adres klienta?"
+  };
+  if (!confirm(confirmations[action])) return;
+  const paths = {
+    revoke: `/api/admin/guide-access/${orderId}/devices/${deviceId}/revoke`,
+    reset: `/api/admin/guide-access/${orderId}/reset-devices`,
+    disable: `/api/admin/guide-access/${orderId}/disable`,
+    enable: `/api/admin/guide-access/${orderId}/enable`,
+    resend: `/api/admin/guide-access/${orderId}/resend`
+  };
+  button.disabled = true;
+  try {
+    await api(paths[action], { method: "POST" });
+    await loadAccessCustomers();
+    const messages = { revoke: "Urządzenie zostało odłączone.", reset: "Wszystkie urządzenia zostały odłączone.", disable: "Dostęp został wyłączony.", enable: "Dostęp został włączony.", resend: "Indywidualny link został wysłany ponownie." };
+    showNotice(accessNotice, messages[action], true);
+  } catch (error) {
+    showNotice(accessNotice, error.message);
+    button.disabled = false;
   }
 }
 
@@ -374,6 +568,14 @@ $("#logout").addEventListener("click", async () => {
   } finally {
     location.assign("/admin/wyjazdy/login/");
   }
+});
+
+$$('[data-panel]').forEach((button) => button.addEventListener("click", () => showPanel(button.dataset.panel)));
+$("#reload-access").addEventListener("click", loadAccessCustomers);
+$("#access-search").addEventListener("input", renderAccessCustomers);
+accessList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-access-action]");
+  if (button) runAccessAction(button);
 });
 
 loadTrips();

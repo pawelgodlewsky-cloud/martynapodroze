@@ -9,16 +9,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./admin.css?v=1">
-  <script src="./app.js?v=1" type="module"></script>
+  <link rel="stylesheet" href="./admin.css?v=3">
+  <script src="./app.js?v=3" type="module"></script>
 </head>
 <body>
   <header class="topbar">
     <a class="brand-name" href="/" aria-label="Martyna Podróże — strona główna"><strong>Martyna</strong> Podróże</a>
-    <div class="topbar__actions"><span>Panel propozycji</span><button id="logout" type="button">Wyloguj</button></div>
+    <div class="topbar__actions"><span>Panel administracyjny</span><button id="logout" type="button">Wyloguj</button></div>
   </header>
 
   <main class="shell">
+    <nav class="panel-tabs" aria-label="Sekcje panelu">
+      <button class="is-active" type="button" data-panel="trips" aria-current="page">Propozycje wyjazdów</button>
+      <button type="button" data-panel="access">Dostępy do przewodnika</button>
+    </nav>
+
     <section id="list-view">
       <div class="page-heading">
         <div><p class="handwritten">Wyjazdy szyte na miarę</p><h1>Propozycje wyjazdów</h1><p>Jeden estetyczny link zamiast długiej wiadomości z rezerwacjami.</p></div>
@@ -26,6 +31,20 @@
       </div>
       <div class="notice" id="list-notice" hidden></div>
       <div class="trip-list" id="trip-list" aria-live="polite"><p class="loading">Ładowanie propozycji…</p></div>
+    </section>
+
+    <section id="access-view" hidden>
+      <div class="page-heading access-heading">
+        <div><p class="handwritten">Przewodnik po Lombardii</p><h1>Dostępy klientów</h1><p>Sprawdź aktywacje, odłącz urządzenie albo ponownie wyślij klientowi indywidualny link.</p></div>
+        <button class="button button--secondary" id="reload-access" type="button">Odśwież dane</button>
+      </div>
+      <div class="access-summary" id="access-summary" aria-label="Podsumowanie dostępów"></div>
+      <div class="access-toolbar">
+        <label for="access-search">Szukaj po adresie e-mail</label>
+        <input id="access-search" type="search" placeholder="np. klientka@gmail.com" autocomplete="off">
+      </div>
+      <div class="notice" id="access-notice" hidden></div>
+      <div class="access-list" id="access-list" aria-live="polite"><p class="loading">Ładowanie dostępów…</p></div>
     </section>
 
     <section id="form-view" hidden>
