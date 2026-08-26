@@ -23,4 +23,12 @@ describe("commerce security", () => {
     await expect(commerceInternals.validAccessToken(`${token}x`, "secret")).resolves.toBeNull();
     await expect(commerceInternals.validAccessToken(token, "different")).resolves.toBeNull();
   });
+
+  it("places the individual activation link directly under /como/", async () => {
+    const link = await commerceInternals.guideAccessLink("cs_live_example", "secret");
+    const url = new URL(link);
+    expect(url.origin).toBe("https://martynapodroze.pl");
+    expect(url.pathname).toBe("/como/");
+    await expect(commerceInternals.validAccessToken(url.searchParams.get("token") ?? "", "secret")).resolves.toBe("cs_live_example");
+  });
 });

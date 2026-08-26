@@ -84,6 +84,11 @@ async function accessToken(sessionId: string, secret: string): Promise<string> {
   return `${sessionId}.${bytesToBase64Url(await hmac(secret, `activate:${sessionId}`))}`;
 }
 
+async function guideAccessLink(sessionId: string, secret: string): Promise<string> {
+  const token = await accessToken(sessionId, secret);
+  return `https://martynapodroze.pl/como/?token=${encodeURIComponent(token)}`;
+}
+
 async function validAccessToken(token: string, secret: string): Promise<string | null> {
   const separator = token.lastIndexOf(".");
   if (separator < 1) return null;
@@ -147,8 +152,7 @@ export async function stripeWebhook(request: Request, env: Env): Promise<Respons
   if (!order || order.status !== "paid") return new Response("Order unavailable", { status: 409 });
 
   if (!order.email_sent_at) {
-    const token = await accessToken(order.id, env.COMMERCE_ACCESS_SECRET);
-    const sent = await sendAccessEmail(order.customer_email, `https://martynapodroze.pl/dostep/lombardia/?token=${encodeURIComponent(token)}`, env);
+    const sent = await sendAccessEmail(order.customer_email, await guideAccessLink(order.id, env.COMMERCE_ACCESS_SECRET), env);
     if (!sent) return new Response("Email delivery failed", { status: 503 });
     await env.DB.prepare("UPDATE commerce_orders SET email_sent_at=CURRENT_TIMESTAMP, updated_at=CURRENT_TIMESTAMP WHERE id = ?").bind(order.id).run();
   }
@@ -203,6 +207,7 @@ function contentType(pathname: string): string {
 
 export async function protectedGuide(request: Request, env: Env): Promise<Response> {
   if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+  if (new URL(request.url).searchParams.has("token")) return activateGuide(request, env);
   const deviceToken = cookieValue(request, DEVICE_COOKIE);
   if (!deviceToken || !env.DB) return Response.redirect(`${new URL(request.url).origin}/dostep/lombardia/`, 302);
   const deviceHash = await sha256(deviceToken);
@@ -226,4 +231,4 @@ export async function protectedGuide(request: Request, env: Env): Promise<Respon
   return new Response(request.method === "HEAD" ? null : upstream.body, { status: upstream.status, headers });
 }
 
-export const commerceInternals = { verifyStripeSignature, accessToken, validAccessToken, sha256 };
+export const commerceInternals = { verifyStripeSignature, accessToken, guideAccessLink, validAccessToken, sha256 };
