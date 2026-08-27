@@ -30,7 +30,7 @@ import {
 import { renderPublicTrip } from "../src/public-page";
 import { parseTripInput, validateHttpUrl, ValidationError } from "../src/trips";
 import type { Env } from "../src/types";
-import { activateGuide, protectedGuide, purchaseComplete, stripeWebhook } from "../src/commerce";
+import { activateGuide, protectedGuide, publicGuidePreview, purchaseComplete, stripeWebhook } from "../src/commerce";
 import {
   listGuideAccessCustomers,
   resendGuideAccess,
@@ -276,6 +276,9 @@ export default {
       }
       if (url.pathname === "/zakup/lombardia" || url.pathname.startsWith("/zakup/lombardia/")) {
         return purchaseComplete(request, env);
+      }
+      if (url.pathname === "/podglad/como" || url.pathname.startsWith("/podglad/como/")) {
+        return publicGuidePreview(request, env);
       }
       if (url.pathname === "/como" || url.pathname.startsWith("/como/")) return protectedGuide(request, env);
       if (url.pathname === "/api/admin/trips" || url.pathname.startsWith("/api/admin/trips/") ||

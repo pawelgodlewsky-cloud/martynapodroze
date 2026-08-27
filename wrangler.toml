@@ -12,6 +12,7 @@ routes = [
   { pattern = "martynapodroze.pl/api/stripe/*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/dostep/lombardia*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/zakup/lombardia*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/podglad/como*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/como*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/w/*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/go/*", zone_name = "martynapodroze.pl" }

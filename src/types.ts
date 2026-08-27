@@ -27,6 +27,7 @@ export interface Env {
   STRIPE_WEBHOOK_SECRET?: string;
   STRIPE_PAYMENT_LINK_ID?: string;
   COMMERCE_ACCESS_SECRET?: string;
+  GUIDE_PREVIEW_TOKEN?: string;
   RESEND_API_KEY?: string;
   TRANSACTIONAL_FROM_EMAIL?: string;
 }

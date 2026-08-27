@@ -7,6 +7,7 @@ const MAX_GUIDE_DEVICES = 3;
 const DEVICE_COOKIE = "mp_lombardia_access";
 const TOKEN_TOLERANCE_SECONDS = 300;
 const GITHUB_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/como";
+const GUIDE_PREVIEW_ROOT = "/podglad/como/";
 const GUIDE_CSP = [
   "default-src 'self'",
   "script-src 'self' https://unpkg.com",
@@ -232,6 +233,36 @@ export async function purchaseComplete(request: Request, env: Env): Promise<Resp
 function contentType(pathname: string): string {
   const extension = pathname.split(".").pop()?.toLowerCase();
   return ({ html: "text/html; charset=utf-8", js: "text/javascript; charset=utf-8", css: "text/css; charset=utf-8", json: "application/json", webmanifest: "application/manifest+json", webp: "image/webp", jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", svg: "image/svg+xml", pdf: "application/pdf" } as Record<string, string>)[extension ?? ""] ?? "application/octet-stream";
+}
+
+export async function publicGuidePreview(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+  const url = new URL(request.url);
+  const path = url.pathname.slice(GUIDE_PREVIEW_ROOT.length);
+  const separator = path.indexOf("/");
+  const token = separator >= 0 ? path.slice(0, separator) : path;
+  if (!env.GUIDE_PREVIEW_TOKEN || !/^[A-Za-z0-9_-]{24,128}$/.test(token) || !safeEqual(token, env.GUIDE_PREVIEW_TOKEN)) {
+    return new Response("Not found", { status: 404, headers: { "X-Robots-Tag": "noindex, nofollow, noarchive" } });
+  }
+  if (separator < 0) return Response.redirect(`${url.origin}${GUIDE_PREVIEW_ROOT}${token}/`, 308);
+
+  let relative = path.slice(separator);
+  if (!relative || relative.endsWith("/")) relative += "index.html";
+  if (relative.includes("..")) return new Response("Not found", { status: 404 });
+  const upstream = await fetch(`${GITHUB_GUIDE_ROOT}${relative}`, { headers: { "User-Agent": "martynapodroze-preview-worker" } });
+  if (!upstream.ok) return new Response("Nie znaleziono pliku.", { status: upstream.status === 404 ? 404 : 502 });
+  const headers = new Headers(upstream.headers);
+  headers.set("Content-Type", contentType(relative));
+  headers.set("Cache-Control", relative.endsWith("index.html") ? "no-store" : "public, max-age=3600");
+  headers.set("Content-Security-Policy", GUIDE_CSP);
+  headers.set("Referrer-Policy", "no-referrer");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  headers.delete("Access-Control-Allow-Origin");
+  headers.delete("Cross-Origin-Resource-Policy");
+  return new Response(request.method === "HEAD" ? null : upstream.body, { status: upstream.status, headers });
 }
 
 export async function protectedGuide(request: Request, env: Env): Promise<Response> {

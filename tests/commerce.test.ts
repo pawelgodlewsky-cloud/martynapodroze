@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { commerceInternals } from "../src/commerce";
+import { commerceInternals, publicGuidePreview } from "../src/commerce";
 
 describe("commerce security", () => {
   beforeEach(() => vi.restoreAllMocks());
@@ -30,5 +30,19 @@ describe("commerce security", () => {
     expect(url.origin).toBe("https://martynapodroze.pl");
     expect(url.pathname).toBe("/como/");
     await expect(commerceInternals.validAccessToken(url.searchParams.get("token") ?? "", "secret")).resolves.toBe("cs_live_example");
+  });
+
+  it("serves an unlisted preview only when the path token matches", async () => {
+    const token = "Fn4Cd3FXCfkEWI-8K7qZRR20ZXuTHNkv";
+    const fetchMock = vi.fn().mockResolvedValue(new Response("body{}", { status: 200, headers: { "Content-Type": "text/plain" } }));
+    vi.stubGlobal("fetch", fetchMock);
+    const response = await publicGuidePreview(new Request(`https://martynapodroze.pl/podglad/como/${token}/styles.css`), { GUIDE_PREVIEW_TOKEN: token } as never);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("text/css; charset=utf-8");
+    expect(response.headers.get("X-Robots-Tag")).toBe("noindex, nofollow, noarchive");
+    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/como/styles.css", expect.any(Object));
+
+    const denied = await publicGuidePreview(new Request("https://martynapodroze.pl/podglad/como/not-a-real-token/"), { GUIDE_PREVIEW_TOKEN: token } as never);
+    expect(denied.status).toBe(404);
   });
 });
