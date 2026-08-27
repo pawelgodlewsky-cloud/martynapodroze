@@ -1,6 +1,46 @@
 const DATA_FILES = ["destinations", "points", "routes", "restaurants", "budget", "tips", "transport", "glossary", "food", "sources", "emergency", "attractions"];
 const storageKey = "lombardia-ebook-v1";
 
+const POINT_IMAGE_OVERRIDES = Object.freeze({
+  "bg-porta-nuova": "assets/places/porta-nuova-generated.webp",
+  "bg-funicular": "assets/places/funicolare-citta-alta-generated.webp",
+  "bg-mercato": "assets/places/piazza-mercato-scarpe-generated.webp",
+  "bg-piazza-vecchia": "assets/places/piazza-vecchia-generated.webp",
+  "bg-basilica": "assets/places/santa-maria-colleoni-generated.webp",
+  "bg-campanone": "assets/places/campanone-generated.webp",
+  "bg-colle-aperto": "assets/places/colle-aperto-food-generated.webp",
+  "bg-san-vigilio": "assets/places/castello-san-vigilio-generated.webp",
+  "bg-porta-san-giacomo": "assets/places/porta-san-giacomo-generated.webp",
+  "co-bergamo": "assets/places/bergamo-rail-replacement-generated.webp",
+  "co-ponte-san-pietro": "assets/places/ponte-san-pietro-transfer-generated.webp",
+  "co-lecco": "assets/places/lecco-station-transfer-generated.webp",
+  "co-varenna-station": "assets/places/varenna-esino-generated.webp",
+  "co-lovers": "assets/places/passeggiata-innamorati-generated.webp",
+  "co-san-giorgio": "assets/places/piazza-san-giorgio-varenna-generated.webp",
+  "co-villa-monastero": "assets/places/villa-monastero-generated.webp",
+  "co-ferry-varenna": "assets/places/varenna-imbarcadero-generated.webp",
+  "co-bellagio": "assets/places/bellagio-ferry-generated.webp",
+  "co-salita": "assets/places/salita-serbelloni-generated.webp",
+  "co-basilica": "assets/places/basilica-san-giacomo-bellagio-generated.webp",
+  "co-spartivento": "assets/places/punta-spartivento-generated.webp",
+  "co-pescallo": "assets/places/pescallo-generated.webp",
+  "co-return": "assets/places/return-ferry-varenna-generated.webp",
+  "mi-centrale": "assets/places/milano-centrale-generated.webp",
+  "mi-duomo": "assets/places/duomo-milano-generated.webp",
+  "mi-san-satiro": "assets/places/san-satiro-generated.webp",
+  "mi-galleria": "assets/places/galleria-vittorio-generated.webp",
+  "mi-scala": "assets/places/teatro-scala-generated.webp",
+  "mi-brera": "assets/places/brera-generated.webp",
+  "mi-castello": "assets/places/castello-sforzesco-generated.webp",
+  "mi-sempione": "assets/places/parco-sempione-generated.webp",
+  "mi-san-maurizio": "assets/places/san-maurizio-generated.webp",
+  "mi-grazie": "assets/places/santa-maria-grazie-generated.webp",
+  "mi-colonne": "assets/places/colonne-san-lorenzo-generated.webp",
+  "mi-navigli": "assets/places/navigli-generated.webp"
+});
+
+const pointImage = point => POINT_IMAGE_OVERRIDES[point.id] || point.image;
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
@@ -508,7 +548,7 @@ function pointCard(point, disabledMode = null) {
   const recommendation = recommendationFor(point);
   const isCurrent = state.currentPoint[point.day] === point.id;
   const shortened = state.delayPlans[point.day]?.shortened?.[point.id];
-  const cardImages = point.images?.length ? point.images : [{ src: point.image || day.hero, alt: point.name, position: point.position || "center" }];
+  const cardImages = point.images?.length ? point.images : [{ src: pointImage(point) || day.hero, alt: point.name, position: point.position || "center" }];
   const cardImageMarkup = cardImages.length === 1
     ? `<img class="point-image" src="${cardImages[0].src}" style="object-position:${cardImages[0].position || "center"}" alt="${escapeHtml(cardImages[0].alt || point.name)}" loading="lazy">`
     : `<div class="point-image-stack" data-count="${Math.min(cardImages.length, 2)}">${cardImages.slice(0, 2).map(image => `<img class="point-image" src="${image.src}" style="object-position:${image.position || "center"}" alt="${escapeHtml(image.alt || point.name)}" loading="lazy">`).join("")}</div>`;
@@ -554,7 +594,7 @@ function renderPlace(point) {
   const completed = majorPoints.filter(item => state.done.includes(item.id)).length;
   const percent = majorPoints.length ? Math.round(completed / majorPoints.length * 100) : 0;
   const done = state.done.includes(point.id);
-  const images = detail.images?.length ? detail.images : [{ src: point.image || day.hero, alt: point.name, position: point.position || "center" }];
+  const images = detail.images?.length ? detail.images : [{ src: pointImage(point) || day.hero, alt: point.name, position: point.position || "center" }];
   const hero = images[0];
   const quickInfo = [
     ["Ile czasu", detail.duration || point.visit],
@@ -1190,7 +1230,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=29", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=30", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }

@@ -15,7 +15,7 @@
       "Widok na Campanone"
     ],
     "images": [
-      { "src": "assets/bergamo.webp", "alt": "Bergamo i zabudowa Città Alta", "position": "33% 32%" }
+      { "src": "assets/places/piazza-vecchia-generated.webp", "alt": "Piazza Vecchia z fontanną Contarini i Campanone", "position": "50% 46%" }
     ]
   },
   "co-villa-monastero": {
@@ -35,7 +35,7 @@
       "Widoki na jezioro z ogrodu"
     ],
     "images": [
-      { "src": "assets/como.webp", "alt": "Widok na jezioro Como", "position": "47% 48%" }
+      { "src": "assets/places/villa-monastero-generated.webp", "alt": "Ogród i tarasy Villa Monastero nad jeziorem Como", "position": "50% 50%" }
     ]
   },
   "mi-duomo": {
@@ -55,7 +55,7 @@
       "Dach i detale iglic przy dobrej pogodzie"
     ],
     "images": [
-      { "src": "assets/milano.webp", "alt": "Duomo di Milano i centrum Mediolanu", "position": "70% 35%" }
+      { "src": "assets/places/duomo-milano-generated.webp", "alt": "Fasada Duomo di Milano od strony placu", "position": "50% 45%" }
     ]
   },
   "mi-galleria": {
@@ -75,7 +75,7 @@
       "Perspektywa nawy w stronę Piazza della Scala"
     ],
     "images": [
-      { "src": "assets/milano.webp", "alt": "Centrum Mediolanu w okolicy Duomo i Gallerii", "position": "40% 35%" }
+      { "src": "assets/places/galleria-vittorio-generated.webp", "alt": "Wnętrze Galleria Vittorio Emanuele II pod szklaną kopułą", "position": "50% 45%" }
     ]
   }
 }
