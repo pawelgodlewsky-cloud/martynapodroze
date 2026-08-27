@@ -112,6 +112,7 @@ function enrichPoint(point) {
     minimumMinutes,
     energyWeight,
     estimatedCost,
+    reservationStamp: point.reservationStamp || (point.id === "mi-grazie" ? "UWAGA: WYMAGANA REZERWACJA · POMIŃ, JEŚLI JEJ NIE MASZ" : null),
     indoor: point.indoor ?? false,
     outdoor: point.outdoor ?? ["attraction","photospot"].includes(point.type),
     audio: point.audio || (point.audioUrl ? {url: point.audioUrl, duration: point.audioDuration, title: point.audioTitle} : null),
@@ -557,6 +558,7 @@ function pointCard(point, disabledMode = null) {
     <div class="point-content">
       ${done ? `<span class="completion-badge" role="status">✓ Ukończone</span>` : ""}
       <div class="point-top"><div><span class="point-time">${escapeHtml(point.time)}</span><h3>${escapeHtml(point.name)}</h3></div></div>
+      ${point.reservationStamp ? `<div class="reservation-stamp" role="note"><span aria-hidden="true">!</span><b>${escapeHtml(point.reservationStamp)}</b></div>` : ""}
       <span class="recommendation-label ${recommendation.className} ${matchesPreference(point) ? "match" : ""}">${escapeHtml(recommendation.label)}${matchesPreference(point) ? " · pasuje do Ciebie" : ""}</span>
       ${disabled ? `<div class="mode-disabled-notice ${disabledMode}-notice" role="note"><span aria-hidden="true">${disabledCopy.icon}</span><div><b>${disabledCopy.title}</b><small>${disabledCopy.body}</small></div></div>` : ""}
       ${point.travelAlert ? `<div class="travel-alert" role="alert"><span class="travel-alert-date">${escapeHtml(point.travelAlert.until)}</span><b>${escapeHtml(point.travelAlert.title)}</b><p>${escapeHtml(point.travelAlert.body)}</p><a href="${point.travelAlert.url}" target="_blank" rel="noopener">Oficjalny komunikat RFI ↗</a></div>` : ""}
@@ -629,6 +631,7 @@ function renderPlace(point) {
           ${detail.tag ? `<span class="place-tag">${escapeHtml(detail.tag)}</span>` : ""}
           <p class="place-location">${escapeHtml(day.city)} · punkt ${point.order} na trasie</p>
           <h1 id="placeTitle">${escapeHtml(point.name)}</h1>
+          ${point.reservationStamp ? `<div class="reservation-stamp" role="note"><span aria-hidden="true">!</span><b>${escapeHtml(point.reservationStamp)}</b></div>` : ""}
         </div>
 
         <section class="place-progress" aria-label="Postęp ważnych miejsc dnia">
@@ -1230,7 +1233,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=30", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=31", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }

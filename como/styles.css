@@ -551,6 +551,9 @@ body.companion-active { padding-bottom: calc(148px + var(--safe-bottom)); }
 .point-desc { color: var(--color-text-muted); font-size: 14px; line-height: 1.75; }
 .recommendation-label { margin-bottom: 12px; border-radius: 6px; background: var(--color-soft) !important; color: var(--color-brand-primary) !important; }
 .status { border: 0; border-radius: 5px; background: #f0e8df; color: #5f5751; }
+.reservation-stamp { width: fit-content; max-width: 100%; display: flex; align-items: center; gap: 9px; margin: 12px 0 16px; padding: 9px 12px; border: 2px solid #a94f3f; outline: 1px dashed #a94f3f; outline-offset: -5px; color: #8d3d31; font-size: 11px; font-weight: 800; letter-spacing: .06em; line-height: 1.35; text-transform: uppercase; transform: rotate(-1deg); }
+.reservation-stamp span { flex: 0 0 auto; width: 22px; height: 22px; display: grid; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 13px; }
+.reservation-stamp b { font: inherit; }
 .point-facts { gap: 0; margin: 22px 0; border: solid var(--color-border); border-width: 1px 0; }
 .point-facts div { padding: 13px 11px; border-bottom: 1px solid var(--color-border); border-radius: 0; background: transparent; }
 .point-facts div:nth-last-child(-n+2) { border-bottom: 0; }
@@ -747,6 +750,7 @@ body.companion-active { padding-bottom: calc(148px + var(--safe-bottom)); }
   .hero { width: min(100% - 28px,1180px); }
   .section-heading { align-items: start; flex-direction: column; }
   .section-heading .tiny-note { text-align: left; }
+  .reservation-stamp { padding: 9px 10px; font-size: 10px; letter-spacing: .045em; }
   .journey-postcard { border-radius: 22px; }
   .journey-postcard-head { gap: 10px; padding: 16px 14px 14px; }
   .journey-title { gap: 9px; }
