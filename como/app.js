@@ -771,10 +771,11 @@ function initializeRealMap(points, disabledIds, palette) {
   const coordinates = points.map(point => [point.lat, point.lng]);
   const map = L.map(container, { zoomControl: true, attributionControl: true, preferCanvas: true, zoomSnap: .5 });
   leafletMapInstance = map;
-  const tiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-    subdomains: "abcd",
-    maxZoom: 20,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
+  const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    updateWhenIdle: true,
+    keepBuffer: 2,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
   }).addTo(map);
   tiles.once("load", () => canvas.classList.add("real-map-ready"));
 
@@ -823,8 +824,9 @@ function initializeRealMap(points, disabledIds, palette) {
     const duration = Math.max(45000, (coordinates.length-1)*10000);
     const animate = now => {
       if (leafletMapInstance !== map) return;
-      const progress = ((now-started)%duration)/duration*(coordinates.length-1);
-      const index = Math.min(coordinates.length-2, Math.floor(progress));
+      const elapsed = Math.max(0, now-started);
+      const progress = (elapsed%duration)/duration*(coordinates.length-1);
+      const index = Math.max(0, Math.min(coordinates.length-2, Math.floor(progress)));
       const phase = progress-index;
       const [latA,lngA] = coordinates[index], [latB,lngB] = coordinates[index+1];
       scooter.setLatLng([latA+(latB-latA)*phase, lngA+(lngB-lngA)*phase]);
@@ -900,7 +902,7 @@ function renderMap() {
         <g class="journey-traveller" aria-hidden="true"><circle r="18"/><text x="0" y="7" text-anchor="middle">🛵</text><animateMotion dur="${Math.max(45,(points.length-1)*10)}s" begin=".8s" repeatCount="indefinite" path="${path}"/></g>
       </svg>
     </div>
-    <footer class="journey-postcard-foot"><span><i class="route-swatch"></i>${escapeHtml(modeLabel)}</span><span>Dane OpenStreetMap · mapa CARTO · trasa orientacyjna</span></footer>
+    <footer class="journey-postcard-foot"><span><i class="route-swatch"></i>${escapeHtml(modeLabel)}</span><span>Mapa OpenStreetMap · trasa orientacyjna</span></footer>
   </article>`;
   initializeRealMap(points, disabledIds, palette);
   $("#mapLegend").textContent = state.routeMode === "rain" ? "Tło pokazuje realny układ mapy. Szare punkty są wyłączone przez deszcz i nie uruchamiają nawigacji." : state.routeMode === "quick" ? "Tło pokazuje realny układ mapy. Szare punkty nie mieszczą się w skróconej trasie i nie uruchamiają nawigacji." : "Tło i położenie punktów pochodzą z mapy. Łącząca je linia jest orientacyjna — dokładną trasę otwórz po dotknięciu przystanku.";
@@ -1233,7 +1235,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=31", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=32", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }

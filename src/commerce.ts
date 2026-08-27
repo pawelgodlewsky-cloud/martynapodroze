@@ -13,7 +13,7 @@ const GUIDE_CSP = [
   "script-src 'self' https://unpkg.com",
   "style-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com",
   "font-src https://fonts.gstatic.com",
-  "img-src 'self' data: https://unpkg.com https://*.basemaps.cartocdn.com",
+  "img-src 'self' data: https://unpkg.com https://tile.openstreetmap.org",
   "connect-src 'self'",
   "worker-src 'self'",
   "manifest-src 'self'",
@@ -255,7 +255,7 @@ export async function publicGuidePreview(request: Request, env: Env): Promise<Re
   headers.set("Content-Type", contentType(relative));
   headers.set("Cache-Control", relative.endsWith("index.html") ? "no-store" : "public, max-age=3600");
   headers.set("Content-Security-Policy", GUIDE_CSP);
-  headers.set("Referrer-Policy", "no-referrer");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("X-Frame-Options", "DENY");
   headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
