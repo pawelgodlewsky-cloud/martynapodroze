@@ -701,7 +701,7 @@ function renderPlace(point) {
 
         ${detail.notice ? `<aside class="place-data-notice" role="note"><span>Informacja czasowa</span><p>${escapeHtml(detail.notice)}</p></aside>` : ""}
 
-        <section class="place-section curiosity-section" aria-labelledby="curiosityTitle"><div class="place-section-heading"><span>Warto wiedzieć</span><h2 id="curiosityTitle">5 ciekawostek</h2></div>${featuredFact ? `<div class="featured-curiosity"><span>Wow, tego możesz nie wiedzieć</span><p>${escapeHtml(featuredFact)}</p></div><details class="additional-curiosities"><summary><span>Czy wiesz, że?</span><small>${additionalFacts.length} dodatkowe fakty</small></summary><ol>${additionalFacts.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol></details>` : `<ol>${facts.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>`}</section>
+        <section class="place-section curiosity-section" aria-labelledby="curiosityTitle"><div class="place-section-heading"><span>Warto wiedzieć</span><h2 id="curiosityTitle">5 ciekawostek</h2></div>${featuredFact ? `<div class="featured-curiosity"><span>Wow, tego możesz nie wiedzieć</span><p>${escapeHtml(featuredFact)}</p></div><details class="additional-curiosities" open><summary><span>Czy wiesz, że?</span><small>${additionalFacts.length} dodatkowe fakty</small></summary><ol>${additionalFacts.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol></details>` : `<ol>${facts.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>`}</section>
 
         ${quickInfo.length ? `<section class="place-section" aria-labelledby="quickInfoTitle"><div class="place-section-heading"><span>Na miejscu</span><h2 id="quickInfoTitle">Najważniejsze informacje</h2></div><dl class="quick-info">${quickInfo.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl></section>` : ""}
 
@@ -1025,7 +1025,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=38", "app.js?v=38", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=39", "app.js?v=39", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
@@ -1299,7 +1299,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=38", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=39", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }
