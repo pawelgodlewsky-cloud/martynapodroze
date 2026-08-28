@@ -46,15 +46,16 @@
       "Widoki na jezioro z ogrodu"
     ],
     "facts": [
-      "Willa powstała z przekształcenia żeńskiego klasztoru cysterskiego założonego pod koniec XII wieku.",
-      "Jej dzisiejszy eklektyczny wygląd jest wynikiem przebudów kolejnych właścicieli.",
-      "Ogród biegnie tarasami wzdłuż brzegu jeziora na odcinku blisko dwóch kilometrów.",
-      "Wśród wnętrz znajduje się Sala Fermi, gdzie Enrico Fermi prowadził ostatnie wykłady w 1954 roku.",
-      "W ogrodzie rosną razem gatunki śródziemnomorskie i egzotyczne: palmy, cytrusy, agawy i juki."
+      "Nazwa Monastero jest dosłowna. Willa powstała z żeńskiego klasztoru cysterek założonego pod koniec XII wieku.",
+      "Klasztor rozwiązano w 1567 roku, a później kompleks stopniowo przekształcano w prywatną rezydencję.",
+      "Ogrody ciągną się wzdłuż jeziora przez prawie 2 kilometry i rośnie w nich ponad 900 gatunków roślin.",
+      "W 1954 roku Enrico Fermi prowadził tutaj jedne ze swoich ostatnich wykładów.",
+      "Organizowana w willi szkoła fizyki gościła przez lata ponad 60 laureatów Nagrody Nobla."
     ],
+    "featuredFact": "W 1954 roku Enrico Fermi prowadził tutaj jedne ze swoich ostatnich wykładów.",
     "sources": [
-      { "label": "Varenna Turismo — historia Villa Monastero", "url": "https://varennaturismo.com/villa-monastero/" },
-      { "label": "Villa Monastero — oficjalne informacje", "url": "https://www.villamonastero.eu/en/" }
+      { "label": "Varenna Turismo: historia Villa Monastero", "url": "https://varennaturismo.com/villa-monastero/" },
+      { "label": "Villa Monastero: oficjalne informacje", "url": "https://www.villamonastero.eu/en/" }
     ],
     "images": [
       { "src": "assets/places/villa-monastero-generated.webp", "alt": "Ogród i tarasy Villa Monastero nad jeziorem Como", "position": "50% 50%" }
@@ -243,104 +244,169 @@
       { "label": "Visit Bergamo: Porta San Giacomo", "url": "https://www.visitbergamo.net/oggetto/porta-san-giacomo/" }
     ]
   },
+  "co-bergamo": {
+    "tag": "TYMCZASOWA TRASA KOLEJOWA",
+    "history": "Autobus zastępczy jest częścią długiej modernizacji linii Bergamo i Ponte San Pietro, a nie skutkiem chwilowej awarii. Pociągi nadal kursują po obu stronach zamkniętego odcinka, dlatego podróż wymaga przesiadki z autobusu z powrotem na kolej.",
+    "notice": "Ten wariant jest związany z pracami planowanymi do końca 2026 roku. Po zakończeniu modernizacji opis i ciekawostki trzeba ponownie zweryfikować.",
+    "facts": [
+      "Autobus zastępczy nie jest skutkiem chwilowej awarii. Odcinek Bergamo i Ponte San Pietro zamknięto z powodu modernizacji prowadzonej od lutego 2024 do końca 2026 roku.",
+      "Po obu stronach zamkniętego fragmentu pociągi nadal kursują, dlatego w Ponte San Pietro wraca się z autobusu na kolej.",
+      "Prace mają zwiększyć przepustowość jednej z najważniejszych tras kolejowych w rejonie Bergamo.",
+      "Autobusy zastępcze jeżdżą w obu kierunkach, a część połączeń ma dodatkowy przystanek przy Bergamo Ospedale.",
+      "W autobusach zastępczych nie można przewozić rowerów, a czas przejazdu może się zmieniać zależnie od ruchu drogowego."
+    ],
+    "featuredFact": "Autobus zastępczy nie jest skutkiem chwilowej awarii. Odcinek Bergamo i Ponte San Pietro zamknięto z powodu modernizacji prowadzonej od lutego 2024 do końca 2026 roku.",
+    "sources": [
+      { "label": "RFI i Trenord: modernizacja Bergamo i Ponte San Pietro", "url": "https://www.rfi.it/it/news-e-media/infomobilita/avvisi/2024/2/5/linee-milano---bergamo--via-carnate---lecco---bergamo-.html" }
+    ]
+  },
+  "co-ponte-san-pietro": {
+    "tag": "STACJA Z 1863 ROKU",
+    "history": "Ponte San Pietro wygląda niepozornie, ale kolej działa tu od ponad 160 lat. Stacja rozwinęła się w XIX wieku jako węzeł, a jej połączenia wsparły rozwój miejscowego przemysłu.",
+    "facts": [
+      "Pierwszy pociąg na trasie w kierunku Lecco wyruszył stąd 4 listopada 1863 roku.",
+      "W 1889 roku otwarto linię w stronę Carnate, dzięki czemu Ponte San Pietro stało się węzłem kolejowym.",
+      "Kolej wsparła rozwój miejscowego przemysłu, między innymi potężnego zakładu włókienniczego rodziny Legler.",
+      "Podczas II wojny światowej okolice stacji bombardowano, ponieważ most kolejowy miał znaczenie dla niemieckiego transportu wojskowego.",
+      "Linia istnieje tu od ponad 160 lat, ale przez modernizację ostatnie kilometry do Bergamo trzeba tymczasowo pokonywać autobusem."
+    ],
+    "featuredFact": "Linia istnieje tu od ponad 160 lat, ale przez modernizację ostatnie kilometry do Bergamo trzeba tymczasowo pokonywać autobusem.",
+    "sources": [
+      { "label": "Comune di Ponte San Pietro: historia kolei", "url": "https://www.comune.pontesanpietro.bg.it/" }
+    ]
+  },
+  "co-return": {
+    "tag": "TRZY ŚRODKI TRANSPORTU",
+    "history": "Powrót z Bellagio do Bergamo łączy historyczną żeglugę po jeziorze, kolej wzdłuż wschodniego brzegu i czasowy autobus zastępczy na ostatnim odcinku. To dobry przekrój przez różne epoki transportu w Lombardii.",
+    "notice": "Autobus na ostatnim odcinku jest rozwiązaniem czasowym związanym z pracami planowanymi do końca 2026 roku.",
+    "facts": [
+      "W jednym powrocie korzystasz z trzech środków transportu: promu, pociągu i autobusu zastępczego.",
+      "Prom Bellagio i Varenna jest częścią centralnej sieci łączącej również Menaggio i Cadenabbię.",
+      "Po wyjściu w Varennie wracasz na linię kolejową biegnącą wzdłuż wschodniego brzegu jeziora w kierunku Lecco.",
+      "W Lecco zmieniasz linię na trasę do Ponte San Pietro, działającą od 1863 roku.",
+      "Ostatni fragment Ponte San Pietro i Bergamo odbywa się autobusem w związku z pracami infrastrukturalnymi planowanymi do końca 2026 roku."
+    ],
+    "featuredFact": "W jednym powrocie korzystasz z trzech środków transportu: promu, pociągu i autobusu zastępczego.",
+    "sources": [
+      { "label": "Navigazione Laghi: prom Bellagio i Varenna", "url": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/" },
+      { "label": "RFI: prace na odcinku Bergamo i Ponte San Pietro", "url": "https://www.rfi.it/it/news-e-media/infomobilita/avvisi/2024/2/5/linee-milano---bergamo--via-carnate---lecco---bergamo-.html" }
+    ]
+  },
   "co-lovers": {
     "tag": "SPACER NAD WODĄ",
     "history": "Nadmorska kładka łącząca Olivedo ze starym centrum Varenny powstała jako współczesne udogodnienie, a nie dawna droga. Pomysł narodził się w 1976 roku, a trasę otwarto w 1983 roku.",
     "facts": [
-      "Trasę wymyślił Giorgio Monico, burmistrz Varenny i architekt.",
-      "Pierwotna nazwa brzmiała Passerella degli Studiosi — Kładka Uczonych.",
-      "Nazwa odnosiła się do naukowców przyjeżdżających na kursy fizyki w Villa Monastero.",
-      "Kładkę oficjalnie otwarto 27 lutego 1983 roku.",
-      "W 2020 roku nadano jej imię Giorgia Monico, choć popularnie nadal nazywa się ją Spacerem Zakochanych."
+      "Spacer Zakochanych jest nazwą potoczną. Oficjalnie kładka nosi nazwę Passerella Giorgio Monico.",
+      "Trasa prowadzi od okolic przystani do Riva Grande, czyli starego serca Varenny.",
+      "Fragment promenady jest dosłownie zawieszony nad wodą, pomiędzy skałą a jeziorem.",
+      "Czerwone barierki i metalowe łuki sprawiły, że jest to jeden z najbardziej rozpoznawalnych kadrów z Varenny.",
+      "Promenada ma zaledwie kilkaset metrów, ale łączy port z historyczną częścią miasteczka."
     ],
+    "featuredFact": "Fragment promenady jest dosłownie zawieszony nad wodą, pomiędzy skałą a jeziorem.",
     "sources": [
-      { "label": "Varenna Turismo — historia kładki", "url": "https://varennaturismo.com/intitolazione-della-passerella-a-giorgio-monico/" }
+      { "label": "Varenna Turismo: historia kładki", "url": "https://varennaturismo.com/intitolazione-della-passerella-a-giorgio-monico/" }
     ]
   },
   "co-san-giorgio": {
     "tag": "SERCE VARENNY",
     "history": "Piazza San Giorgio jest historycznym centrum Varenny, skupionym wokół średniowiecznego kościoła parafialnego. Kamienne uliczki łączą plac z brzegiem jeziora, willami i dawnymi drogami prowadzącymi do Vezio.",
     "facts": [
-      "Kościół San Giorgio ma średniowieczne pochodzenie i zachował romańsko-gotyckie elementy.",
-      "Jego posadzkę wykonano z charakterystycznego czarnego marmuru z Varenny.",
-      "Na kontrfasadzie zachował się niezwykły fresk Sądu z przedstawieniem piekła.",
-      "Wewnątrz znajduje się kamienna Pietà z końca XV wieku.",
-      "Z placu odchodzą schodkowe contrade, które były podstawową siecią pieszą dawnej osady."
+      "Kościół San Giorgio został konsekrowany już w 1313 roku.",
+      "Podłogę świątyni wykonano z miejscowego czarnego marmuru z Varenny.",
+      "Na fasadzie warto znaleźć fresk przedstawiający św. Krzysztofa, patrona podróżnych.",
+      "Na kontrfasadzie znajduje się średniowieczne przedstawienie piekła.",
+      "Jednym z najcenniejszych zabytków jest poliptyk św. Jerzego namalowany w 1467 roku przez Jo Pietro Brentaniego."
     ],
+    "featuredFact": "Podłogę świątyni wykonano z miejscowego czarnego marmuru z Varenny.",
     "sources": [
-      { "label": "Varenna Turismo — kościół San Giorgio", "url": "https://varennaturismo.com/chiesa-di-san-giorgio/" }
+      { "label": "Varenna Turismo: kościół San Giorgio", "url": "https://varennaturismo.com/chiesa-di-san-giorgio/" }
     ]
   },
   "co-ferry-varenna": {
     "tag": "WĘZEŁ ŚRODKOWEGO JEZIORA",
-    "history": "Przystań w Varennie jest częścią publicznej żeglugi po jeziorze Como. Łączy wschodni brzeg i kolej z promowym czworokątem Varenna–Bellagio–Menaggio–Cadenabbia.",
+    "history": "Przystań w Varennie jest częścią publicznej żeglugi po jeziorze Como. Łączy wschodni brzeg i kolej z Bellagio, Menaggio i Cadenabbią.",
     "facts": [
-      "Varenna jest jednym z czterech głównych portów promowych środkowej części jeziora.",
-      "Na tej części sieci kursują zarówno statki pasażerskie, jak i promy przewożące pojazdy.",
-      "Połączenie z Bellagio przecina centralną część jeziora zamiast objeżdżać ją drogą.",
-      "Dworzec Varenna-Esino leży około 650 metrów od przystani, ale wyżej na zboczu.",
-      "Bilet kolejowy i regionalny IVOL nie zastępuje osobnego biletu Navigazione Laghi."
+      "Varenna leży w sercu systemu promowego środkowego Lago di Como. Statki łączą ją między innymi z Bellagio, Menaggio i Cadenabbią.",
+      "Niektóre kursy obsługują promy przewożące również samochody, a nie tylko pieszych pasażerów.",
+      "Regularna publiczna żegluga na Lago di Como ma niemal 200 lat historii. Rozpoczęła się w 1826 roku.",
+      "Jednym z pierwszych parowców na jeziorze był Lario, którego nazwa pochodzi od dawnej nazwy Lago di Como.",
+      "W rejonie przystani zaczyna się Passeggiata degli Innamorati, więc od razu wchodzi się na jedną z najładniejszych promenad jeziora."
     ],
+    "featuredFact": "Regularna publiczna żegluga na Lago di Como ma niemal 200 lat historii. Rozpoczęła się w 1826 roku.",
     "sources": [
-      { "label": "Navigazione Laghi — rozkłady jeziora Como", "url": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/" }
+      { "label": "Navigazione Laghi: historia i rozkłady jeziora Como", "url": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/" }
     ]
   },
   "co-bellagio": {
     "tag": "PORT NA ROZWIDLENIU JEZIORA",
     "history": "Bellagio leży na cyplu, w miejscu gdzie od północy jezioro Como rozdziela się na dwa południowe ramiona. Przystań przy Piazza Mazzini od pokoleń jest głównym wejściem do miasteczka od strony wody.",
     "facts": [
-      "Bellagio zajmuje centralny cypel pomiędzy ramionami jeziora prowadzącymi do Como i Lecco.",
-      "Piazza Mazzini skupia przystanie, hotele i najniższą część historycznego centrum.",
-      "Promy łączą Bellagio z Varenną, Menaggio i Cadenabbią.",
-      "Historyczna zabudowa wznosi się tarasami, dlatego większość spacerów od portu zaczyna się pod górę.",
-      "Sprawdzenie powrotu zaraz po przypłynięciu chroni plan przed sezonowymi zmianami rozkładu."
+      "Bellagio nie ma stacji kolejowej, dlatego transport wodny od pokoleń jest dla miasta wyjątkowo ważny.",
+      "Położenie w centralnej części jeziora sprawia, że przystań działa jak naturalny węzeł między wschodnim i zachodnim brzegiem.",
+      "Sieć promowa łączy Bellagio bezpośrednio między innymi z Varenną, Menaggio i Cadenabbią.",
+      "Gdy regularna żegluga parowa ruszyła w 1826 roku, podróż wodą była znacznie szybsza niż krętymi drogami wokół jeziora.",
+      "Historyczne portyki przy Piazza Mazzini służyły między innymi jako schronienie łodzi i miejsce prowadzenia handlu."
     ],
+    "featuredFact": "Bellagio nie ma stacji kolejowej, dlatego transport wodny od pokoleń jest dla miasta wyjątkowo ważny.",
     "sources": [
-      { "label": "Navigazione Laghi — Bellagio i Varenna", "url": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/" }
+      { "label": "Navigazione Laghi: Bellagio i Varenna", "url": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/" }
     ]
   },
   "co-salita": {
     "tag": "SCHODY BELLAGIO",
     "history": "Salita Serbelloni należy do sieci stromych uliczek, które od stuleci łączą nabrzeże Bellagio z górną częścią osady. Dzisiejszy pocztówkowy kadr wyrósł z bardzo praktycznego układu miasteczka na zboczu.",
     "facts": [
-      "Słowo salita oznacza po włosku podejście lub ulicę prowadzącą pod górę.",
-      "Schody łączą niższe ulice przy jeziorze z Via Giuseppe Garibaldi.",
-      "Kamienne stopnie są częścią historycznej pieszej siatki Bellagio, a nie dekoracyjną konstrukcją.",
-      "Nazwa Serbelloni przypomina rodzinę związaną z pobliską willą i wzgórzem.",
-      "Najbardziej charakterystyczny widok powstaje z góry, z jeziorem zamykającym perspektywę uliczki."
+      "To prawdopodobnie najczęściej fotografowane schody w Bellagio, ale kiedyś pełniły zupełnie inną funkcję.",
+      "Mieszkańcy nadal nazywają to miejsce Il Fossato, czyli Fosa.",
+      "W średniowieczu znajdował się tutaj element systemu obronnego starego Borgo.",
+      "Po prawej stronie schodów można rozpoznać fragmenty dawnych murów, a przy wejściu znajdował się kiedyś most zwodzony.",
+      "Alessandro Serbelloni przekształcił dawną fosę w szerokie schody prowadzące do miasta."
+    ],
+    "featuredFact": "Mieszkańcy nadal nazywają to miejsce Il Fossato, czyli Fosa.",
+    "sources": [
+      { "label": "Bellagio Lake Como: Salita Serbelloni", "url": "https://www.bellagiolakecomo.com/en/bellagio-lake-como-italy/poi-points-of-interest/salita-serbelloni" }
     ]
   },
   "co-basilica": {
     "tag": "ROMAŃSKIE BELLAGIO",
     "history": "Basilica di San Giacomo powstała między XI a XII wiekiem i jest najważniejszą świątynią historycznego Bellagio. Mimo późniejszych przebudów zachowała czytelną romańską bryłę z lokalnego kamienia.",
     "facts": [
-      "Świątynię wzniesiono w epoce romańskiej, między XI i XII wiekiem.",
-      "Jej masywna kamienna bryła wyróżnia się na tle późniejszej zabudowy Bellagio.",
-      "Kościół przechodził barokowe zmiany, a późniejsze restauracje przywracały mu romański charakter.",
-      "Dzwonnica wykorzystuje formy przypominające średniowieczną wieżę obronną.",
-      "Bazylika stoi przy górnej osi miasteczka, na naturalnej drodze z centrum ku Punta Spartivento."
+      "Bazylikę wzniesiono mniej więcej między 1075 a 1125 rokiem.",
+      "Budowali ją Maestri Comacini, lombardzcy mistrzowie kamieniarscy działający w średniowieczu w wielu częściach Europy.",
+      "W XVII wieku wnętrze i fasadę zbarokizowano, a na początku XX wieku próbowano przywrócić świątyni romański charakter.",
+      "W 1904 roku uznano ją za włoski monument narodowy.",
+      "W środku znajduje się archaiczny krucyfiks z XII wieku, dzieła związane ze szkołą Perugina i polichromowana figura złożonego do grobu Chrystusa."
+    ],
+    "featuredFact": "Budowali ją Maestri Comacini, lombardzcy mistrzowie kamieniarscy działający w średniowieczu w wielu częściach Europy.",
+    "sources": [
+      { "label": "Bellagio Lake Como: Basilica di San Giacomo", "url": "https://www.bellagiolakecomo.com/en/bellagio-lake-como-italy/poi-points-of-interest/basilica-san-giacomo" }
     ]
   },
   "co-spartivento": {
     "tag": "TRZY KIERUNKI JEZIORA",
     "history": "Punta Spartivento jest końcem półwyspu Bellagio. Sama nazwa oznacza miejsce „rozdzielające wiatr”, a geografia cypla pozwala jednocześnie zobaczyć północ jeziora i oba południowe ramiona.",
     "facts": [
-      "Cypel leży dokładnie przy rozwidleniu jeziora Como na kształt odwróconej litery Y.",
-      "Na zachód otwiera się ramię prowadzące do Como, a na wschód ramię prowadzące do Lecco.",
-      "W kierunku północnym widać szeroką część jeziora biegnącą ku Alpom.",
-      "Nazwa Spartivento dosłownie odnosi się do rozdzielania wiatrów.",
-      "Punkt jest publiczny i zapewnia jeden z nielicznych szerokich widoków bez biletu w Bellagio."
-    ]
+      "Nazwa Spartivento oznacza mniej więcej miejsce, które rozdziela wiatr.",
+      "To skrajny punkt cypla Bellagio i najlepsze miejsce, żeby zrozumieć kształt Lago di Como.",
+      "Widać stąd trzy kierunki jeziora jednocześnie: ramię Como, ramię Lecco i północną część prowadzącą ku Colico.",
+      "Z poziomu ziemi naprawdę widać, dlaczego Lago di Como przypomina odwróconą literę Y.",
+      "Punkt leży około 10 minut spacerem od historycznego centrum, a widok jest dostępny bez biletu do którejkolwiek willi."
+    ],
+    "featuredFact": "Widać stąd trzy kierunki jeziora jednocześnie: ramię Como, ramię Lecco i północną część prowadzącą ku Colico."
   },
   "co-pescallo": {
     "tag": "DAWNA OSADA RYBACKA",
     "history": "Pescallo to mała osada po wschodniej stronie półwyspu Bellagio, zwrócona ku ramieniu Lecco. Jej spokojna zatoka i nazwa wiążą się z tradycją rybacką, odmienną od reprezentacyjnego frontu promowego.",
     "facts": [
-      "Pescallo leży po przeciwnej stronie półwyspu niż główna przystań Bellagio.",
-      "Zatoka otwiera się na wschodnie ramię jeziora prowadzące do Lecco.",
-      "Osada była historycznie związana z rybołówstwem i lokalnym ruchem łodzi.",
-      "Do Pescallo schodzi się pieszo z górnej części Bellagio po stromych uliczkach.",
-      "Brak głównego terminalu promowego sprawia, że rytm miejsca jest spokojniejszy niż przy Piazza Mazzini."
+      "Pescallo było kiedyś niewielką osadą rybacką, a nie częścią turystycznego centrum Bellagio.",
+      "Leży po przeciwnej stronie cypla niż główne nabrzeże Bellagio, nad ramieniem Lecco.",
+      "W centrum stoi kościół Santi Biagio e Andrea, otoczony starymi domami i uliczkami prowadzącymi do portu.",
+      "Pescallo nadal ma silne związki z żeglarstwem. Odbywa się tutaj Trofeo Velico Serbelloni z klasycznymi łodziami.",
+      "Miasteczko stało się scenerią kryminału La regola del lupo Franco Vanniego z 2019 roku."
+    ],
+    "featuredFact": "Pescallo było kiedyś niewielką osadą rybacką, a nie częścią turystycznego centrum Bellagio.",
+    "sources": [
+      { "label": "Navigazione Laghi Magazine: Pescallo", "url": "https://magazine.navigazionelaghi.it/" }
     ]
   },
   "mi-san-satiro": {
@@ -535,22 +601,30 @@
     "tag": "KOLEJ MIĘDZY GÓRAMI A JEZIOREM",
     "history": "Stacja Lecco jest ważnym węzłem po wschodniej stronie jeziora Como. Łączy połączenia z Bergamo i Mediolanem z linią biegnącą północnym brzegiem przez Varennę w kierunku Colico, Sondrio i Tirano.",
     "facts": [
-      "Stacja leży blisko południowego krańca wschodniego ramienia jeziora Como.",
-      "Krzyżują się tu połączenia z Bergamo, Mediolanu i linii prowadzącej w stronę Valtelliny.",
-      "Pociągi do Varenny często mają jako stację końcową Colico, Sondrio albo Tirano.",
-      "Lecco jest miastem silnie związanym z Alessandrem Manzonim i powieścią „Narzeczeni”.",
-      "Przystań statków leży poza dworcem, więc wariant wodny wymaga osobnego przejścia i biletu."
+      "Stację Lecco uruchomiono w 1863 roku razem z połączeniem prowadzącym w stronę Bergamo.",
+      "Obecny główny budynek dworca pochodzi z 1881 roku.",
+      "Lecco stało się ważnym węzłem. Zbiegają się tutaj trasy w stronę Bergamo, Mediolanu, Como i Tirano.",
+      "Linia wzdłuż wschodniego brzegu jeziora dotarła do Bellano w 1892 roku. Wtedy otwarto również stację obsługującą Varennę.",
+      "W Lecco przesiadasz się z XIX-wiecznej linii Bergamo i Lecco na XIX-wieczną trasę biegnącą wzdłuż Lago di Como."
+    ],
+    "featuredFact": "W Lecco przesiadasz się z XIX-wiecznej linii Bergamo i Lecco na XIX-wieczną trasę biegnącą wzdłuż Lago di Como.",
+    "sources": [
+      { "label": "Trenord: stacja i połączenia Lecco", "url": "https://www.trenord.it/en/routes-and-timetables/journey/" }
     ]
   },
   "co-varenna-station": {
     "tag": "STACJA NAD JEZIOREM",
     "history": "Varenna-Esino powstała na linii kolejowej prowadzącej wzdłuż wschodniego brzegu jeziora Como. Mimo nazwy stacja administracyjnie leży w Perledo, wysoko ponad przystanią i historycznym centrum Varenny.",
     "facts": [
-      "Stacja nazywa się Varenna-Esino, ale znajduje się na terenie gminy Perledo.",
-      "Leży na linii prowadzącej z Lecco w kierunku Colico i Valtelliny.",
-      "Różnica wysokości sprawia, że droga z promu na pociąg prowadzi pod górę.",
-      "Kolej daje Varennie całoroczne połączenie lądowe niezależne od sezonowych promów.",
-      "Nazwa łączy turystyczną Varennę z doliną prowadzącą w stronę Esino Lario."
+      "Stację otwarto w 1892 roku.",
+      "Formalnie nie znajduje się w Varennie, lecz na terenie sąsiedniej gminy Perledo.",
+      "Początkowo nazywała się po prostu Varenna.",
+      "W 1935 roku nazwę zmieniono na Varenna-Esino, a później na dzisiejsze Varenna-Esino-Perledo.",
+      "Esino Lario leży około 12 km od stacji, wysoko ponad jeziorem, choć nazwa może sugerować znacznie mniejszą odległość."
+    ],
+    "featuredFact": "Formalnie nie znajduje się w Varennie, lecz na terenie sąsiedniej gminy Perledo.",
+    "sources": [
+      { "label": "Trenord: stacja Varenna-Esino", "url": "https://www.trenord.it/en/routes-and-timetables/services/our-lines/tirano-sondrio-lecco-milano-regional-line/" }
     ]
   },
   "mi-centrale": {

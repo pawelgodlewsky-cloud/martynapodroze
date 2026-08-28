@@ -813,6 +813,9 @@ body.place-open { overflow: hidden; }
 .place-description { padding: 38px 0 22px; }
 .place-description p { color: #554e49; font-size: 14px; line-height: 1.85; }
 .place-description p:first-child::first-letter { float: left; margin: 7px 8px 0 0; color: var(--place-accent); font-family: var(--font-heading); font-size: 58px; line-height: .65; }
+.place-data-notice { margin: 0 0 28px; padding: 16px 18px; border: 1px solid #c98876; background: #fbebe5; color: #6e3d33; }
+.place-data-notice span { display: block; margin-bottom: 5px; font-size: 8px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.place-data-notice p { margin: 0; font-size: 11px; font-weight: 700; line-height: 1.55; }
 
 .place-progress { padding: 17px 0; border: solid var(--color-border); border-width: 1px 0; }
 .place-progress > div:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }

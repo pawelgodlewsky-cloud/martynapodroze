@@ -699,6 +699,8 @@ function renderPlace(point) {
           ${descriptions.map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join("")}
         </section>
 
+        ${detail.notice ? `<aside class="place-data-notice" role="note"><span>Informacja czasowa</span><p>${escapeHtml(detail.notice)}</p></aside>` : ""}
+
         <section class="place-section curiosity-section" aria-labelledby="curiosityTitle"><div class="place-section-heading"><span>Warto wiedzieć</span><h2 id="curiosityTitle">5 ciekawostek</h2></div>${featuredFact ? `<div class="featured-curiosity"><span>Wow, tego możesz nie wiedzieć</span><p>${escapeHtml(featuredFact)}</p></div><details class="additional-curiosities"><summary><span>Czy wiesz, że?</span><small>${additionalFacts.length} dodatkowe fakty</small></summary><ol>${additionalFacts.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol></details>` : `<ol>${facts.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>`}</section>
 
         ${quickInfo.length ? `<section class="place-section" aria-labelledby="quickInfoTitle"><div class="place-section-heading"><span>Na miejscu</span><h2 id="quickInfoTitle">Najważniejsze informacje</h2></div><dl class="quick-info">${quickInfo.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl></section>` : ""}
@@ -1023,7 +1025,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=34", "app.js?v=34", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=35", "app.js?v=35", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
