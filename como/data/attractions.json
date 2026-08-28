@@ -540,57 +540,115 @@
   },
   "d4-pignolo": {
     "tag": "BORGO DEL SAPERE",
-    "history": "Borgo Pignolo rosło przy dawnej drodze łączącej dolne miasto z wenecką bramą Sant'Agostino. Renesansowe pałace, klasztory i kościoły sprawiły, że dziś nazywa się je także „Borgo del Sapere” — dzielnicą wiedzy.",
+    "history": "Borgo Pignolo rozwinęło się już w średniowieczu jako przedłużenie miasta schodzące od Città Alta w stronę dolnej części Bergamo. Renesansowe pałace, kościoły i dawne pracownie nadal tworzą jego historyczny charakter.",
     "facts": [
-      "Przy Via Pignolo zachował się ciąg renesansowych i neoklasycystycznych pałaców z wewnętrznymi dziedzińcami.",
-      "Górna część borgo mieści dziś część Uniwersytetu w Bergamo.",
-      "W jednym z miejscowych pałaców gościł poeta Torquato Tasso.",
-      "Kościół San Bernardino przechowuje nastawę ołtarzową Lorenza Lotta z 1521 roku.",
-      "Ulica prowadzi ku Porta Sant'Agostino i weneckim murom Città Alta."
+      "Borgo Pignolo nie jest nową modną dzielnicą. Rozwinęło się już w średniowieczu jako przedłużenie miasta schodzące od Città Alta w stronę dolnej części Bergamo.",
+      "Spacerując Via Pignolo, mija się renesansowe i neoklasycystyczne pałace, antykwariaty, galerie oraz tradycyjne pracownie rzemieślnicze. Działa tu nawet pracownia lutnicza.",
+      "Przy ulicy znajduje się XVI-wieczny Palazzo Agliardi, który nadal jest zamieszkany przez rodzinę hrabiów Agliardi. Za fasadą kryje się także ogród wiszący.",
+      "Kościół San Bernardino powstał prawdopodobnie po wizytach św. Bernardyna ze Sieny w Bergamo w latach 1419–1422, choć dzisiejszy neogotycki wygląd otrzymał wiele wieków później.",
+      "Największym skarbem związanym z kościołem jest Pala di San Bernardino Lorenza Lotta z 1521 roku, jedno z arcydzieł okresu jego pracy w Bergamo. Kościół pozostaje objęty pracami strukturalnymi rozpoczętymi w 2024 roku."
     ],
+    "featuredFact": "Przy ulicy znajduje się XVI-wieczny Palazzo Agliardi, który nadal jest zamieszkany przez rodzinę hrabiów Agliardi. Za fasadą kryje się także ogród wiszący.",
     "sources": [
-      { "label": "Visit Bergamo — Borgo Pignolo", "url": "https://www.visitbergamo.net/oggetto/borgo-pignolo/" }
+      { "label": "Visit Bergamo: Borgo Pignolo", "url": "https://www.visitbergamo.net/oggetto/borgo-pignolo/" }
     ]
   },
   "d4-carrara": {
     "tag": "PIĘĆ WIEKÓW MALARSTWA",
     "history": "Accademia Carrara wyrosła z kolekcji i szkoły sztuki założonych przez hrabiego Giacoma Carrarę pod koniec XVIII wieku. Dziś jest jedną z najważniejszych włoskich pinakotek opartych w dużej mierze na darach prywatnych kolekcjonerów.",
     "facts": [
-      "Trzon muzeum stworzył hrabia Giacomo Carrara, kolekcjoner i mecenas sztuki.",
-      "Ekspozycja prowadzi przez pięć stuleci włoskiego malarstwa, od XV do XIX wieku.",
-      "W kolekcji znajdują się dzieła między innymi Botticellego, Rafaela, Tycjana i Canaletta.",
-      "Carrara posiada szczególnie ważne zespoły prac Lorenza Lotta i Giovanniego Battisty Moroniego.",
-      "Jednym z nietypowych skarbów zbiorów są karty z renesansowej talii tarota Visconti–Sforza."
+      "Muzeum powstało dzięki kolekcjonerowi Giacomowi Carrarze, który po swojej śmierci w 1796 roku pozostawił miastu galerię i szkołę malarstwa.",
+      "To nietypowe muzeum, bo jego kolekcja nie powstała głównie przez zakupy państwowe czy przejmowanie majątków. Trzon zbiorów tworzą prywatne darowizny mieszkańców i kolekcjonerów.",
+      "Giacomo Carrara miał pod koniec życia aż 1275 obrazów. Dziś tylko 407 dzieł w muzeum udało się jednoznacznie zidentyfikować jako pochodzące z jego pierwotnej kolekcji. Część sprzedano na aukcji w 1835 roku.",
+      "W środku można zobaczyć dzieła takich artystów jak Rafael, Botticelli, Mantegna, Giovanni Bellini czy Lorenzo Lotto. Jak na stosunkowo niewielkie Bergamo to niezwykle mocna kolekcja.",
+      "Tradycja przekazywania sztuki muzeum trwa od ponad dwóch stuleci. Do największych darczyńców należeli Carrara, Guglielmo Lochis, Giovanni Morelli i Federico Zeri, a łącznie muzeum otrzymało ponad 200 mniejszych zapisów i darowizn."
     ],
+    "featuredFact": "Giacomo Carrara miał pod koniec życia aż 1275 obrazów. Dziś tylko 407 dzieł w muzeum udało się jednoznacznie zidentyfikować jako pochodzące z jego pierwotnej kolekcji. Część sprzedano na aukcji w 1835 roku.",
     "sources": [
-      { "label": "Visit Bergamo — Accademia Carrara", "url": "https://www.visitbergamo.net/oggetto/accademia-carrara/" },
-      { "label": "Accademia Carrara — oficjalna strona", "url": "https://lacarrara.it/" }
+      { "label": "Visit Bergamo: Accademia Carrara", "url": "https://www.visitbergamo.net/oggetto/accademia-carrara/" },
+      { "label": "Accademia Carrara: oficjalna strona", "url": "https://lacarrara.it/" }
     ]
   },
   "d4-gamec": {
     "tag": "SZTUKA WSPÓŁCZESNA",
-    "history": "GAMeC — Galleria d'Arte Moderna e Contemporanea di Bergamo — otwarto w 1991 roku naprzeciw Accademia Carrara. Instytucja łączy kolekcję XX i XXI wieku z wystawami czasowymi, badaniami i projektami w przestrzeni miasta.",
+    "history": "GAMeC, czyli Galleria d'Arte Moderna e Contemporanea di Bergamo, otwarto w 1991 roku naprzeciw Accademia Carrara. Instytucja łączy kolekcję XX i XXI wieku z wystawami czasowymi, badaniami i projektami w przestrzeni miasta.",
     "facts": [
-      "Skrót GAMeC rozwija się jako Galleria d'Arte Moderna e Contemporanea.",
-      "Muzeum otwarto w 1991 roku w zaadaptowanym zespole dawnych budynków klasztornych.",
-      "Stoi po przeciwnej stronie Via San Tomaso niż Accademia Carrara.",
-      "Program obejmuje zarówno kolekcję stałą, jak i zmienne wystawy sztuki współczesnej.",
-      "Muzeum organizuje także projekty poza własnym gmachem, dlatego aktualny program jest ważniejszy niż sama nazwa kolekcji."
+      "GAMeC, czyli Galleria d'Arte Moderna e Contemporanea, jest stosunkowo młoda. Została otwarta dopiero w 1991 roku.",
+      "Sam budynek jest dużo starszy. Zanim trafiła tu sztuka współczesna, kompleks był kolejno klasztorem, a później koszarami wojskowymi.",
+      "Dawny klasztor odrestaurowano na potrzeby muzeum według projektu Studio Gregotti Associati, jednego z ważniejszych włoskich biur architektonicznych końca XX wieku.",
+      "GAMeC ma około 1500 m² powierzchni wystawienniczej i nie ogranicza się do klasycznych obrazów. Prezentuje instalacje, fotografię, wideo i eksperymentalną sztukę współczesną.",
+      "Również tutaj dużą rolę odegrali prywatni mieszkańcy Bergamo. Po pierwszej wystawie w 1991 roku lokalni kolekcjonerzy zdecydowali się przekazać miastu jedne z najlepszych prac ze swoich zbiorów."
     ],
+    "featuredFact": "Sam budynek jest dużo starszy. Zanim trafiła tu sztuka współczesna, kompleks był kolejno klasztorem, a później koszarami wojskowymi.",
     "sources": [
-      { "label": "GAMeC — oficjalna strona", "url": "https://www.gamec.it/" }
+      { "label": "GAMeC: oficjalna strona", "url": "https://www.gamec.it/" }
     ]
   },
   "d4-suardi": {
     "tag": "NAJSTARSZY PARK CITTÀ BASSA",
-    "history": "Parco Suardi jest jednym z historycznych publicznych ogrodów dolnego Bergamo. Założony w XIX wieku park dał rozwijającej się Città Bassa zielone miejsce spacerów poza zwartą zabudową starego miasta.",
+    "history": "Parco Suardi jest uznawany za pierwszy publiczny park Bergamo. Miasto odkupiło część dawnej posiadłości rodu Suardi i w 1950 roku udostępniło ją mieszkańcom jako zielone miejsce wypoczynku.",
     "facts": [
-      "Park leży pomiędzy Borgo Santa Caterina a muzealną osią Via San Tomaso.",
-      "Należy do najstarszych publicznych terenów zielonych Città Bassa.",
-      "Powstał w epoce, gdy dolne Bergamo szybko rozwijało się poza dawnymi fortyfikacjami.",
-      "Zachował układ spacerowego ogrodu miejskiego z dużymi drzewami i alejami.",
-      "Położenie blisko Carrary i GAMeC czyni go naturalnym odpoczynkiem pomiędzy muzeami a centrum."
+      "Parco Suardi ma szczególny tytuł. Jest uznawany za pierwszy publiczny park Bergamo.",
+      "Teren należał wcześniej do ogromnej posiadłości rodziny Suardi. W 1949 roku miasto odkupiło część ogrodu od hrabiego Guidina Suardiego.",
+      "Park został oficjalnie otwarty dla mieszkańców 2 kwietnia 1950 roku.",
+      "W dawnych dokumentach teren określano jako prato acquatario i ortaglia. Była to wilgotna łąka oraz obszar uprawy warzyw, związany z licznymi kanałami wodnymi w okolicy.",
+      "Przez pewien czas w Parco Suardi funkcjonowało nawet coś w rodzaju małego miejskiego zoo. Zwierzęta ostatecznie usunięto ze względu na problemy związane z ich utrzymaniem."
+    ],
+    "featuredFact": "Przez pewien czas w Parco Suardi funkcjonowało nawet coś w rodzaju małego miejskiego zoo. Zwierzęta ostatecznie usunięto ze względu na problemy związane z ich utrzymaniem."
+  },
+  "d4-station": {
+    "tag": "DWORZEC I NOWE MIASTO",
+    "history": "Stazione di Bergamo otwarto w 1857 roku, w ostatnich latach austriackiego panowania nad Lombardią. Kolej, tramwaje i późniejszy dworzec autobusowy uczyniły ten rejon ważnym węzłem rozwijającej się Città Bassa.",
+    "facts": [
+      "Pierwszy dworzec kolejowy w Bergamo otwarto 12 października 1857 roku. Kolej stała się jednym z symboli modernizacji miasta w ostatnich latach austriackiego panowania nad Lombardią.",
+      "Już w XIX wieku próbowano sprawnie połączyć dworzec z położoną na wzgórzu Città Alta. W 1898 roku zelektryfikowano linię tramwajową prowadzącą od stacji w stronę funicolare.",
+      "Charakterystyczna fontanna przed dworcem pojawiła się w 1912 roku. Wcześniej na jej miejscu znajdował się zielony skwer z palmami.",
+      "Lata 50. były dla stacji prawdziwą rewolucją. W 1954 roku zelektryfikowano połączenie kolejowe z Mediolanem przez Treviglio, a kilka lat później powstał sąsiedni dworzec autobusowy.",
+      "Plac przed dworcem wygląda dziś znacznie inaczej niż dawniej. Podczas przebudowy w latach 2008–2012 Piazzale Guglielmo Marconi został w dużej mierze przekształcony w przestrzeń pieszą."
+    ],
+    "featuredFact": "Charakterystyczna fontanna przed dworcem pojawiła się w 1912 roku. Wcześniej na jej miejscu znajdował się zielony skwer z palmami.",
+    "sources": [
+      { "label": "Visit Bergamo: dworzec i rozwój Città Bassa", "url": "https://www.visitbergamo.net/oggetto/8b/" }
     ]
+  },
+  "d4-porta-nuova": {
+    "tag": "SENTIERONE I SMAKI BERGAMO",
+    "history": "Sentierone wyrósł ze średniowiecznej ścieżki biegnącej przez Prato di Sant'Alessandro. Z czasem targowy teren przekształcono w reprezentacyjne centrum Città Bassa, pełne kawiarni, sklepów i miejsc dobrych na ostatni lunch.",
+    "facts": [
+      "Dzisiejszy elegancki Sentierone zaczynał jako zwyczajna średniowieczna ścieżka biegnąca przez łąkę Prato di Sant'Alessandro. Dopiero później zamienił się w reprezentacyjny deptak miasta.",
+      "W XVIII wieku stała tutaj potężna Antica Fiera. Kompleks zbudowany w latach 1734–1740 mieścił aż 540 sklepów i stoisk i był najważniejszym centrum handlowym prowincji.",
+      "Starą fiera rozebrano w XX wieku, a jej miejsce zajęło monumentalne Centro Piacentiniano, które stworzyło współczesne centrum Città Bassa.",
+      "Jeśli na lunch wybierzesz casoncelli alla bergamasca, jesz danie o bardzo długiej historii. Pierwsza znana wzmianka o casoncelli z Bergamo pochodzi z 13 maja 1386 roku.",
+      "Jeśli po lunchu zobaczysz w cukierni coś wyglądającego jak żółta polenta z małymi ptaszkami, to najprawdopodobniej Polenta e Ösei, deser, a nie polenta. Słodką wersję stworzono w Bergamo w 1907 roku."
+    ],
+    "featuredFact": "Jeśli po lunchu zobaczysz w cukierni coś wyglądającego jak żółta polenta z małymi ptaszkami, to najprawdopodobniej Polenta e Ösei, deser, a nie polenta. Słodką wersję stworzono w Bergamo w 1907 roku."
+  },
+  "d4-bus": {
+    "tag": "JEDEN BILET, KILKA ŚRODKÓW TRANSPORTU",
+    "history": "Airport Bus jest częścią linii 1 ATB i łączy lotnisko z dworcem, Porta Nuova oraz okolicami Città Alta. Stanowi najprostszy publiczny dojazd z centrum Bergamo do terminala BGY.",
+    "facts": [
+      "Airport Bus to część linii 1 ATB i łączy w jednej osi lotnisko, dworzec kolejowy, Porta Nuova oraz okolice Città Alta.",
+      "Według aktualnego rozkładu autobus między lotniskiem a Bergamo kursuje codziennie mniej więcej co 20 minut.",
+      "W marcu 2026 roku Airport Bus dostał zupełnie nową identyfikację wizualną. Zmieniono wygląd autobusów, przystanków, tablic i materiałów informacyjnych, żeby turyści łatwiej rozpoznawali połączenie z lotniskiem.",
+      "Na przejazd lotnisko i Bergamo obowiązuje taryfa trzech stref, ale istnieją również bilety turystyczne na 24 i 72 godziny obejmujące całą sieć ATB oraz przewóz bagażu.",
+      "Ten sam system biletowy ATB obejmuje nie tylko autobusy, ale też obie bergamskie funicolare oraz tramwaj T1. Jeden odpowiedni bilet może więc obsłużyć kilka różnych środków transportu."
+    ],
+    "featuredFact": "W marcu 2026 roku Airport Bus dostał zupełnie nową identyfikację wizualną. Zmieniono wygląd autobusów, przystanków, tablic i materiałów informacyjnych, żeby turyści łatwiej rozpoznawali połączenie z lotniskiem.",
+    "sources": [
+      { "label": "ATB Bergamo: Airport Bus", "url": "https://www.atb.bergamo.it/en/other-services/tourist-services" }
+    ]
+  },
+  "d4-airport": {
+    "tag": "OD LOTNISKA WOJSKOWEGO DO BAZY RYANAIR",
+    "history": "Port lotniczy w Orio al Serio powstał w 1939 roku jako obiekt wojskowy. Cywilne loty ruszyły w 1972 roku, a rozwój tanich połączeń na początku XXI wieku zmienił BGY w jedno z najważniejszych lotnisk regionu.",
+    "facts": [
+      "Lotnisko zaczynało jako obiekt wojskowy utworzony w 1939 roku. Dopiero kilkadziesiąt lat później rozpoczęła się jego cywilna historia.",
+      "Spółkę SACBO, która miała przekształcić Orio al Serio w cywilny port lotniczy, założono 16 lipca 1970 roku.",
+      "Pierwszy regularny lot cywilny wystartował 21 marca 1972 roku. Był to DC-9 linii Itavia lecący do Rzymu-Ciampino, a ówczesny pas startowy miał tylko około 1800 metrów.",
+      "Dzień, który całkowicie zmienił przyszłość BGY, przypadł na Walentynki 2002 roku. Ryanair uruchomił wtedy połączenie z Frankfurt-Hahn, a na pokładzie inauguracyjnego rejsu odbył się ślub. Rok później przewoźnik otworzył w Bergamo swoją bazę.",
+      "Od 23 marca 2011 roku oficjalna nazwa lotniska nawiązuje do Caravaggia: Il Caravaggio International Airport. Przy wejściu nr 3 znajduje się również ogromna, 2,49-metrowa brązowa rzeźba Caravaggia autorstwa Giacoma Manzù."
+    ],
+    "featuredFact": "Dzień, który całkowicie zmienił przyszłość BGY, przypadł na Walentynki 2002 roku. Ryanair uruchomił wtedy połączenie z Frankfurt-Hahn, a na pokładzie inauguracyjnego rejsu odbył się ślub. Rok później przewoźnik otworzył w Bergamo swoją bazę."
   },
   "bg-station": {
     "tag": "BRAMA DO BERGAMO",
