@@ -540,6 +540,12 @@ body.companion-active { padding-bottom: calc(148px + var(--safe-bottom)); }
 .timeline { margin-top: 42px; }
 .timeline::before { background: #d9cec4; }
 .point-card { margin-bottom: 34px; border: 0; border-top: 1px solid var(--color-border); border-radius: 0; background: transparent; box-shadow: none; overflow: visible; }
+.point-card[data-place-id] { cursor: pointer; transition: border-color .2s ease, background-color .2s ease; }
+.point-card[data-place-id] .point-image { transition: transform .28s cubic-bezier(.2,.8,.2,1), filter .28s ease, opacity .2s ease; }
+.point-card[data-place-id] h3 { text-decoration: underline; text-decoration-color: color-mix(in srgb,var(--point-accent) 38%,transparent); text-decoration-thickness: 2px; text-underline-offset: .16em; transition: color .2s ease, text-decoration-color .2s ease, text-underline-offset .2s ease; }
+.point-card[data-place-id]:hover, .point-card[data-place-id]:has(.place-button:focus-visible) { border-color: var(--point-accent); background: color-mix(in srgb,var(--point-accent) 4%,transparent); }
+.point-card[data-place-id]:hover h3, .point-card[data-place-id]:has(.place-button:focus-visible) h3 { color: var(--point-accent); text-decoration-color: var(--point-accent); text-underline-offset: .23em; }
+.point-card[data-place-id]:hover .point-image { transform: scale(1.018); filter: saturate(1.02) contrast(1.03); }
 .point-card::before { background: var(--color-brand-primary); box-shadow: 0 0 0 6px var(--color-background); }
 .point-card.completed { opacity: 1; box-shadow: none; }
 .point-card.completed::before { background: var(--color-accent-dark); }
@@ -772,9 +778,14 @@ body.companion-active { padding-bottom: calc(148px + var(--safe-bottom)); }
 
 /* Fullscreen attraction guide */
 body.place-open { overflow: hidden; }
-.place-button { width: 100%; min-height: 50px; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 20px 0 12px; padding: 0 18px; border: 1px solid var(--color-text); border-radius: 0; background: transparent; color: var(--color-text); font-size: 12px; font-weight: 800; cursor: pointer; }
+.place-button { width: 100%; min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 20px 0 12px; padding: 9px 18px; border: 1px solid var(--color-text); border-radius: 0; background: transparent; color: var(--color-text); font-size: 12px; font-weight: 800; text-align: left; cursor: pointer; transition: background-color .18s ease, color .18s ease, border-color .18s ease; }
+.place-button > span:first-child { display: grid; gap: 2px; }
+.place-button b { font: inherit; }
+.place-button small { color: var(--color-text-muted); font-size: 9px; font-weight: 700; letter-spacing: .025em; }
 .place-button span:last-child { color: var(--point-accent,var(--color-brand-primary)); font-size: 22px; font-weight: 400; transition: transform .18s ease; }
-.place-button:hover span:last-child { transform: translateX(4px); }
+.place-button:hover, .place-button:focus-visible { border-color: var(--point-accent,var(--color-brand-primary)); background: var(--point-accent,var(--color-brand-primary)); color: white; outline: none; }
+.place-button:hover small, .place-button:focus-visible small { color: rgba(255,255,255,.78); }
+.place-button:hover span:last-child, .place-button:focus-visible span:last-child { color: white; transform: translate(3px,-3px); }
 
 .place-overlay { position: fixed; z-index: 90; inset: 0; overflow-y: auto; overscroll-behavior: contain; background: var(--color-background); }
 .place-dialog { min-height: 100%; outline: 0; }
@@ -835,6 +846,15 @@ body.place-open { overflow: hidden; }
 .highlights-section li { position: relative; min-height: 46px; padding: 13px 0 13px 48px; border-top: 1px solid var(--color-border); color: var(--color-text); font-size: 12px; counter-increment: place-highlight; }
 .highlights-section li::before { content: counter(place-highlight,decimal-leading-zero); position: absolute; left: 0; color: var(--place-accent); font-family: var(--font-heading); font-size: 24px; font-weight: 700; line-height: 1; }
 
+.curiosity-section { position: relative; }
+.curiosity-section::before { content: "?"; position: absolute; top: 26px; right: 0; color: color-mix(in srgb,var(--place-accent) 13%,transparent); font-family: var(--font-heading); font-size: 96px; font-weight: 700; line-height: 1; pointer-events: none; }
+.curiosity-section ol { position: relative; margin: 0; padding: 0; list-style: none; counter-reset: place-curiosity; }
+.curiosity-section li { position: relative; min-height: 64px; padding: 17px 0 17px 58px; border-top: 1px solid var(--color-border); color: var(--color-text); font-size: 13px; line-height: 1.6; counter-increment: place-curiosity; }
+.curiosity-section li::before { content: counter(place-curiosity,decimal-leading-zero); position: absolute; top: 15px; left: 0; color: var(--place-accent); font-family: var(--font-heading); font-size: 30px; font-weight: 700; line-height: 1; }
+.place-sources ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.place-sources a { min-height: 42px; display: flex; align-items: center; padding: 9px 12px; border-left: 3px solid var(--place-accent); background: var(--color-soft); color: var(--color-text); font-size: 11px; font-weight: 800; line-height: 1.4; text-decoration: none; }
+.place-sources a:hover, .place-sources a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+
 .place-gallery { display: grid; grid-auto-columns: 86%; grid-auto-flow: column; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; scrollbar-width: thin; }
 .place-gallery button { height: 340px; overflow: hidden; padding: 0; border: 0; background: var(--color-text); cursor: zoom-in; scroll-snap-align: start; }
 .place-gallery img { width: 100%; height: 100%; object-fit: cover; }
@@ -881,6 +901,7 @@ body.place-open { overflow: hidden; }
   .journey-route, .real-route-line, .map-stop, .map-node-current .stop-halo, .real-map-pin.is-current { animation: none !important; }
   .map-stop { opacity: 1; }
   .journey-traveller { display: none; }
+  .point-card[data-place-id]:hover .point-image { transform: none; }
 }
 
 @media print {

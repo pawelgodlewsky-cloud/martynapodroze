@@ -1,6 +1,14 @@
 const DATA_FILES = ["destinations", "points", "routes", "restaurants", "budget", "tips", "transport", "glossary", "food", "sources", "emergency", "attractions"];
 const storageKey = "lombardia-ebook-v1";
 
+const PLACE_DETAIL_ALIASES = Object.freeze({
+  "d4-station": "bg-station",
+  "d4-porta-nuova": "bg-porta-nuova",
+  "d4-bus": "bg-station",
+  "d4-airport": "bg-station",
+  "co-return": "co-ferry-varenna"
+});
+
 const POINT_IMAGE_OVERRIDES = Object.freeze({
   "bg-porta-nuova": "assets/places/porta-nuova-generated.webp",
   "bg-funicular": "assets/places/funicolare-citta-alta-generated.webp",
@@ -103,10 +111,11 @@ function enrichPoint(point) {
   const minimumMinutes = point.minimumMinutes || Math.max(5, Math.round(plannedMinutes * (priority === "mustSee" ? .65 : .45) / 5) * 5);
   const energyWeight = point.energyWeight || (point.type === "transport" || point.type === "food" ? 1 : statuses.includes("OPCJONALNE") ? 3 : 2);
   const estimatedCost = point.estimatedCost ?? firstNumber(point.cost, 0);
+  const editorialDetail = data.attractions?.[point.id] || data.attractions?.[PLACE_DETAIL_ALIASES[point.id]] || null;
   return {
     ...point,
-    detail: data.attractions?.[point.id] || null,
-    pointKind: data.attractions?.[point.id] ? "major" : "supporting",
+    detail: placeDetail(point, editorialDetail),
+    pointKind: editorialDetail ? "major" : "supporting",
     priority,
     plannedMinutes,
     minimumMinutes,
@@ -118,6 +127,47 @@ function enrichPoint(point) {
     audio: point.audio || (point.audioUrl ? {url: point.audioUrl, duration: point.audioDuration, title: point.audioTitle} : null),
     photoSpot: point.photoSpot || (point.type === "photospot" ? {instruction: point.description, bestTime: point.why} : null),
     bonus: point.bonus || null
+  };
+}
+
+function placeDetail(point, editorial = null) {
+  const typeLabels = {
+    attraction: "MIEJSCE Z HISTORIĄ",
+    photospot: "MIEJSCE I KADR",
+    food: "MIEJSCE I SMAK",
+    transport: "PUNKT W PODRÓŻY"
+  };
+  const practicalFacts = [
+    `Znajdziesz to miejsce pod adresem: ${point.address}.`,
+    `W planie warto przeznaczyć na nie ${point.visit}.`,
+    `Koszt według założeń przewodnika: ${point.cost}.`,
+    `Dostęp i godziny: ${point.opening}.`,
+    point.next?.to
+      ? `Po tym punkcie trasa prowadzi dalej w trybie ${point.next.mode} — około ${point.next.minutes} min (${point.next.distance}).`
+      : `To ostatni punkt tego dnia; nie trzeba już dopasowywać kolejnego przejścia.`
+  ];
+  const defaultDescription = [
+    point.description,
+    `W planie to miejsce pełni konkretną rolę: ${point.why}`
+  ];
+  const editorialDescription = editorial?.description
+    ? (Array.isArray(editorial.description) ? editorial.description : [editorial.description])
+    : [];
+  const descriptions = editorialDescription.length
+    ? editorialDescription
+    : [point.description, editorial?.history || defaultDescription[1]].filter(Boolean);
+  const sources = editorial?.sources?.length
+    ? editorial.sources
+    : point.officialUrl
+      ? [{ label: "Oficjalna strona miejsca", url: point.officialUrl }]
+      : [];
+
+  return {
+    ...(editorial || {}),
+    tag: editorial?.tag || typeLabels[point.type] || "PUNKT NA TRASIE",
+    description: descriptions,
+    facts: editorial?.facts?.length ? editorial.facts.slice(0, 5) : practicalFacts,
+    sources
   };
 }
 
@@ -553,7 +603,7 @@ function pointCard(point, disabledMode = null) {
   const cardImageMarkup = cardImages.length === 1
     ? `<img class="point-image" src="${cardImages[0].src}" style="object-position:${cardImages[0].position || "center"}" alt="${escapeHtml(cardImages[0].alt || point.name)}" loading="lazy">`
     : `<div class="point-image-stack" data-count="${Math.min(cardImages.length, 2)}">${cardImages.slice(0, 2).map(image => `<img class="point-image" src="${image.src}" style="object-position:${image.position || "center"}" alt="${escapeHtml(image.alt || point.name)}" loading="lazy">`).join("")}</div>`;
-  return `<article class="point-card ${point.pointKind === "major" ? "major-point" : "supporting-point"} ${done ? "completed" : ""} ${isCurrent ? "is-current" : ""} ${disabled ? `mode-disabled ${disabledMode}-disabled` : ""}" data-order="${point.order}" id="point-${point.id}" style="--point-accent:${day.accent}" ${disabled ? `aria-disabled="true"` : ""}>
+  return `<article class="point-card ${point.pointKind === "major" ? "major-point" : "supporting-point"} ${done ? "completed" : ""} ${isCurrent ? "is-current" : ""} ${disabled ? `mode-disabled ${disabledMode}-disabled` : ""}" data-order="${point.order}" data-place-id="${point.id}" id="point-${point.id}" style="--point-accent:${day.accent}" ${disabled ? `aria-disabled="true"` : ""}>
     ${cardImageMarkup}
     <div class="point-content">
       ${done ? `<span class="completion-badge" role="status">✓ Ukończone</span>` : ""}
@@ -570,7 +620,7 @@ function pointCard(point, disabledMode = null) {
         <div><span>godziny</span><b>${escapeHtml(point.opening)}</b></div><div><span>rezerwacja</span><b>${escapeHtml(point.reservation)}</b></div>
       </div>
       <div class="why-box"><b>Dlaczego warto:</b> ${escapeHtml(point.why)}</div>
-      ${point.detail ? `<button class="place-button" data-action="open-place" data-id="${point.id}"><span>Zobacz miejsce</span><span aria-hidden="true">→</span></button>` : ""}
+      <button class="place-button" data-action="open-place" data-id="${point.id}" aria-label="Odkryj ${escapeHtml(point.name)} i poznaj 5 ciekawostek"><span><b>Odkryj miejsce</b><small>opis · historia · 5 ciekawostek</small></span><span aria-hidden="true">↗</span></button>
       ${point.officialUrl ? `<a class="official-link" href="${point.officialUrl}" target="_blank" rel="noopener">Sprawdź dziś / bilety ↗</a>` : ""}
       ${point.audio?.url ? `<div class="audio-tip"><b>Martyna mówi · ${escapeHtml(point.audio.duration || "krótkie audio")}</b><audio controls preload="none" src="${point.audio.url}" aria-label="${escapeHtml(point.audio.title || `Audio o ${point.name}`)}"></audio></div>` : ""}
       ${point.photoSpot?.instruction ? `<div class="photo-spot"><b>Najlepszy kadr</b><p>${escapeHtml(point.photoSpot.instruction)}</p>${point.photoSpot.bestTime ? `<small>Wskazówka: ${escapeHtml(point.photoSpot.bestTime)}</small>` : ""}${disabled ? "" : `<a href="${point.photoSpot.mapsUrl || guideLink(point)}" target="_blank" rel="noopener">Otwórz punkt ↗</a>`}</div>` : ""}
@@ -589,12 +639,12 @@ function renderPlace(point) {
   const detail = point.detail;
   if (!detail) return;
   const day = dayInfo(point.day);
-  const majorPoints = majorPointsForDay(point.day);
-  const index = majorPoints.findIndex(item => item.id === point.id);
-  const previous = majorPoints[index - 1] || null;
-  const next = majorPoints[index + 1] || null;
-  const completed = majorPoints.filter(item => state.done.includes(item.id)).length;
-  const percent = majorPoints.length ? Math.round(completed / majorPoints.length * 100) : 0;
+  const placePoints = pointsForDay(point.day);
+  const index = placePoints.findIndex(item => item.id === point.id);
+  const previous = placePoints[index - 1] || null;
+  const next = placePoints[index + 1] || null;
+  const completed = placePoints.filter(item => state.done.includes(item.id)).length;
+  const percent = placePoints.length ? Math.round(completed / placePoints.length * 100) : 0;
   const done = state.done.includes(point.id);
   const images = detail.images?.length ? detail.images : [{ src: pointImage(point) || day.hero, alt: point.name, position: point.position || "center" }];
   const hero = images[0];
@@ -623,7 +673,7 @@ function renderPlace(point) {
           <img src="${hero.src}" alt="${escapeHtml(hero.alt || point.name)}" style="object-position:${hero.position || "center"}" fetchpriority="high">
           <span class="place-zoom" aria-hidden="true">Powiększ</span>
         </button>
-        <div class="place-route-mark" aria-hidden="true"><b>${String(index + 1).padStart(2, "0")}</b><span>/ ${String(majorPoints.length).padStart(2, "0")}</span></div>
+        <div class="place-route-mark" aria-hidden="true"><b>${String(index + 1).padStart(2, "0")}</b><span>/ ${String(placePoints.length).padStart(2, "0")}</span></div>
       </section>
 
       <div class="place-copy">
@@ -634,16 +684,18 @@ function renderPlace(point) {
           ${point.reservationStamp ? `<div class="reservation-stamp" role="note"><span aria-hidden="true">!</span><b>${escapeHtml(point.reservationStamp)}</b></div>` : ""}
         </div>
 
-        <section class="place-progress" aria-label="Postęp ważnych miejsc dnia">
-          <div><span>Postęp dnia</span><b>${completed} / ${majorPoints.length} ważnych miejsc</b></div>
-          <div class="progress-line" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}" aria-valuetext="Odwiedzono ${completed} z ${majorPoints.length} ważnych miejsc"><i style="width:${percent}%"></i></div>
+        <section class="place-progress" aria-label="Postęp punktów dnia">
+          <div><span>Postęp dnia</span><b>${completed} / ${placePoints.length} punktów</b></div>
+          <div class="progress-line" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}" aria-valuetext="Odwiedzono ${completed} z ${placePoints.length} punktów"><i style="width:${percent}%"></i></div>
         </section>
 
-        ${percent === 100 ? `<section class="place-day-complete" role="status"><span>Dzień ${day.day}</span><h2>${escapeHtml(day.city)} zaliczone</h2><p>${completed} z ${majorPoints.length} ważnych miejsc oznaczonych jako odwiedzone.</p></section>` : ""}
+        ${percent === 100 ? `<section class="place-day-complete" role="status"><span>Dzień ${day.day}</span><h2>${escapeHtml(day.city)} zaliczone</h2><p>${completed} z ${placePoints.length} punktów oznaczonych jako odwiedzone.</p></section>` : ""}
 
         <section class="place-description" aria-label="O miejscu">
           ${descriptions.map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join("")}
         </section>
+
+        <section class="place-section curiosity-section" aria-labelledby="curiosityTitle"><div class="place-section-heading"><span>Warto wiedzieć</span><h2 id="curiosityTitle">5 ciekawostek</h2></div><ol>${detail.facts.slice(0, 5).map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section>
 
         ${quickInfo.length ? `<section class="place-section" aria-labelledby="quickInfoTitle"><div class="place-section-heading"><span>Na miejscu</span><h2 id="quickInfoTitle">Najważniejsze informacje</h2></div><dl class="quick-info">${quickInfo.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl></section>` : ""}
 
@@ -654,6 +706,8 @@ function renderPlace(point) {
         ${detail.shortVisit ? `<section class="place-note short-visit"><span>Gdy masz mało czasu</span><h2>Zobacz sedno</h2><p>${escapeHtml(detail.shortVisit)}</p></section>` : ""}
 
         ${detail.highlights?.length ? `<section class="place-section highlights-section"><div class="place-section-heading"><span>Krótka lista</span><h2>Nie przegap</h2></div><ol>${detail.highlights.slice(0, 5).map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section>` : ""}
+
+        ${detail.sources?.length ? `<section class="place-section place-sources" aria-labelledby="placeSourcesTitle"><div class="place-section-heading"><span>Sprawdzone informacje</span><h2 id="placeSourcesTitle">Źródła</h2></div><ul>${detail.sources.map(source => `<li><a href="${source.url}" target="_blank" rel="noopener">${escapeHtml(source.label)} ↗</a></li>`).join("")}</ul></section>` : ""}
 
         ${images.length > 1 ? `<section class="place-section gallery-section" aria-labelledby="galleryTitle"><div class="place-section-heading"><span>${images.length} zdjęcia</span><h2 id="galleryTitle">Galeria</h2></div><div class="place-gallery">${images.map((image, imageIndex) => `<button data-action="open-image" data-src="${image.src}" data-alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}"><img src="${image.src}" alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}" style="object-position:${image.position || "center"}" loading="lazy"></button>`).join("")}</div></section>` : ""}
 
@@ -965,7 +1019,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=26", "app.js?v=26", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=33", "app.js?v=33", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
@@ -1071,7 +1125,11 @@ function switchDay(day) {
 
 document.addEventListener("click", event => {
   const button = event.target.closest("[data-action], [data-view]");
-  if (!button) return;
+  if (!button) {
+    const card = event.target.closest(".point-card[data-place-id]");
+    if (card && !event.target.closest("a, button, input, select, textarea, audio")) openPlace(card.dataset.placeId);
+    return;
+  }
   if (button.dataset.view) return showView(button.dataset.view);
   const action = button.dataset.action;
   if (action === "open-place") openPlace(button.dataset.id);

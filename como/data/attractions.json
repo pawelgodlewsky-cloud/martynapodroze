@@ -14,6 +14,16 @@
       "Palazzo della Ragione",
       "Widok na Campanone"
     ],
+    "facts": [
+      "Plac ukształtował się jako świeckie centrum władzy Città Alta, obok religijnego Piazza Duomo.",
+      "Fontannę Contarini podarował miastu w 1780 roku podestà Alvise Contarini.",
+      "Palazzo della Ragione należy do najstarszych zachowanych pałaców komunalnych we Włoszech.",
+      "Pod arkadami Palazzo della Ragione przechodzi się bezpośrednio na Piazza Duomo.",
+      "Nad placem góruje Campanone, którego dzwon do dziś rozbrzmiewa wieczorną serią uderzeń."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — Piazza Vecchia", "url": "https://www.visitbergamo.net/oggetto/piazza-vecchia/" }
+    ],
     "images": [
       { "src": "assets/places/piazza-vecchia-generated.webp", "alt": "Piazza Vecchia z fontanną Contarini i Campanone", "position": "50% 46%" }
     ]
@@ -33,6 +43,17 @@
       "Ogród botaniczny wzdłuż brzegu",
       "Tarasy i loggie nad wodą",
       "Widoki na jezioro z ogrodu"
+    ],
+    "facts": [
+      "Willa powstała z przekształcenia żeńskiego klasztoru cysterskiego założonego pod koniec XII wieku.",
+      "Jej dzisiejszy eklektyczny wygląd jest wynikiem przebudów kolejnych właścicieli.",
+      "Ogród biegnie tarasami wzdłuż brzegu jeziora na odcinku blisko dwóch kilometrów.",
+      "Wśród wnętrz znajduje się Sala Fermi, gdzie Enrico Fermi prowadził ostatnie wykłady w 1954 roku.",
+      "W ogrodzie rosną razem gatunki śródziemnomorskie i egzotyczne: palmy, cytrusy, agawy i juki."
+    ],
+    "sources": [
+      { "label": "Varenna Turismo — historia Villa Monastero", "url": "https://varennaturismo.com/villa-monastero/" },
+      { "label": "Villa Monastero — oficjalne informacje", "url": "https://www.villamonastero.eu/en/" }
     ],
     "images": [
       { "src": "assets/places/villa-monastero-generated.webp", "alt": "Ogród i tarasy Villa Monastero nad jeziorem Como", "position": "50% 50%" }
@@ -54,6 +75,16 @@
       "Główna nawa katedry",
       "Dach i detale iglic przy dobrej pogodzie"
     ],
+    "facts": [
+      "Budowę katedry rozpoczęto w 1386 roku, a prace i dekorowanie trwały przez stulecia.",
+      "Duomo obłożono jasnym marmurem wydobywanym w Candoglii nad jeziorem Maggiore.",
+      "Na najwyższej iglicy stoi pozłacana Madonnina ustawiona w 1774 roku.",
+      "Katedrę zdobią tysiące rzeźb, gargulców i detali wykonanych przez artystów wielu epok.",
+      "Pod posadzką zachowały się relikty wcześniejszych budowli sakralnych i baptysterium."
+    ],
+    "sources": [
+      { "label": "Duomo Milano — kompleks monumentalny", "url": "https://www.duomomilano.it/en/" }
+    ],
     "images": [
       { "src": "assets/places/duomo-milano-generated.webp", "alt": "Fasada Duomo di Milano od strony placu", "position": "50% 45%" }
     ]
@@ -74,8 +105,450 @@
       "Mozaikowa posadzka",
       "Perspektywa nawy w stronę Piazza della Scala"
     ],
+    "facts": [
+      "Galerię wzniesiono w drugiej połowie XIX wieku według projektu Giuseppe Mengoniego.",
+      "Jej nazwa upamiętnia pierwszego króla zjednoczonych Włoch, Wiktora Emanuela II.",
+      "Krzyżujące się pasaże przykrywa konstrukcja z żelaza i szkła, nowatorska w swojej epoce.",
+      "Oś galerii łączy Piazza del Duomo z Piazza della Scala.",
+      "Projektant Giuseppe Mengoni zginął po upadku z konstrukcji krótko przed uroczystym otwarciem."
+    ],
+    "sources": [
+      { "label": "YesMilano — centrum Mediolanu", "url": "https://www.yesmilano.it/en/neighborhoods/things-to-do-near-duomo" }
+    ],
     "images": [
       { "src": "assets/places/galleria-vittorio-generated.webp", "alt": "Wnętrze Galleria Vittorio Emanuele II pod szklaną kopułą", "position": "50% 45%" }
+    ]
+  },
+  "bg-porta-nuova": {
+    "tag": "BRAMA CITTÀ BASSA",
+    "history": "Porta Nuova wyznacza monumentalne wejście do nowoczesnej części Bergamo. Dzisiejsze propyleje zastąpiły w 1837 roku skromniejsze przejście w dawnych murach Muraine i stały się osią rozwoju Città Bassa.",
+    "facts": [
+      "Dwa neoklasycystyczne pawilony powstały w miejscu dawnego przejścia przez mury Muraine.",
+      "Nową bramę otwarto w 1837 roku, a rok później uruchomiono reprezentacyjną Strada Ferdinandea.",
+      "Do 1901 roku w pawilonach pracowała straż kontrolująca towary wwożone do miasta.",
+      "Oś Viale Papa Giovanni XXIII prowadzi stąd niemal prosto do dworca kolejowego.",
+      "Z placu celowo pozostawiono otwarty widok na sylwetę Città Alta."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — Porta Nuova", "url": "https://www.visitbergamo.net/oggetto/porta-nuova/" }
+    ]
+  },
+  "bg-funicular": {
+    "tag": "HISTORYCZNA KOLEJ",
+    "history": "Funicolare di Bergamo łączy dolne miasto z Città Alta, przebijając się przez pas weneckich murów. Uruchomiona w 1887 roku kolej zmieniła codzienny dojazd na wzgórze i do dziś pozostaje częścią transportu miejskiego.",
+    "facts": [
+      "Kolej miejska rozpoczęła regularną pracę w 1887 roku.",
+      "Dolna stacja stoi przy Viale Vittorio Emanuele II, a górna wychodzi na Piazza Mercato delle Scarpe.",
+      "Przejazd prowadzi przez historyczny pas fortyfikacji otaczających Città Alta.",
+      "Funicolare działa jako zwykły element sieci ATB, a nie wyłącznie atrakcja turystyczna.",
+      "Bergamo ma także drugą kolej linową prowadzącą z Colle Aperto na wzgórze San Vigilio."
+    ],
+    "sources": [
+      { "label": "ATB Bergamo — funicolari", "url": "https://www.atb.bergamo.it/en/other-services/tourist-services" },
+      { "label": "Visit Bergamo — Città Alta", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
+    ]
+  },
+  "bg-mercato": {
+    "tag": "DAWNY TARG SZEWCÓW",
+    "history": "Piazza Mercato delle Scarpe należała do najważniejszych miejsc handlu w średniowiecznym Bergamo. Leżała przy końcu rzymskiego decumanus, a jej nazwa przypomina o cechu szewców działającym tu od XIII wieku.",
+    "facts": [
+      "Plac leży przy zakończeniu dawnego rzymskiego decumanus, dzisiejszej Via Gombito.",
+      "Nazwa pochodzi od cechu Caligari, czyli szewców i wytwórców obuwia.",
+      "Siedziba cechu mieściła się tu już w XIII wieku.",
+      "Fasada dawnego domu cechowego przetrwała w budynku górnej stacji funicolare.",
+      "Kolej linowa dociera na plac od 1887 roku, ale średniowieczny układ przestrzeni pozostał czytelny."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — Piazza Mercato delle Scarpe", "url": "https://www.visitbergamo.net/oggetto/piazza-mercato-delle-scarpe/" }
+    ]
+  },
+  "bg-basilica": {
+    "tag": "DWA SKARBY PIAZZA DUOMO",
+    "history": "Bazylika Santa Maria Maggiore powstała jako miejska świątynia w XII wieku, a w kolejnych stuleciach otrzymała niezwykle bogate wnętrze. Przylegająca Cappella Colleoni to renesansowe mauzoleum kondotiera Bartolomea Colleoniego.",
+    "facts": [
+      "Budowę bazyliki rozpoczęto w 1137 roku po miejskiej przysiędze złożonej w czasie epidemii.",
+      "Świątynia nie ma klasycznej zachodniej fasady; główne wejścia znajdują się po bokach.",
+      "Przy portalach stoją charakterystyczne lwy z czerwonego i białego marmuru.",
+      "W bazylice znajduje się pomnik grobowy kompozytora Gaetana Donizettiego.",
+      "Kaplica Colleoniego została zaprojektowana w XV wieku przez Giovanniego Antonia Amadea."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — Basilica Santa Maria Maggiore", "url": "https://www.visitbergamo.net/oggetto/basilica-s-maria-maggiore/" }
+    ]
+  },
+  "bg-campanone": {
+    "tag": "WIEŻA MIEJSKIEGO DZWONU",
+    "history": "Campanone, czyli Torre Civica, wyrósł z średniowiecznej wieży rodu Suardi i z czasem stał się wieżą miejską. Jego dzwon regulował rytm życia Città Alta, informując między innymi o zamykaniu bram.",
+    "facts": [
+      "Wieża ma ponad 50 metrów wysokości i dominuje nad Piazza Vecchia.",
+      "Na taras prowadzą schody, ale w obiekcie działa również winda.",
+      "Największy dzwon dał wieży popularną nazwę Campanone — „wielki dzwon”.",
+      "Każdego wieczoru o 22:00 rozlega się tradycyjna seria stu uderzeń.",
+      "Sygnał przypomina czasy, gdy po zmroku zamykano bramy miasta w murach."
+    ],
+    "sources": [
+      { "label": "Museo delle Storie di Bergamo — Campanone", "url": "https://museodellestorie.bergamo.it/luogo/campanone/" }
+    ]
+  },
+  "bg-colle-aperto": {
+    "tag": "SMAK BERGAMO",
+    "history": "Colle Aperto od wieków jest zachodnim węzłem Città Alta, blisko bramy Sant'Alessandro i drogi na San Vigilio. Dziś plac kojarzy się także z lokalnym smakiem: właśnie w tej okolicy narodziły się lody stracciatella.",
+    "facts": [
+      "Plac leży przy zachodnim wejściu do Città Alta, obok Porta Sant'Alessandro.",
+      "Stąd odchodzi druga bergamska funicolare, prowadząca na San Vigilio.",
+      "Stracciatellę lodową stworzył Enrico Panattoni w pobliskiej La Marianna w 1961 roku.",
+      "Nazwa deseru nawiązuje do czekoladowych „strzępków” zastygających w masie lodowej.",
+      "Colle Aperto łączy główną ulicę starego miasta z zielonymi wzgórzami na zachodzie."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — Città Alta i stracciatella", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
+    ]
+  },
+  "bg-san-vigilio": {
+    "tag": "TWIERDZA NAD MIASTEM",
+    "history": "Wzgórze San Vigilio było strategicznym punktem obrony Bergamo, bo pozwalało kontrolować Città Alta, doliny i równinę. Zamek wielokrotnie rozbudowywano pod rządami Viscontich i Republiki Weneckiej.",
+    "facts": [
+      "San Vigilio wznosi się wyżej niż właściwa Città Alta.",
+      "Fortyfikacje kontrolowały drogi prowadzące z miasta ku dolinom Brembana i Seriana.",
+      "Zamek zmieniał formę wraz z rozwojem artylerii i potrzebami kolejnych władców.",
+      "Do ruin można dojść pieszo albo podjechać drugą bergamską kolejką linową.",
+      "Dziś teren działa przede wszystkim jako bezpłatny park i punkt panoramiczny."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — San Vigilio i Città Alta", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
+    ]
+  },
+  "bg-porta-san-giacomo": {
+    "tag": "MURY UNESCO",
+    "history": "Porta San Giacomo jest najbardziej reprezentacyjną bramą weneckich murów Bergamo. Fortyfikacje wzniesiono w XVI wieku, gdy miasto należało do Republiki Weneckiej i stanowiło jej zachodnią placówkę obronną.",
+    "facts": [
+      "Weneckie mury budowano w latach 1561–1588.",
+      "Bramę wykończono jasnym marmurem, dzięki czemu mocno odcina się od ceglanej zabudowy.",
+      "Na fasadzie widnieje skrzydlaty lew św. Marka, symbol Republiki Weneckiej.",
+      "System murów otacza Città Alta na długości ponad pięciu kilometrów.",
+      "W 2017 roku fortyfikacje Bergamo wpisano wraz z innymi dziełami obronnymi Wenecji na listę UNESCO."
+    ],
+    "sources": [
+      { "label": "UNESCO — Venetian Works of Defence", "url": "https://whc.unesco.org/en/list/1533/" }
+    ]
+  },
+  "co-lovers": {
+    "tag": "SPACER NAD WODĄ",
+    "history": "Nadmorska kładka łącząca Olivedo ze starym centrum Varenny powstała jako współczesne udogodnienie, a nie dawna droga. Pomysł narodził się w 1976 roku, a trasę otwarto w 1983 roku.",
+    "facts": [
+      "Trasę wymyślił Giorgio Monico, burmistrz Varenny i architekt.",
+      "Pierwotna nazwa brzmiała Passerella degli Studiosi — Kładka Uczonych.",
+      "Nazwa odnosiła się do naukowców przyjeżdżających na kursy fizyki w Villa Monastero.",
+      "Kładkę oficjalnie otwarto 27 lutego 1983 roku.",
+      "W 2020 roku nadano jej imię Giorgia Monico, choć popularnie nadal nazywa się ją Spacerem Zakochanych."
+    ],
+    "sources": [
+      { "label": "Varenna Turismo — historia kładki", "url": "https://varennaturismo.com/intitolazione-della-passerella-a-giorgio-monico/" }
+    ]
+  },
+  "co-san-giorgio": {
+    "tag": "SERCE VARENNY",
+    "history": "Piazza San Giorgio jest historycznym centrum Varenny, skupionym wokół średniowiecznego kościoła parafialnego. Kamienne uliczki łączą plac z brzegiem jeziora, willami i dawnymi drogami prowadzącymi do Vezio.",
+    "facts": [
+      "Kościół San Giorgio ma średniowieczne pochodzenie i zachował romańsko-gotyckie elementy.",
+      "Jego posadzkę wykonano z charakterystycznego czarnego marmuru z Varenny.",
+      "Na kontrfasadzie zachował się niezwykły fresk Sądu z przedstawieniem piekła.",
+      "Wewnątrz znajduje się kamienna Pietà z końca XV wieku.",
+      "Z placu odchodzą schodkowe contrade, które były podstawową siecią pieszą dawnej osady."
+    ],
+    "sources": [
+      { "label": "Varenna Turismo — kościół San Giorgio", "url": "https://varennaturismo.com/chiesa-di-san-giorgio/" }
+    ]
+  },
+  "co-ferry-varenna": {
+    "tag": "WĘZEŁ ŚRODKOWEGO JEZIORA",
+    "history": "Przystań w Varennie jest częścią publicznej żeglugi po jeziorze Como. Łączy wschodni brzeg i kolej z promowym czworokątem Varenna–Bellagio–Menaggio–Cadenabbia.",
+    "facts": [
+      "Varenna jest jednym z czterech głównych portów promowych środkowej części jeziora.",
+      "Na tej części sieci kursują zarówno statki pasażerskie, jak i promy przewożące pojazdy.",
+      "Połączenie z Bellagio przecina centralną część jeziora zamiast objeżdżać ją drogą.",
+      "Dworzec Varenna-Esino leży około 650 metrów od przystani, ale wyżej na zboczu.",
+      "Bilet kolejowy i regionalny IVOL nie zastępuje osobnego biletu Navigazione Laghi."
+    ],
+    "sources": [
+      { "label": "Navigazione Laghi — rozkłady jeziora Como", "url": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/" }
+    ]
+  },
+  "co-bellagio": {
+    "tag": "PORT NA ROZWIDLENIU JEZIORA",
+    "history": "Bellagio leży na cyplu, w miejscu gdzie od północy jezioro Como rozdziela się na dwa południowe ramiona. Przystań przy Piazza Mazzini od pokoleń jest głównym wejściem do miasteczka od strony wody.",
+    "facts": [
+      "Bellagio zajmuje centralny cypel pomiędzy ramionami jeziora prowadzącymi do Como i Lecco.",
+      "Piazza Mazzini skupia przystanie, hotele i najniższą część historycznego centrum.",
+      "Promy łączą Bellagio z Varenną, Menaggio i Cadenabbią.",
+      "Historyczna zabudowa wznosi się tarasami, dlatego większość spacerów od portu zaczyna się pod górę.",
+      "Sprawdzenie powrotu zaraz po przypłynięciu chroni plan przed sezonowymi zmianami rozkładu."
+    ],
+    "sources": [
+      { "label": "Navigazione Laghi — Bellagio i Varenna", "url": "https://www.navigazionelaghi.it/en/tickets-and-timetables-lake-como/" }
+    ]
+  },
+  "co-salita": {
+    "tag": "SCHODY BELLAGIO",
+    "history": "Salita Serbelloni należy do sieci stromych uliczek, które od stuleci łączą nabrzeże Bellagio z górną częścią osady. Dzisiejszy pocztówkowy kadr wyrósł z bardzo praktycznego układu miasteczka na zboczu.",
+    "facts": [
+      "Słowo salita oznacza po włosku podejście lub ulicę prowadzącą pod górę.",
+      "Schody łączą niższe ulice przy jeziorze z Via Giuseppe Garibaldi.",
+      "Kamienne stopnie są częścią historycznej pieszej siatki Bellagio, a nie dekoracyjną konstrukcją.",
+      "Nazwa Serbelloni przypomina rodzinę związaną z pobliską willą i wzgórzem.",
+      "Najbardziej charakterystyczny widok powstaje z góry, z jeziorem zamykającym perspektywę uliczki."
+    ]
+  },
+  "co-basilica": {
+    "tag": "ROMAŃSKIE BELLAGIO",
+    "history": "Basilica di San Giacomo powstała między XI a XII wiekiem i jest najważniejszą świątynią historycznego Bellagio. Mimo późniejszych przebudów zachowała czytelną romańską bryłę z lokalnego kamienia.",
+    "facts": [
+      "Świątynię wzniesiono w epoce romańskiej, między XI i XII wiekiem.",
+      "Jej masywna kamienna bryła wyróżnia się na tle późniejszej zabudowy Bellagio.",
+      "Kościół przechodził barokowe zmiany, a późniejsze restauracje przywracały mu romański charakter.",
+      "Dzwonnica wykorzystuje formy przypominające średniowieczną wieżę obronną.",
+      "Bazylika stoi przy górnej osi miasteczka, na naturalnej drodze z centrum ku Punta Spartivento."
+    ]
+  },
+  "co-spartivento": {
+    "tag": "TRZY KIERUNKI JEZIORA",
+    "history": "Punta Spartivento jest końcem półwyspu Bellagio. Sama nazwa oznacza miejsce „rozdzielające wiatr”, a geografia cypla pozwala jednocześnie zobaczyć północ jeziora i oba południowe ramiona.",
+    "facts": [
+      "Cypel leży dokładnie przy rozwidleniu jeziora Como na kształt odwróconej litery Y.",
+      "Na zachód otwiera się ramię prowadzące do Como, a na wschód ramię prowadzące do Lecco.",
+      "W kierunku północnym widać szeroką część jeziora biegnącą ku Alpom.",
+      "Nazwa Spartivento dosłownie odnosi się do rozdzielania wiatrów.",
+      "Punkt jest publiczny i zapewnia jeden z nielicznych szerokich widoków bez biletu w Bellagio."
+    ]
+  },
+  "co-pescallo": {
+    "tag": "DAWNA OSADA RYBACKA",
+    "history": "Pescallo to mała osada po wschodniej stronie półwyspu Bellagio, zwrócona ku ramieniu Lecco. Jej spokojna zatoka i nazwa wiążą się z tradycją rybacką, odmienną od reprezentacyjnego frontu promowego.",
+    "facts": [
+      "Pescallo leży po przeciwnej stronie półwyspu niż główna przystań Bellagio.",
+      "Zatoka otwiera się na wschodnie ramię jeziora prowadzące do Lecco.",
+      "Osada była historycznie związana z rybołówstwem i lokalnym ruchem łodzi.",
+      "Do Pescallo schodzi się pieszo z górnej części Bellagio po stromych uliczkach.",
+      "Brak głównego terminalu promowego sprawia, że rytm miejsca jest spokojniejszy niż przy Piazza Mazzini."
+    ]
+  },
+  "mi-san-satiro": {
+    "tag": "ILUZJA BRAMANTEGO",
+    "history": "Santa Maria presso San Satiro przebudowano w epoce renesansu w sąsiedztwie starszego sanktuarium. Brak miejsca za ołtarzem skłonił Donata Bramantego do stworzenia słynnej iluzji głębokiego prezbiterium.",
+    "facts": [
+      "Renesansową przebudowę rozpoczęto w latach 70. XV wieku.",
+      "Za ołtarzem nie było miejsca na pełną apsydę, ponieważ tuż za kościołem biegła ulica.",
+      "Bramante stworzył perspektywiczne stiuki wyglądające jak głęboka przestrzeń.",
+      "Pozorna absyda ma w rzeczywistości mniej niż metr głębokości.",
+      "Iluzję najlepiej widać z osi głównej nawy; z boku jej płytkość staje się oczywista."
+    ],
+    "sources": [
+      { "label": "YesMilano — mapa sztuki i kultury", "url": "https://www.yesmilano.it/system/files/allegati/paragrafi/22436/ArtAndCulture.pdf" }
+    ]
+  },
+  "mi-scala": {
+    "tag": "ŚWIĄTYNIA OPERY",
+    "history": "Teatro alla Scala otwarto w 1778 roku jako nowy teatr dworski Mediolanu. Zaprojektowany przez Giuseppe Piermariniego gmach stanął w miejscu kościoła Santa Maria alla Scala, od którego przejął nazwę.",
+    "facts": [
+      "Teatr otwarto 3 sierpnia 1778 roku operą Antonia Salieriego „Europa riconosciuta”.",
+      "Nazwa La Scala pochodzi od kościoła Santa Maria alla Scala stojącego wcześniej w tym miejscu.",
+      "Widownię zaprojektowano w układzie podkowy z wieloma kondygnacjami lóż.",
+      "Gmach został ciężko uszkodzony podczas bombardowania Mediolanu w 1943 roku.",
+      "Po odbudowie teatr otwarto ponownie w 1946 roku koncertem pod dyrekcją Artura Toscaniniego."
+    ],
+    "sources": [
+      { "label": "Museo Teatrale alla Scala — muzeum i teatr", "url": "https://www.museoscala.org/en/" }
+    ]
+  },
+  "mi-brera": {
+    "tag": "ARTYSTYCZNA DZIELNICA",
+    "history": "Brera rozwinęła swoją artystyczną tożsamość wokół Palazzo di Brera, gdzie działały instytucje nauki i sztuki. Akademia i Pinakoteka przyciągnęły studentów, artystów, antykwariuszy i wydawców.",
+    "facts": [
+      "Nazwa Brera wywodzi się prawdopodobnie od średniowiecznego słowa braida oznaczającego teren podmiejski lub łąkę.",
+      "Palazzo di Brera mieści Akademię Sztuk Pięknych, Pinakotekę, bibliotekę i obserwatorium.",
+      "Akademię założono w XVIII wieku, a Pinakotekę otwarto publicznie w epoce napoleońskiej.",
+      "Dziedziniec pałacu zdobi pomnik Napoleona przedstawionego jako Mars Pokój Czyniący.",
+      "W pobliżu zachował się XVIII-wieczny ogród botaniczny Orto Botanico di Brera."
+    ]
+  },
+  "mi-castello": {
+    "tag": "SIEDEM WIEKÓW MEDIOLANU",
+    "history": "Castello Sforzesco zaczynał jako XIV-wieczna twierdza Viscontich, potem stał się renesansową rezydencją Sforzów. Pod obcymi rządami służył jako cytadela i koszary, a pod koniec XIX wieku przekształcono go w kompleks muzealny.",
+    "facts": [
+      "Pierwszą twierdzę wzniósł Galeazzo II Visconti w latach 1360–1370.",
+      "Francesco Sforza odbudował zamek po zniszczeniach z czasów Republiki Ambrozjańskiej.",
+      "Na dworze Ludovica il Moro pracowali między innymi Leonardo da Vinci i Bramante.",
+      "W 1521 roku dawna Torre del Filarete eksplodowała, gdy przechowywano w niej amunicję.",
+      "Dzisiejszą wieżę wejściową zrekonstruował Luca Beltrami podczas wielkiej restauracji pod koniec XIX wieku."
+    ],
+    "sources": [
+      { "label": "Comune di Milano — historia Castello Sforzesco", "url": "https://www.comune.milano.it/it/web/castello-sforzesco/scopri-il-castello/la-storia-del-castello" }
+    ]
+  },
+  "mi-sempione": {
+    "tag": "ZIELONA OŚ MIASTA",
+    "history": "Parco Sempione urządzono pod koniec XIX wieku na dawnym terenie ćwiczeń wojskowych za Castello Sforzesco. Projekt połączył zamek z reprezentacyjną osią prowadzącą ku Arco della Pace.",
+    "facts": [
+      "Park powstał w latach 1888–1894 według projektu Emilia Alemagny.",
+      "Teren wcześniej służył jako wojskowy plac ćwiczeń przy zamku.",
+      "Oś widokowa prowadzi od Castello Sforzesco do Arco della Pace.",
+      "W parku znajdują się Arena Civica, Palazzo dell'Arte i wieża Torre Branca.",
+      "Krajobraz zaprojektowano w swobodnym stylu angielskim, z krętymi alejami i stawem."
+    ]
+  },
+  "mi-san-maurizio": {
+    "tag": "FRESKI ZA KLASZTORNĄ ŚCIANĄ",
+    "history": "San Maurizio była kościołem wielkiego żeńskiego Monastero Maggiore. W XVI wieku wnętrze podzielono na część publiczną i chór mniszek, a niemal każdą powierzchnię pokryły renesansowe freski.",
+    "facts": [
+      "Obecną świątynię budowano na początku XVI wieku przy klasztorze benedyktynek.",
+      "Ściana działowa oddzielała wiernych od chóru mniszek klauzurowych.",
+      "Znaczną część dekoracji wykonali Bernardino Luini i artyści z jego kręgu.",
+      "Freski pokrywają obie części kościoła, dlatego nie warto kończyć wizyty w pierwszej sali.",
+      "Bogactwo malowideł przyniosło świątyni popularny przydomek „Kaplicy Sykstyńskiej Mediolanu”."
+    ],
+    "sources": [
+      { "label": "Comune di Milano — San Maurizio i Monastero Maggiore", "url": "https://www2.comune.milano.it/web/museo-archeologico-milano/-/la-chiesa-di-san-maurizio-e-il-monastero-maggiore-marzo-2026" }
+    ]
+  },
+  "mi-grazie": {
+    "tag": "LEONARDO I KLASZTOR",
+    "history": "Santa Maria delle Grazie jest dominikańskim kompleksem rozwijanym od XV wieku. W refektarzu klasztoru Leonardo da Vinci namalował Ostatnią Wieczerzę, eksperymentując z techniką, która zaczęła niszczeć już niedługo po ukończeniu dzieła.",
+    "facts": [
+      "Dominikański kompleks zaczęto budować w latach 60. XV wieku.",
+      "Renesansową część z trybuną wiąże się z działalnością Donata Bramantego.",
+      "Leonardo pracował nad Ostatnią Wieczerzą około 1495–1498 roku.",
+      "Nie jest to klasyczny fresk: artysta malował na suchej ścianie, co pogorszyło trwałość dzieła.",
+      "Refektarz przetrwał bombardowanie w 1943 roku; sąsiednie partie budynku zostały zniszczone, a ściana obrazu ocalała."
+    ],
+    "sources": [
+      { "label": "Museo del Cenacolo Vinciano — informacje", "url": "https://cenacolovinciano.org/en/" },
+      { "label": "UNESCO — Santa Maria delle Grazie", "url": "https://whc.unesco.org/en/list/93/" }
+    ]
+  },
+  "mi-colonne": {
+    "tag": "RZYMSKI MEDIOLAN",
+    "history": "Colonne di San Lorenzo są najbardziej widocznym zespołem rzymskich kolumn w Mediolanie. Elementy starszej monumentalnej budowli przeniesiono tu w późnej starożytności i wykorzystano przy reprezentacyjnym wejściu do wczesnochrześcijańskiej bazyliki.",
+    "facts": [
+      "Rząd tworzy szesnaście kolumn z korynckimi kapitelami.",
+      "Kolumny pochodzą z rzymskiej budowli datowanej na okres cesarski.",
+      "W późnej starożytności przeniesiono je w pobliże bazyliki San Lorenzo.",
+      "Bazylika należała do największych budowli wczesnochrześcijańskiego Mediolanu.",
+      "To jeden z nielicznych dużych zespołów antycznego Mediolanum widocznych bez schodzenia pod ziemię."
+    ],
+    "sources": [
+      { "label": "Comune di Milano — Mediolan rzymski", "url": "https://www2.comune.milano.it/documents/86337559/317583831/Otto%2Bpercorsi%2B%2Balla%2Bscoperta%2Bdi%2BMediolanum.pdf/bd2051b1-ccfd-96c2-ba4a-36287af619f3?t=1603351201637" }
+    ]
+  },
+  "mi-navigli": {
+    "tag": "PORT I KANAŁY",
+    "history": "Darsena była przez stulecia miejskim portem, w którym spotykały się mediolańskie kanały. Navigli służyły do transportu ludzi, żywności i materiałów budowlanych, zanim część śródmiejskiej sieci zasypano lub przykryto w XX wieku.",
+    "facts": [
+      "Naviglio Grande rozwijano od średniowiecza jako drogę wodną łączącą Mediolan z Ticino.",
+      "Kanałami transportowano do miasta między innymi marmur przeznaczony na budowę Duomo.",
+      "Leonardo da Vinci nie stworzył całej sieci, ale pracował w Mediolanie nad rozwiązaniami śluz i gospodarki wodnej.",
+      "Darsena pełniła funkcję miejskiego portu i punktu przeładunkowego.",
+      "Vicolo dei Lavandai przypomina o pralnikach i praczach korzystających z kanału jeszcze w XX wieku."
+    ]
+  },
+  "d4-pignolo": {
+    "tag": "BORGO DEL SAPERE",
+    "history": "Borgo Pignolo rosło przy dawnej drodze łączącej dolne miasto z wenecką bramą Sant'Agostino. Renesansowe pałace, klasztory i kościoły sprawiły, że dziś nazywa się je także „Borgo del Sapere” — dzielnicą wiedzy.",
+    "facts": [
+      "Przy Via Pignolo zachował się ciąg renesansowych i neoklasycystycznych pałaców z wewnętrznymi dziedzińcami.",
+      "Górna część borgo mieści dziś część Uniwersytetu w Bergamo.",
+      "W jednym z miejscowych pałaców gościł poeta Torquato Tasso.",
+      "Kościół San Bernardino przechowuje nastawę ołtarzową Lorenza Lotta z 1521 roku.",
+      "Ulica prowadzi ku Porta Sant'Agostino i weneckim murom Città Alta."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — Borgo Pignolo", "url": "https://www.visitbergamo.net/oggetto/borgo-pignolo/" }
+    ]
+  },
+  "d4-carrara": {
+    "tag": "PIĘĆ WIEKÓW MALARSTWA",
+    "history": "Accademia Carrara wyrosła z kolekcji i szkoły sztuki założonych przez hrabiego Giacoma Carrarę pod koniec XVIII wieku. Dziś jest jedną z najważniejszych włoskich pinakotek opartych w dużej mierze na darach prywatnych kolekcjonerów.",
+    "facts": [
+      "Trzon muzeum stworzył hrabia Giacomo Carrara, kolekcjoner i mecenas sztuki.",
+      "Ekspozycja prowadzi przez pięć stuleci włoskiego malarstwa, od XV do XIX wieku.",
+      "W kolekcji znajdują się dzieła między innymi Botticellego, Rafaela, Tycjana i Canaletta.",
+      "Carrara posiada szczególnie ważne zespoły prac Lorenza Lotta i Giovanniego Battisty Moroniego.",
+      "Jednym z nietypowych skarbów zbiorów są karty z renesansowej talii tarota Visconti–Sforza."
+    ],
+    "sources": [
+      { "label": "Visit Bergamo — Accademia Carrara", "url": "https://www.visitbergamo.net/oggetto/accademia-carrara/" },
+      { "label": "Accademia Carrara — oficjalna strona", "url": "https://lacarrara.it/" }
+    ]
+  },
+  "d4-gamec": {
+    "tag": "SZTUKA WSPÓŁCZESNA",
+    "history": "GAMeC — Galleria d'Arte Moderna e Contemporanea di Bergamo — otwarto w 1991 roku naprzeciw Accademia Carrara. Instytucja łączy kolekcję XX i XXI wieku z wystawami czasowymi, badaniami i projektami w przestrzeni miasta.",
+    "facts": [
+      "Skrót GAMeC rozwija się jako Galleria d'Arte Moderna e Contemporanea.",
+      "Muzeum otwarto w 1991 roku w zaadaptowanym zespole dawnych budynków klasztornych.",
+      "Stoi po przeciwnej stronie Via San Tomaso niż Accademia Carrara.",
+      "Program obejmuje zarówno kolekcję stałą, jak i zmienne wystawy sztuki współczesnej.",
+      "Muzeum organizuje także projekty poza własnym gmachem, dlatego aktualny program jest ważniejszy niż sama nazwa kolekcji."
+    ],
+    "sources": [
+      { "label": "GAMeC — oficjalna strona", "url": "https://www.gamec.it/" }
+    ]
+  },
+  "d4-suardi": {
+    "tag": "NAJSTARSZY PARK CITTÀ BASSA",
+    "history": "Parco Suardi jest jednym z historycznych publicznych ogrodów dolnego Bergamo. Założony w XIX wieku park dał rozwijającej się Città Bassa zielone miejsce spacerów poza zwartą zabudową starego miasta.",
+    "facts": [
+      "Park leży pomiędzy Borgo Santa Caterina a muzealną osią Via San Tomaso.",
+      "Należy do najstarszych publicznych terenów zielonych Città Bassa.",
+      "Powstał w epoce, gdy dolne Bergamo szybko rozwijało się poza dawnymi fortyfikacjami.",
+      "Zachował układ spacerowego ogrodu miejskiego z dużymi drzewami i alejami.",
+      "Położenie blisko Carrary i GAMeC czyni go naturalnym odpoczynkiem pomiędzy muzeami a centrum."
+    ]
+  },
+  "bg-station": {
+    "tag": "BRAMA DO BERGAMO",
+    "history": "Oś lotnisko–dworzec łączy Orio al Serio z centrum Bergamo. Stazione di Bergamo stała się w XIX wieku punktem rozwoju Città Bassa, a dzisiejsza linia autobusowa 1 spina terminal, dworzec, Porta Nuova i kolejkę do Città Alta.",
+    "facts": [
+      "Lotnisko BGY leży w gminie Orio al Serio, kilka kilometrów od centrum Bergamo.",
+      "Dworzec kolejowy otwarto w XIX wieku wraz z rozwojem linii łączących Bergamo z Lombardią.",
+      "Viale Papa Giovanni XXIII tworzy prostą oś widokową między dworcem a Porta Nuova.",
+      "Miejska linia ATB 1 łączy lotnisko z dworcem i trasą w stronę Città Alta.",
+      "Ten sam system biletowy ATB obejmuje autobusy miejskie i obie bergamskie funicolari zgodnie z zakresem biletu."
+    ],
+    "sources": [
+      { "label": "ATB Bergamo — usługi turystyczne i Airport Bus", "url": "https://www.atb.bergamo.it/en/other-services/tourist-services" }
+    ]
+  },
+  "co-lecco": {
+    "tag": "KOLEJ MIĘDZY GÓRAMI A JEZIOREM",
+    "history": "Stacja Lecco jest ważnym węzłem po wschodniej stronie jeziora Como. Łączy połączenia z Bergamo i Mediolanem z linią biegnącą północnym brzegiem przez Varennę w kierunku Colico, Sondrio i Tirano.",
+    "facts": [
+      "Stacja leży blisko południowego krańca wschodniego ramienia jeziora Como.",
+      "Krzyżują się tu połączenia z Bergamo, Mediolanu i linii prowadzącej w stronę Valtelliny.",
+      "Pociągi do Varenny często mają jako stację końcową Colico, Sondrio albo Tirano.",
+      "Lecco jest miastem silnie związanym z Alessandrem Manzonim i powieścią „Narzeczeni”.",
+      "Przystań statków leży poza dworcem, więc wariant wodny wymaga osobnego przejścia i biletu."
+    ]
+  },
+  "co-varenna-station": {
+    "tag": "STACJA NAD JEZIOREM",
+    "history": "Varenna-Esino powstała na linii kolejowej prowadzącej wzdłuż wschodniego brzegu jeziora Como. Mimo nazwy stacja administracyjnie leży w Perledo, wysoko ponad przystanią i historycznym centrum Varenny.",
+    "facts": [
+      "Stacja nazywa się Varenna-Esino, ale znajduje się na terenie gminy Perledo.",
+      "Leży na linii prowadzącej z Lecco w kierunku Colico i Valtelliny.",
+      "Różnica wysokości sprawia, że droga z promu na pociąg prowadzi pod górę.",
+      "Kolej daje Varennie całoroczne połączenie lądowe niezależne od sezonowych promów.",
+      "Nazwa łączy turystyczną Varennę z doliną prowadzącą w stronę Esino Lario."
+    ]
+  },
+  "mi-centrale": {
+    "tag": "MONUMENTALNY DWORZEC",
+    "history": "Milano Centrale otwarto w 1931 roku jako nowy główny dworzec miasta. Projekt Ulisse Stacchiniego rozrósł się do monumentalnej formy łączącej klasycyzujące detale, nowoczesną konstrukcję i reprezentacyjny język epoki.",
+    "facts": [
+      "Obecny dworzec otwarto w 1931 roku, zastępując wcześniejszą stację centralną.",
+      "Głównym projektantem był architekt Ulisse Stacchini.",
+      "Perony przykrywają ogromne stalowe hale o łukowych przekryciach.",
+      "Fasada łączy kamienną monumentalność z dekoracjami typowymi dla pierwszej połowy XX wieku.",
+      "Pod dworcem krzyżują się linie metra M2 i M3, dzięki czemu można szybko ominąć długi marsz do Duomo."
     ]
   }
 }
