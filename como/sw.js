@@ -1,4 +1,4 @@
-const CACHE = "lombardia-v39-expanded-curiosities";
+const CACHE = "lombardia-v40-verified-curiosities";
 const LOCAL = [
   "./", "index.html", "styles.css", "app.js", "manifest.webmanifest",
   "assets/bergamo.webp", "assets/como.webp", "assets/milano.webp", "assets/logo-martyna.png", "assets/logo-martyna.webp", "assets/app-icon.svg",
