@@ -851,6 +851,18 @@ body.place-open { overflow: hidden; }
 .curiosity-section ol { position: relative; margin: 0; padding: 0; list-style: none; counter-reset: place-curiosity; }
 .curiosity-section li { position: relative; min-height: 64px; padding: 17px 0 17px 58px; border-top: 1px solid var(--color-border); color: var(--color-text); font-size: 13px; line-height: 1.6; counter-increment: place-curiosity; }
 .curiosity-section li::before { content: counter(place-curiosity,decimal-leading-zero); position: absolute; top: 15px; left: 0; color: var(--place-accent); font-family: var(--font-heading); font-size: 30px; font-weight: 700; line-height: 1; }
+.featured-curiosity { position: relative; margin: 6px 0 14px; padding: 22px 22px 24px; border-left: 4px solid var(--place-accent); background: color-mix(in srgb,var(--place-accent) 8%,var(--color-surface)); }
+.featured-curiosity::before { content: "✦"; position: absolute; top: 17px; right: 18px; color: var(--place-accent); font-size: 20px; }
+.featured-curiosity span { display: block; padding-right: 34px; color: var(--place-accent); font-size: 8px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.featured-curiosity p { max-width: 610px; margin: 10px 0 0; color: var(--color-text); font-family: var(--font-heading); font-size: clamp(23px,5vw,30px); font-weight: 600; line-height: 1.2; }
+.additional-curiosities { border: solid var(--color-border); border-width: 1px 0; }
+.additional-curiosities summary { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: var(--color-text); cursor: pointer; list-style: none; }
+.additional-curiosities summary::-webkit-details-marker { display: none; }
+.additional-curiosities summary span { font-size: 12px; font-weight: 800; }
+.additional-curiosities summary small { display: inline-flex; align-items: center; gap: 8px; color: var(--place-accent); font-size: 9px; font-weight: 800; }
+.additional-curiosities summary small::after { content: "+"; width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--place-accent); border-radius: 50%; font-size: 15px; line-height: 1; }
+.additional-curiosities[open] summary small::after { content: "−"; }
+.additional-curiosities ol { border-top: 1px solid var(--color-border); }
 .place-sources ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .place-sources a { min-height: 42px; display: flex; align-items: center; padding: 9px 12px; border-left: 3px solid var(--place-accent); background: var(--color-soft); color: var(--color-text); font-size: 11px; font-weight: 800; line-height: 1.4; text-decoration: none; }
 .place-sources a:hover, .place-sources a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }

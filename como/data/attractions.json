@@ -3,7 +3,7 @@
     "tag": "SERCE CITTÀ ALTA",
     "description": [
       "To najważniejszy plac górnego Bergamo i najlepszy punkt, żeby na chwilę zwolnić. W jednym kadrze masz Palazzo della Ragione, fontannę Contarini i Campanone.",
-      "Nie traktuj go tylko jako przejścia między atrakcjami. To tutaj najłatwiej złapać układ Città Alta, a kolejny ważny punkt — Santa Maria Maggiore — jest tuż obok."
+      "Nie traktuj go tylko jako przejścia między atrakcjami. To tutaj najłatwiej złapać układ Città Alta, a kolejny ważny punkt, Santa Maria Maggiore, jest tuż obok."
     ],
     "worthIt": "Zdecydowanie",
     "tip": "Po obejściu placu idź od razu w stronę Piazza Duomo. Bazylika Santa Maria Maggiore i Cappella Colleoni są około 2 minuty dalej, więc nie trzeba wracać tą samą drogą.",
@@ -15,14 +15,15 @@
       "Widok na Campanone"
     ],
     "facts": [
-      "Plac ukształtował się jako świeckie centrum władzy Città Alta, obok religijnego Piazza Duomo.",
-      "Fontannę Contarini podarował miastu w 1780 roku podestà Alvise Contarini.",
-      "Palazzo della Ragione należy do najstarszych zachowanych pałaców komunalnych we Włoszech.",
-      "Pod arkadami Palazzo della Ragione przechodzi się bezpośrednio na Piazza Duomo.",
-      "Nad placem góruje Campanone, którego dzwon do dziś rozbrzmiewa wieczorną serią uderzeń."
+      "Przez stulecia był to polityczny środek Bergamo, zanim centrum administracyjne przeniosło się do dolnego miasta.",
+      "Palazzo della Ragione pochodzi z końca XII wieku i uchodzi za najstarszą zachowaną siedzibę władz miejskich w Lombardii.",
+      "Fontannę Contarini podarowano miastu w 1780 roku. Była dekoracją, ale przede wszystkim praktycznym źródłem wody.",
+      "Pod koniec XIX wieku fontannę zastąpiono pomnikiem Garibaldiego. Na swoje miejsce wróciła w 1922 roku.",
+      "Pod arkadami Palazzo della Ragione znajduje się XVIII-wieczny zegar słoneczny. W południe czasu słonecznego promień światła wskazuje datę i znak zodiaku."
     ],
+    "featuredFact": "Pod arkadami Palazzo della Ragione znajduje się XVIII-wieczny zegar słoneczny. W południe czasu słonecznego promień światła wskazuje datę i znak zodiaku.",
     "sources": [
-      { "label": "Visit Bergamo — Piazza Vecchia", "url": "https://www.visitbergamo.net/oggetto/piazza-vecchia/" }
+      { "label": "Visit Bergamo: Piazza Vecchia", "url": "https://www.visitbergamo.net/oggetto/piazza-vecchia/" }
     ],
     "images": [
       { "src": "assets/places/piazza-vecchia-generated.webp", "alt": "Piazza Vecchia z fontanną Contarini i Campanone", "position": "50% 46%" }
@@ -123,113 +124,123 @@
     "tag": "BRAMA CITTÀ BASSA",
     "history": "Porta Nuova wyznacza monumentalne wejście do nowoczesnej części Bergamo. Dzisiejsze propyleje zastąpiły w 1837 roku skromniejsze przejście w dawnych murach Muraine i stały się osią rozwoju Città Bassa.",
     "facts": [
-      "Dwa neoklasycystyczne pawilony powstały w miejscu dawnego przejścia przez mury Muraine.",
-      "Nową bramę otwarto w 1837 roku, a rok później uruchomiono reprezentacyjną Strada Ferdinandea.",
-      "Do 1901 roku w pawilonach pracowała straż kontrolująca towary wwożone do miasta.",
-      "Oś Viale Papa Giovanni XXIII prowadzi stąd niemal prosto do dworca kolejowego.",
-      "Z placu celowo pozostawiono otwarty widok na sylwetę Città Alta."
+      "Nazwa może mylić. To nie jest średniowieczna brama Città Alta. Dzisiejsza Porta Nuova powstała dopiero w 1837 roku.",
+      "Wcześniej przebiegały tędy Muraine, czyli system murów otaczający dolną część Bergamo.",
+      "Dwa neoklasycystyczne budynki po obu stronach ulicy tworzą monumentalną ramę dla widoku Città Alta.",
+      "Przez lata był to główny punkt wejścia do handlowego i finansowego centrum Bergamo.",
+      "Bergamo zaprojektowano wokół widoku wzgórza. Idąc od dworca, praktycznie cały czas masz Città Alta przed sobą."
     ],
+    "featuredFact": "Nazwa może mylić. To nie jest średniowieczna brama Città Alta. Dzisiejsza Porta Nuova powstała dopiero w 1837 roku.",
     "sources": [
-      { "label": "Visit Bergamo — Porta Nuova", "url": "https://www.visitbergamo.net/oggetto/porta-nuova/" }
+      { "label": "Visit Bergamo: Porta Nuova", "url": "https://www.visitbergamo.net/oggetto/porta-nuova/" }
     ]
   },
   "bg-funicular": {
     "tag": "HISTORYCZNA KOLEJ",
     "history": "Funicolare di Bergamo łączy dolne miasto z Città Alta, przebijając się przez pas weneckich murów. Uruchomiona w 1887 roku kolej zmieniła codzienny dojazd na wzgórze i do dziś pozostaje częścią transportu miejskiego.",
     "facts": [
-      "Kolej miejska rozpoczęła regularną pracę w 1887 roku.",
-      "Dolna stacja stoi przy Viale Vittorio Emanuele II, a górna wychodzi na Piazza Mercato delle Scarpe.",
-      "Przejazd prowadzi przez historyczny pas fortyfikacji otaczających Città Alta.",
-      "Funicolare działa jako zwykły element sieci ATB, a nie wyłącznie atrakcja turystyczna.",
-      "Bergamo ma także drugą kolej linową prowadzącą z Colle Aperto na wzgórze San Vigilio."
+      "Kolejka łączy obie części miasta od 1887 roku. Miała zapobiec gospodarczemu odcięciu Città Alta od rozwijającego się dolnego miasta.",
+      "Pierwszy system zaprojektował inżynier Alessandro Ferretti.",
+      "Pierwotnie kolejkę napędzała maszyna parowa, a dwa wagony pomagały wzajemnie równoważyć swój ciężar.",
+      "Trasa ma około 240 metrów, pokonuje około 85 metrów różnicy wysokości, a maksymalne nachylenie dochodzi do 52%.",
+      "Wagonik przejeżdża przez XVI-wieczne Mury Weneckie. Komunikacja miejska dosłownie wjeżdża przez zabytkowe fortyfikacje."
     ],
+    "featuredFact": "Wagonik przejeżdża przez XVI-wieczne Mury Weneckie. Komunikacja miejska dosłownie wjeżdża przez zabytkowe fortyfikacje.",
     "sources": [
-      { "label": "ATB Bergamo — funicolari", "url": "https://www.atb.bergamo.it/en/other-services/tourist-services" },
-      { "label": "Visit Bergamo — Città Alta", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
+      { "label": "ATB Bergamo: funicolari", "url": "https://www.atb.bergamo.it/en/other-services/tourist-services" },
+      { "label": "Visit Bergamo: Città Alta", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
     ]
   },
   "bg-mercato": {
     "tag": "DAWNY TARG SZEWCÓW",
     "history": "Piazza Mercato delle Scarpe należała do najważniejszych miejsc handlu w średniowiecznym Bergamo. Leżała przy końcu rzymskiego decumanus, a jej nazwa przypomina o cechu szewców działającym tu od XIII wieku.",
     "facts": [
-      "Plac leży przy zakończeniu dawnego rzymskiego decumanus, dzisiejszej Via Gombito.",
-      "Nazwa pochodzi od cechu Caligari, czyli szewców i wytwórców obuwia.",
-      "Siedziba cechu mieściła się tu już w XIII wieku.",
-      "Fasada dawnego domu cechowego przetrwała w budynku górnej stacji funicolare.",
-      "Kolej linowa dociera na plac od 1887 roku, ale średniowieczny układ przestrzeni pozostał czytelny."
+      "Dosłowne tłumaczenie nazwy to Plac Targu Butów. Nie jest to współczesny chwyt marketingowy.",
+      "W średniowieczu działała tutaj korporacja szewców, a plac był ważnym miejscem handlu.",
+      "W 1430 roku plac został przeznaczony właśnie na handel obuwiem.",
+      "Budynek dzisiejszej górnej stacji funicolare był wcześniej związany z cechem szewców. Jego średniowieczna fasada przetrwała do dziś.",
+      "Plac leżał na skrzyżowaniu ważnych dróg Città Alta. Część statutów regulujących działalność cechów wciąż znajduje się w miejskiej bibliotece."
     ],
+    "featuredFact": "Dosłowne tłumaczenie nazwy to Plac Targu Butów. Nie jest to współczesny chwyt marketingowy.",
     "sources": [
-      { "label": "Visit Bergamo — Piazza Mercato delle Scarpe", "url": "https://www.visitbergamo.net/oggetto/piazza-mercato-delle-scarpe/" }
+      { "label": "Visit Bergamo: Piazza Mercato delle Scarpe", "url": "https://www.visitbergamo.net/oggetto/piazza-mercato-delle-scarpe/" }
     ]
   },
   "bg-basilica": {
     "tag": "DWA SKARBY PIAZZA DUOMO",
     "history": "Bazylika Santa Maria Maggiore powstała jako miejska świątynia w XII wieku, a w kolejnych stuleciach otrzymała niezwykle bogate wnętrze. Przylegająca Cappella Colleoni to renesansowe mauzoleum kondotiera Bartolomea Colleoniego.",
     "facts": [
-      "Budowę bazyliki rozpoczęto w 1137 roku po miejskiej przysiędze złożonej w czasie epidemii.",
-      "Świątynia nie ma klasycznej zachodniej fasady; główne wejścia znajdują się po bokach.",
-      "Przy portalach stoją charakterystyczne lwy z czerwonego i białego marmuru.",
-      "W bazylice znajduje się pomnik grobowy kompozytora Gaetana Donizettiego.",
-      "Kaplica Colleoniego została zaprojektowana w XV wieku przez Giovanniego Antonia Amadea."
+      "Według tradycji budowę bazyliki Santa Maria Maggiore rozpoczęto w 1137 roku jako wotum związane z epidemią dżumy.",
+      "W środku znajdują się drewniane intarsje wykonane według projektów Lorenza Lotta, jednego z najważniejszych malarzy włoskiego renesansu.",
+      "W bazylice spoczywa Gaetano Donizetti, kompozytor urodzony w Bergamo i jedna z najważniejszych postaci w historii miasta.",
+      "Cappella Colleoni jest prywatnym mauzoleum kondotiera Bartolomea Colleoniego. Znajduje się tu także delikatny grobowiec jego córki Medei.",
+      "Na kracie przed kaplicą zobaczysz herb Colleoniego z trzema charakterystycznymi symbolami. Legenda mówi, że ich potarcie przynosi szczęście, dlatego metal jest wyraźnie wypolerowany."
     ],
+    "featuredFact": "Na kracie przed kaplicą zobaczysz herb Colleoniego z trzema charakterystycznymi symbolami. Legenda mówi, że ich potarcie przynosi szczęście, dlatego metal jest wyraźnie wypolerowany.",
     "sources": [
-      { "label": "Visit Bergamo — Basilica Santa Maria Maggiore", "url": "https://www.visitbergamo.net/oggetto/basilica-s-maria-maggiore/" }
+      { "label": "Visit Bergamo: Basilica Santa Maria Maggiore", "url": "https://www.visitbergamo.net/oggetto/basilica-s-maria-maggiore/" },
+      { "label": "Visit Bergamo: Cappella Colleoni", "url": "https://www.visitbergamo.net/oggetto/cappella-colleoni/" }
     ]
   },
   "bg-campanone": {
     "tag": "WIEŻA MIEJSKIEGO DZWONU",
     "history": "Campanone, czyli Torre Civica, wyrósł z średniowiecznej wieży rodu Suardi i z czasem stał się wieżą miejską. Jego dzwon regulował rytm życia Città Alta, informując między innymi o zamykaniu bram.",
     "facts": [
-      "Wieża ma ponad 50 metrów wysokości i dominuje nad Piazza Vecchia.",
-      "Na taras prowadzą schody, ale w obiekcie działa również winda.",
-      "Największy dzwon dał wieży popularną nazwę Campanone — „wielki dzwon”.",
-      "Każdego wieczoru o 22:00 rozlega się tradycyjna seria stu uderzeń.",
-      "Sygnał przypomina czasy, gdy po zmroku zamykano bramy miasta w murach."
+      "Torre Civica powstała w XI lub XII wieku jako wieża należąca do potężnej rodziny Suardi.",
+      "W XIV wieku przejęły ją władze Bergamo i zaczęły używać dzwonów do przekazywania mieszkańcom ważnych informacji.",
+      "Każdego wieczoru o 22:00 Campanone uderza dokładnie 100 razy. Tradycja przypomina o czasach, gdy zamykano bramy miasta.",
+      "Główny dzwon odlano w 1656 roku. Ma ponad 2 metry średnicy i waży około 5,6 tony.",
+      "Na górę można wejść po około 230 stopniach, ale jest też winda. Widok nie wymaga wspinaczki przez całą wieżę."
     ],
+    "featuredFact": "Każdego wieczoru o 22:00 Campanone uderza dokładnie 100 razy. Tradycja przypomina o czasach, gdy zamykano bramy miasta.",
     "sources": [
-      { "label": "Museo delle Storie di Bergamo — Campanone", "url": "https://museodellestorie.bergamo.it/luogo/campanone/" }
+      { "label": "Museo delle Storie di Bergamo: Campanone", "url": "https://museodellestorie.bergamo.it/luogo/campanone/" }
     ]
   },
   "bg-colle-aperto": {
     "tag": "SMAK BERGAMO",
     "history": "Colle Aperto od wieków jest zachodnim węzłem Città Alta, blisko bramy Sant'Alessandro i drogi na San Vigilio. Dziś plac kojarzy się także z lokalnym smakiem: właśnie w tej okolicy narodziły się lody stracciatella.",
     "facts": [
-      "Plac leży przy zachodnim wejściu do Città Alta, obok Porta Sant'Alessandro.",
-      "Stąd odchodzi druga bergamska funicolare, prowadząca na San Vigilio.",
-      "Stracciatellę lodową stworzył Enrico Panattoni w pobliskiej La Marianna w 1961 roku.",
-      "Nazwa deseru nawiązuje do czekoladowych „strzępków” zastygających w masie lodowej.",
-      "Colle Aperto łączy główną ulicę starego miasta z zielonymi wzgórzami na zachodzie."
+      "Nazwa Colle Aperto pojawiła się na początku XIX wieku, gdy teren przy Porta Sant'Alessandro został wyrównany i otwarty.",
+      "Porta Sant'Alessandro była zachodnią bramą miasta. Wjeżdżali tędy podróżni nadchodzący od strony Como i Lecco.",
+      "Pod budowę weneckich murów w 1561 roku zburzono pobliską bazylikę św. Aleksandra. Zachowana kolumna wskazuje jej dawną lokalizację.",
+      "W lokalu La Marianna Enrico Panattoni stworzył w 1961 roku lody stracciatella.",
+      "Nazwa lodów pochodzi od rzymskiej zupy stracciatella. Kawałki zastygającej czekolady przypominały Panattoniemu fragmenty jajka w gorącym bulionie."
     ],
+    "featuredFact": "Nazwa lodów pochodzi od rzymskiej zupy stracciatella. Kawałki zastygającej czekolady przypominały Panattoniemu fragmenty jajka w gorącym bulionie.",
     "sources": [
-      { "label": "Visit Bergamo — Città Alta i stracciatella", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
+      { "label": "Visit Bergamo: Città Alta i stracciatella", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
     ]
   },
   "bg-san-vigilio": {
     "tag": "TWIERDZA NAD MIASTEM",
     "history": "Wzgórze San Vigilio było strategicznym punktem obrony Bergamo, bo pozwalało kontrolować Città Alta, doliny i równinę. Zamek wielokrotnie rozbudowywano pod rządami Viscontich i Republiki Weneckiej.",
     "facts": [
-      "San Vigilio wznosi się wyżej niż właściwa Città Alta.",
-      "Fortyfikacje kontrolowały drogi prowadzące z miasta ku dolinom Brembana i Seriana.",
-      "Zamek zmieniał formę wraz z rozwojem artylerii i potrzebami kolejnych władców.",
-      "Do ruin można dojść pieszo albo podjechać drugą bergamską kolejką linową.",
-      "Dziś teren działa przede wszystkim jako bezpłatny park i punkt panoramiczny."
+      "Zamek znajduje się na wysokości około 496 m n.p.m., wyżej niż właściwa Città Alta.",
+      "Dzięki położeniu był ostatnim punktem obronnym pozwalającym kontrolować miasto i drogi prowadzące w stronę dolin.",
+      "Twierdza miała wieże, stanowiska artyleryjskie i strzelnice, a pod nią znajdował się system podziemnych przejść i korytarzy.",
+      "W różnych okresach San Vigilio służyło kolejnym władcom Bergamo, którzy dostosowywali obronę do swoich potrzeb.",
+      "W ogrodzie zamkowym znajduje się stół orientacyjny, który pomaga rozpoznać widoczne góry."
     ],
+    "featuredFact": "W ogrodzie zamkowym znajduje się stół orientacyjny, który pomaga rozpoznać widoczne góry.",
     "sources": [
-      { "label": "Visit Bergamo — San Vigilio i Città Alta", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
+      { "label": "Visit Bergamo: San Vigilio", "url": "https://www.visitbergamo.net/en/oggetto/citta-alta/" }
     ]
   },
   "bg-porta-san-giacomo": {
     "tag": "MURY UNESCO",
     "history": "Porta San Giacomo jest najbardziej reprezentacyjną bramą weneckich murów Bergamo. Fortyfikacje wzniesiono w XVI wieku, gdy miasto należało do Republiki Weneckiej i stanowiło jej zachodnią placówkę obronną.",
     "facts": [
-      "Weneckie mury budowano w latach 1561–1588.",
-      "Bramę wykończono jasnym marmurem, dzięki czemu mocno odcina się od ceglanej zabudowy.",
-      "Na fasadzie widnieje skrzydlaty lew św. Marka, symbol Republiki Weneckiej.",
-      "System murów otacza Città Alta na długości ponad pięciu kilometrów.",
-      "W 2017 roku fortyfikacje Bergamo wpisano wraz z innymi dziełami obronnymi Wenecji na listę UNESCO."
+      "Weneckie mury zaczęto budować w 1561 roku. Mają około 6 km długości i otaczają Città Alta.",
+      "Od 2017 roku fortyfikacje Bergamo są częścią transnarodowego obiektu UNESCO Venetian Works of Defence.",
+      "Porta San Giacomo była bramą dla osób przybywających do Bergamo od strony Mediolanu.",
+      "Fasadę wykonano z jasnego marmuru z Zandobbio, dlatego mocno odcina się od szarego kamienia fortyfikacji.",
+      "Dzisiejszy kamienny wiadukt zastąpił dawny drewniany most zwodzony. Nad wejściem nadal widnieje Lew św. Marka."
     ],
+    "featuredFact": "Dzisiejszy kamienny wiadukt zastąpił dawny drewniany most zwodzony. Nad wejściem nadal widnieje Lew św. Marka.",
     "sources": [
-      { "label": "UNESCO — Venetian Works of Defence", "url": "https://whc.unesco.org/en/list/1533/" }
+      { "label": "UNESCO: Venetian Works of Defence", "url": "https://whc.unesco.org/en/list/1533/" },
+      { "label": "Visit Bergamo: Porta San Giacomo", "url": "https://www.visitbergamo.net/oggetto/porta-san-giacomo/" }
     ]
   },
   "co-lovers": {
@@ -506,16 +517,18 @@
   },
   "bg-station": {
     "tag": "BRAMA DO BERGAMO",
-    "history": "Oś lotnisko–dworzec łączy Orio al Serio z centrum Bergamo. Stazione di Bergamo stała się w XIX wieku punktem rozwoju Città Bassa, a dzisiejsza linia autobusowa 1 spina terminal, dworzec, Porta Nuova i kolejkę do Città Alta.",
+    "history": "Trasa z lotniska w Orio al Serio do Stazione di Bergamo jest pierwszym kontaktem z miastem. Dworzec otwarto w 1857 roku, jeszcze podczas austriackiego panowania nad Lombardią, a kolej stała się ważnym impulsem rozwoju Città Bassa.",
     "facts": [
-      "Lotnisko BGY leży w gminie Orio al Serio, kilka kilometrów od centrum Bergamo.",
-      "Dworzec kolejowy otwarto w XIX wieku wraz z rozwojem linii łączących Bergamo z Lombardią.",
-      "Viale Papa Giovanni XXIII tworzy prostą oś widokową między dworcem a Porta Nuova.",
-      "Miejska linia ATB 1 łączy lotnisko z dworcem i trasą w stronę Città Alta.",
-      "Ten sam system biletowy ATB obejmuje autobusy miejskie i obie bergamskie funicolari zgodnie z zakresem biletu."
+      "Airport Bus jedzie bezpośrednio z lotniska BGY do dworca kolejowego i w standardowym rozkładzie kursuje mniej więcej co 20 minut.",
+      "Dworzec w Bergamo otwarto 12 października 1857 roku. Kolej była jednym z najważniejszych impulsów rozwoju dzisiejszej Città Bassa.",
+      "Budowa dworca przypadła jeszcze na okres austriackiego panowania nad Lombardią, przed zjednoczeniem Włoch.",
+      "Pod koniec XIX wieku dworzec był już połączony komunikacją z kolejką do Città Alta. W 1898 roku zelektryfikowano linię tramwajową biegnącą w tym kierunku.",
+      "Po wyjściu z dworca spójrz prosto przed siebie. Miejska oś prowadzi przez Porta Nuova, a wysoko w tle pojawia się Città Alta."
     ],
+    "featuredFact": "Dworzec w Bergamo otwarto 12 października 1857 roku. Kolej była jednym z najważniejszych impulsów rozwoju dzisiejszej Città Bassa.",
     "sources": [
-      { "label": "ATB Bergamo — usługi turystyczne i Airport Bus", "url": "https://www.atb.bergamo.it/en/other-services/tourist-services" }
+      { "label": "ATB Bergamo: Airport Bus", "url": "https://www.atb.bergamo.it/en/other-services/tourist-services" },
+      { "label": "Visit Bergamo: dworzec i rozwój Città Bassa", "url": "https://www.visitbergamo.net/oggetto/8b/" }
     ]
   },
   "co-lecco": {
