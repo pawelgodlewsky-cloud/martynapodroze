@@ -65,7 +65,7 @@
     "tag": "MUST SEE",
     "description": [
       "Duomo wymaga jednej decyzji przed przyjazdem: wybierz konkretny wariant i zarezerwuj slot. Sam plac daje dobry widok na fasadę, ale wnętrze, dach i muzeum potrzebują znacznie więcej czasu.",
-      "Największy efekt daje dach przy dobrej widoczności. Pamiętaj, że winda dojeżdża tylko na pierwszy poziom — wyższy taras i zejście nadal oznaczają schody. Na kontrolę bezpieczeństwa przyjdź 20–30 minut wcześniej."
+      "Największy efekt daje dach przy dobrej widoczności. Pamiętaj, że winda dojeżdża tylko na pierwszy poziom. Wyższy taras i zejście nadal oznaczają schody. Na kontrolę bezpieczeństwa przyjdź 20–30 minut wcześniej."
     ],
     "worthIt": "Zdecydowanie",
     "effort": "zależny od wariantu",
@@ -78,14 +78,15 @@
       "Dach i detale iglic przy dobrej pogodzie"
     ],
     "facts": [
-      "Budowę katedry rozpoczęto w 1386 roku, a prace i dekorowanie trwały przez stulecia.",
-      "Duomo obłożono jasnym marmurem wydobywanym w Candoglii nad jeziorem Maggiore.",
-      "Na najwyższej iglicy stoi pozłacana Madonnina ustawiona w 1774 roku.",
-      "Katedrę zdobią tysiące rzeźb, gargulców i detali wykonanych przez artystów wielu epok.",
-      "Pod posadzką zachowały się relikty wcześniejszych budowli sakralnych i baptysterium."
+      "Budowę rozpoczęto około 1386 roku i prowadzono przez ponad sześć stuleci. Dlatego w katedrze można znaleźć ślady wielu różnych epok.",
+      "Duomo ma ponad 3400 rzeźb, 135 iglic i około 150 gargulców. Pod względem liczby rzeźb przypomina bardziej kamienne miasto niż pojedynczy budynek.",
+      "Charakterystyczny jasny kamień to marmur z Candoglii, który dawniej transportowano do Mediolanu drogą wodną przez system Navigli.",
+      "Gargulce nie są wyłącznie dekoracyjnymi potworami. Pełnią funkcję kamiennych odpływów odprowadzających deszczówkę z dachów katedry.",
+      "Złotą Madonninę na najwyższej iglicy umieszczono w 1774 roku. Podczas II wojny światowej przez pięć lat była zasłonięta szarozielonym materiałem, żeby nie stanowiła punktu orientacyjnego dla bombowców."
     ],
+    "featuredFact": "Złotą Madonninę na najwyższej iglicy umieszczono w 1774 roku. Podczas II wojny światowej przez pięć lat była zasłonięta szarozielonym materiałem, żeby nie stanowiła punktu orientacyjnego dla bombowców.",
     "sources": [
-      { "label": "Duomo Milano — kompleks monumentalny", "url": "https://www.duomomilano.it/en/" }
+      { "label": "Duomo Milano: kompleks monumentalny", "url": "https://www.duomomilano.it/en/" }
     ],
     "images": [
       { "src": "assets/places/duomo-milano-generated.webp", "alt": "Fasada Duomo di Milano od strony placu", "position": "50% 45%" }
@@ -108,14 +109,15 @@
       "Perspektywa nawy w stronę Piazza della Scala"
     ],
     "facts": [
-      "Galerię wzniesiono w drugiej połowie XIX wieku według projektu Giuseppe Mengoniego.",
-      "Jej nazwa upamiętnia pierwszego króla zjednoczonych Włoch, Wiktora Emanuela II.",
-      "Krzyżujące się pasaże przykrywa konstrukcja z żelaza i szkła, nowatorska w swojej epoce.",
-      "Oś galerii łączy Piazza del Duomo z Piazza della Scala.",
-      "Projektant Giuseppe Mengoni zginął po upadku z konstrukcji krótko przed uroczystym otwarciem."
+      "Galeria powstawała od 1865 roku i jest jednym z najstarszych działających pasaży handlowych tego typu na świecie.",
+      "Na posadzce znajdziesz herb Turynu z bykiem. Według miejscowego zwyczaju trzeba postawić piętę na jego kroczu i obrócić się trzy razy, żeby zapewnić sobie szczęście.",
+      "Nawet największe światowe marki muszą podporządkować się zasadom galerii. Szyldy sklepów zachowują charakterystyczny złoty napis na czarnym tle.",
+      "Architekt galerii, Giuseppe Mengoni, zginął 30 grudnia 1877 roku, spadając z rusztowania przy monumentalnym wejściu, tuż przed zaplanowanymi uroczystościami ukończenia inwestycji.",
+      "Mediolańczycy nazywają galerię Salotto di Milano, czyli salonem Mediolanu, bo od XIX wieku była miejscem spacerów, spotkań i pokazywania się w mieście."
     ],
+    "featuredFact": "Architekt galerii, Giuseppe Mengoni, zginął 30 grudnia 1877 roku, spadając z rusztowania przy monumentalnym wejściu, tuż przed zaplanowanymi uroczystościami ukończenia inwestycji.",
     "sources": [
-      { "label": "YesMilano — centrum Mediolanu", "url": "https://www.yesmilano.it/en/neighborhoods/things-to-do-near-duomo" }
+      { "label": "YesMilano: centrum Mediolanu", "url": "https://www.yesmilano.it/en/neighborhoods/things-to-do-near-duomo" }
     ],
     "images": [
       { "src": "assets/places/galleria-vittorio-generated.webp", "alt": "Wnętrze Galleria Vittorio Emanuele II pod szklaną kopułą", "position": "50% 45%" }
@@ -413,119 +415,128 @@
     "tag": "ILUZJA BRAMANTEGO",
     "history": "Santa Maria presso San Satiro przebudowano w epoce renesansu w sąsiedztwie starszego sanktuarium. Brak miejsca za ołtarzem skłonił Donata Bramantego do stworzenia słynnej iluzji głębokiego prezbiterium.",
     "facts": [
-      "Renesansową przebudowę rozpoczęto w latach 70. XV wieku.",
-      "Za ołtarzem nie było miejsca na pełną apsydę, ponieważ tuż za kościołem biegła ulica.",
-      "Bramante stworzył perspektywiczne stiuki wyglądające jak głęboka przestrzeń.",
-      "Pozorna absyda ma w rzeczywistości mniej niż metr głębokości.",
-      "Iluzję najlepiej widać z osi głównej nawy; z boku jej płytkość staje się oczywista."
+      "Największa atrakcja kościoła wygląda jak głęboka na prawie 10 metrów absyda. W rzeczywistości ma około 97 centymetrów.",
+      "Bramante stworzył tę iluzję za pomocą perspektywy, stiuku i malarstwa, bo za świątynią po prostu nie było miejsca na normalne prezbiterium.",
+      "Wystarczy przejść kilka metrów w bok, żeby magia zniknęła i można było zobaczyć, jak ekstremalnie płytka jest konstrukcja.",
+      "Starsza kaplica San Satiro pochodzi już z IX wieku i została poświęcona Satyrowi, bratu św. Ambrożego, patrona Mediolanu.",
+      "Nową świątynię zbudowano w XV wieku między innymi po to, aby przechowywać otaczany kultem wizerunek Madonny z Dzieciątkiem."
     ],
+    "featuredFact": "Największa atrakcja kościoła wygląda jak głęboka na prawie 10 metrów absyda. W rzeczywistości ma około 97 centymetrów.",
     "sources": [
-      { "label": "YesMilano — mapa sztuki i kultury", "url": "https://www.yesmilano.it/system/files/allegati/paragrafi/22436/ArtAndCulture.pdf" }
+      { "label": "YesMilano: mapa sztuki i kultury", "url": "https://www.yesmilano.it/system/files/allegati/paragrafi/22436/ArtAndCulture.pdf" }
     ]
   },
   "mi-scala": {
     "tag": "ŚWIĄTYNIA OPERY",
     "history": "Teatro alla Scala otwarto w 1778 roku jako nowy teatr dworski Mediolanu. Zaprojektowany przez Giuseppe Piermariniego gmach stanął w miejscu kościoła Santa Maria alla Scala, od którego przejął nazwę.",
     "facts": [
-      "Teatr otwarto 3 sierpnia 1778 roku operą Antonia Salieriego „Europa riconosciuta”.",
-      "Nazwa La Scala pochodzi od kościoła Santa Maria alla Scala stojącego wcześniej w tym miejscu.",
-      "Widownię zaprojektowano w układzie podkowy z wieloma kondygnacjami lóż.",
-      "Gmach został ciężko uszkodzony podczas bombardowania Mediolanu w 1943 roku.",
-      "Po odbudowie teatr otwarto ponownie w 1946 roku koncertem pod dyrekcją Artura Toscaniniego."
+      "La Scala powstała dlatego, że wcześniejszy Teatro Regio Ducale został doszczętnie zniszczony przez pożar w 1776 roku.",
+      "Nowy teatr zbudowano w ekspresowym tempie. Od projektu do otwarcia minęły zaledwie dwa lata.",
+      "Nazwa La Scala nie pochodzi od schodów. Teatr zbudowano w miejscu dawnego kościoła Santa Maria alla Scala.",
+      "Otwarcie w 1778 roku uświetniła opera L'Europa riconosciuta Antonia Salieriego, kompozytora, którego później legenda uczyniła rywalem Mozarta.",
+      "Podczas bombardowań w 1943 roku La Scala została poważnie zniszczona. Odbudowano ją i w 1946 roku ponownie otwarto koncertem pod batutą Artura Toscaniniego."
     ],
+    "featuredFact": "Nazwa La Scala nie pochodzi od schodów. Teatr zbudowano w miejscu dawnego kościoła Santa Maria alla Scala.",
     "sources": [
-      { "label": "Museo Teatrale alla Scala — muzeum i teatr", "url": "https://www.museoscala.org/en/" }
+      { "label": "Museo Teatrale alla Scala: muzeum i teatr", "url": "https://www.museoscala.org/en/" }
     ]
   },
   "mi-brera": {
     "tag": "ARTYSTYCZNA DZIELNICA",
     "history": "Brera rozwinęła swoją artystyczną tożsamość wokół Palazzo di Brera, gdzie działały instytucje nauki i sztuki. Akademia i Pinakoteka przyciągnęły studentów, artystów, antykwariuszy i wydawców.",
     "facts": [
-      "Nazwa Brera wywodzi się prawdopodobnie od średniowiecznego słowa braida oznaczającego teren podmiejski lub łąkę.",
-      "Palazzo di Brera mieści Akademię Sztuk Pięknych, Pinakotekę, bibliotekę i obserwatorium.",
-      "Akademię założono w XVIII wieku, a Pinakotekę otwarto publicznie w epoce napoleońskiej.",
-      "Dziedziniec pałacu zdobi pomnik Napoleona przedstawionego jako Mars Pokój Czyniący.",
-      "W pobliżu zachował się XVIII-wieczny ogród botaniczny Orto Botanico di Brera."
-    ]
+      "Nazwa Brera prawdopodobnie pochodzi od słowa braida lub brayda, oznaczającego otwarty teren oczyszczony z drzew. Okolica znajdowała się kiedyś poza murami miasta.",
+      "W jednym Palazzo Brera mieszczą się dziś między innymi Pinacoteca di Brera, Akademia Sztuk Pięknych, ogród botaniczny i obserwatorium astronomiczne.",
+      "Obserwatorium w Brerze powstało w 1764 roku i jest najstarszą instytucją naukową działającą w Mediolanie.",
+      "To właśnie tutaj Giovanni Schiaparelli obserwował w 1877 roku tajemnicze kanały na Marsie. Ich późniejsza błędna interpretacja mocno przyczyniła się do narodzin mitu o cywilizacji Marsjan.",
+      "Ukryty za Palazzo Brera ogród botaniczny został oficjalnie utworzony w latach 1774–1775 z inicjatywy cesarzowej Marii Teresy."
+    ],
+    "featuredFact": "To właśnie tutaj Giovanni Schiaparelli obserwował w 1877 roku tajemnicze kanały na Marsie. Ich późniejsza błędna interpretacja mocno przyczyniła się do narodzin mitu o cywilizacji Marsjan."
   },
   "mi-castello": {
     "tag": "SIEDEM WIEKÓW MEDIOLANU",
     "history": "Castello Sforzesco zaczynał jako XIV-wieczna twierdza Viscontich, potem stał się renesansową rezydencją Sforzów. Pod obcymi rządami służył jako cytadela i koszary, a pod koniec XIX wieku przekształcono go w kompleks muzealny.",
     "facts": [
-      "Pierwszą twierdzę wzniósł Galeazzo II Visconti w latach 1360–1370.",
-      "Francesco Sforza odbudował zamek po zniszczeniach z czasów Republiki Ambrozjańskiej.",
-      "Na dworze Ludovica il Moro pracowali między innymi Leonardo da Vinci i Bramante.",
-      "W 1521 roku dawna Torre del Filarete eksplodowała, gdy przechowywano w niej amunicję.",
-      "Dzisiejszą wieżę wejściową zrekonstruował Luca Beltrami podczas wielkiej restauracji pod koniec XIX wieku."
+      "Pierwszą wielką twierdzę w tym miejscu wznieśli Visconti około 1360–1370 roku, a później Francesco Sforza przebudował ją na książęcą rezydencję.",
+      "Za czasów Ludovica il Moro zamek należał do najbardziej wystawnych dworów Europy. Pracowali tutaj Leonardo da Vinci i Bramante.",
+      "Po upadku Sforzów elegancką rezydencję zamieniono w koszary. Korzystali z nich kolejno Hiszpanie, Austriacy i Francuzi.",
+      "W zamku znajduje się Pietà Rondanini, ostatnie dzieło Michała Anioła. Artysta pracował nad nim niemal do śmierci, mając 89 lat.",
+      "Leonardo pozostawił również dekorację Sala delle Asse, niezwykłą iluzję wnętrza zamienionego w altanę utworzoną z gałęzi drzew. Sala jest obecnie objęta pracami konserwatorskimi."
     ],
+    "featuredFact": "W zamku znajduje się Pietà Rondanini, ostatnie dzieło Michała Anioła. Artysta pracował nad nim niemal do śmierci, mając 89 lat.",
     "sources": [
-      { "label": "Comune di Milano — historia Castello Sforzesco", "url": "https://www.comune.milano.it/it/web/castello-sforzesco/scopri-il-castello/la-storia-del-castello" }
+      { "label": "Comune di Milano: historia Castello Sforzesco", "url": "https://www.comune.milano.it/it/web/castello-sforzesco/scopri-il-castello/la-storia-del-castello" }
     ]
   },
   "mi-sempione": {
     "tag": "ZIELONA OŚ MIASTA",
     "history": "Parco Sempione urządzono pod koniec XIX wieku na dawnym terenie ćwiczeń wojskowych za Castello Sforzesco. Projekt połączył zamek z reprezentacyjną osią prowadzącą ku Arco della Pace.",
     "facts": [
-      "Park powstał w latach 1888–1894 według projektu Emilia Alemagny.",
-      "Teren wcześniej służył jako wojskowy plac ćwiczeń przy zamku.",
-      "Oś widokowa prowadzi od Castello Sforzesco do Arco della Pace.",
-      "W parku znajdują się Arena Civica, Palazzo dell'Arte i wieża Torre Branca.",
-      "Krajobraz zaprojektowano w swobodnym stylu angielskim, z krętymi alejami i stawem."
-    ]
+      "Dzisiejszy park utworzono w latach 1890–1893 jako romantyczny ogród angielski o powierzchni około 47 hektarów.",
+      "W czasach Sforzów nie był to park spacerowy, lecz ogromny książęcy teren łowiecki zamieszkany przez jelenie, sarny, zające, bażanty i kuropatwy.",
+      "Leonardo da Vinci miał w dawnym parku książęcym organizować ceremonie i widowiska dla dworu Ludovica il Moro.",
+      "Nazwa Sempione pochodzi od przełęczy Simplon. Park leży na symbolicznej osi prowadzącej od centrum Mediolanu przez Arco della Pace w jej kierunku.",
+      "Pozostałością wielkiej Wystawy Światowej z 1906 roku jest stojące do dziś w parku mediolańskie Acquario Civico."
+    ],
+    "featuredFact": "W czasach Sforzów nie był to park spacerowy, lecz ogromny książęcy teren łowiecki zamieszkany przez jelenie, sarny, zające, bażanty i kuropatwy."
   },
   "mi-san-maurizio": {
     "tag": "FRESKI ZA KLASZTORNĄ ŚCIANĄ",
     "history": "San Maurizio była kościołem wielkiego żeńskiego Monastero Maggiore. W XVI wieku wnętrze podzielono na część publiczną i chór mniszek, a niemal każdą powierzchnię pokryły renesansowe freski.",
     "facts": [
-      "Obecną świątynię budowano na początku XVI wieku przy klasztorze benedyktynek.",
-      "Ściana działowa oddzielała wiernych od chóru mniszek klauzurowych.",
-      "Znaczną część dekoracji wykonali Bernardino Luini i artyści z jego kręgu.",
-      "Freski pokrywają obie części kościoła, dlatego nie warto kończyć wizyty w pierwszej sali.",
-      "Bogactwo malowideł przyniosło świątyni popularny przydomek „Kaplicy Sykstyńskiej Mediolanu”."
+      "Świątynia jest często nazywana Kaplicą Sykstyńską Mediolanu ze względu na ogromną liczbę renesansowych fresków.",
+      "To kościół podwójny. Jedna część była przeznaczona dla zwykłych wiernych, a druga dla zakonnic żyjących w ścisłej klauzurze.",
+      "Monastero Maggiore było jednym z najważniejszych żeńskich klasztorów Mediolanu i istniało już około VIII–IX wieku.",
+      "Dekoracja wnętrza stanowi jedną z najpełniejszych zachowanych kolekcji malarstwa XVI-wiecznego w Mediolanie. Ogromną część stworzyli Bernardino Luini i jego warsztat.",
+      "W części przeznaczonej dawniej dla zakonnic zachowały się organy z 1554 roku, wykonane przez Giana Giacoma Antegnatiego."
     ],
+    "featuredFact": "Świątynia jest często nazywana Kaplicą Sykstyńską Mediolanu ze względu na ogromną liczbę renesansowych fresków.",
     "sources": [
-      { "label": "Comune di Milano — San Maurizio i Monastero Maggiore", "url": "https://www2.comune.milano.it/web/museo-archeologico-milano/-/la-chiesa-di-san-maurizio-e-il-monastero-maggiore-marzo-2026" }
+      { "label": "Comune di Milano: San Maurizio i Monastero Maggiore", "url": "https://www2.comune.milano.it/web/museo-archeologico-milano/-/la-chiesa-di-san-maurizio-e-il-monastero-maggiore-marzo-2026" }
     ]
   },
   "mi-grazie": {
     "tag": "LEONARDO I KLASZTOR",
     "history": "Santa Maria delle Grazie jest dominikańskim kompleksem rozwijanym od XV wieku. W refektarzu klasztoru Leonardo da Vinci namalował Ostatnią Wieczerzę, eksperymentując z techniką, która zaczęła niszczeć już niedługo po ukończeniu dzieła.",
     "facts": [
-      "Dominikański kompleks zaczęto budować w latach 60. XV wieku.",
-      "Renesansową część z trybuną wiąże się z działalnością Donata Bramantego.",
-      "Leonardo pracował nad Ostatnią Wieczerzą około 1495–1498 roku.",
-      "Nie jest to klasyczny fresk: artysta malował na suchej ścianie, co pogorszyło trwałość dzieła.",
-      "Refektarz przetrwał bombardowanie w 1943 roku; sąsiednie partie budynku zostały zniszczone, a ściana obrazu ocalała."
+      "Leonardo malował Ostatnią Wieczerzę około 1495–1497 roku na ścianie refektarza klasztoru dominikanów.",
+      "Wbrew popularnemu określeniu dzieło nie jest klasycznym freskiem. Leonardo eksperymentował z temperą nakładaną na przygotowany tynk, przez co malowidło zaczęło niszczeć wyjątkowo szybko.",
+      "Problemy zaczęły się niemal natychmiast. Już kilkanaście lat po ukończeniu obrazu źródła wspominały o jego pogarszającym się stanie.",
+      "W 1943 roku bomba zniszczyła dużą część refektarza, w tym dach i sąsiednie ściany. Ściana z Ostatnią Wieczerzą przetrwała.",
+      "Podczas konserwacji odkryto w pobliżu głowy Jezusa otwór po gwoździu, którego Leonardo użył jako punktu zbiegu. Od niego prowadził linie pomagające skonstruować perfekcyjną perspektywę obrazu."
     ],
+    "featuredFact": "W 1943 roku bomba zniszczyła dużą część refektarza, w tym dach i sąsiednie ściany. Ściana z Ostatnią Wieczerzą przetrwała.",
     "sources": [
-      { "label": "Museo del Cenacolo Vinciano — informacje", "url": "https://cenacolovinciano.org/en/" },
-      { "label": "UNESCO — Santa Maria delle Grazie", "url": "https://whc.unesco.org/en/list/93/" }
+      { "label": "Museo del Cenacolo Vinciano: informacje", "url": "https://cenacolovinciano.org/en/" },
+      { "label": "UNESCO: Santa Maria delle Grazie", "url": "https://whc.unesco.org/en/list/93/" }
     ]
   },
   "mi-colonne": {
     "tag": "RZYMSKI MEDIOLAN",
     "history": "Colonne di San Lorenzo są najbardziej widocznym zespołem rzymskich kolumn w Mediolanie. Elementy starszej monumentalnej budowli przeniesiono tu w późnej starożytności i wykorzystano przy reprezentacyjnym wejściu do wczesnochrześcijańskiej bazyliki.",
     "facts": [
-      "Rząd tworzy szesnaście kolumn z korynckimi kapitelami.",
-      "Kolumny pochodzą z rzymskiej budowli datowanej na okres cesarski.",
-      "W późnej starożytności przeniesiono je w pobliże bazyliki San Lorenzo.",
-      "Bazylika należała do największych budowli wczesnochrześcijańskiego Mediolanu.",
-      "To jeden z nielicznych dużych zespołów antycznego Mediolanum widocznych bez schodzenia pod ziemię."
+      "Przed bazyliką stoi 16 monumentalnych kolumn korynckich, będących jednymi z najbardziej widocznych pozostałości rzymskiego Mediolanu.",
+      "Kolumn nie wykonano specjalnie dla bazyliki. Wykorzystano elementy pochodzące ze starszej rzymskiej budowli publicznej.",
+      "Sama Basilica di San Lorenzo sięga czasów późnego Cesarstwa Rzymskiego. Jej początki datuje się na około IV–V wiek.",
+      "Kolumny mają około 8,5 metra wysokości, więc trudno uwierzyć, że przetrwały niemal w centrum współczesnego miasta.",
+      "Vediamoci alle Colonne, czyli spotkajmy się przy Kolumnach, jest normalnym mediolańskim zwrotem. Wieczorami antyczny zabytek zamienia się w jedno z najpopularniejszych miejsc spotkań młodych ludzi."
     ],
+    "featuredFact": "Vediamoci alle Colonne, czyli spotkajmy się przy Kolumnach, jest normalnym mediolańskim zwrotem. Wieczorami antyczny zabytek zamienia się w jedno z najpopularniejszych miejsc spotkań młodych ludzi.",
     "sources": [
-      { "label": "Comune di Milano — Mediolan rzymski", "url": "https://www2.comune.milano.it/documents/86337559/317583831/Otto%2Bpercorsi%2B%2Balla%2Bscoperta%2Bdi%2BMediolanum.pdf/bd2051b1-ccfd-96c2-ba4a-36287af619f3?t=1603351201637" }
+      { "label": "Comune di Milano: Mediolan rzymski", "url": "https://www2.comune.milano.it/documents/86337559/317583831/Otto%2Bpercorsi%2B%2Balla%2Bscoperta%2Bdi%2BMediolanum.pdf/bd2051b1-ccfd-96c2-ba4a-36287af619f3?t=1603351201637" }
     ]
   },
   "mi-navigli": {
     "tag": "PORT I KANAŁY",
     "history": "Darsena była przez stulecia miejskim portem, w którym spotykały się mediolańskie kanały. Navigli służyły do transportu ludzi, żywności i materiałów budowlanych, zanim część śródmiejskiej sieci zasypano lub przykryto w XX wieku.",
     "facts": [
-      "Naviglio Grande rozwijano od średniowiecza jako drogę wodną łączącą Mediolan z Ticino.",
-      "Kanałami transportowano do miasta między innymi marmur przeznaczony na budowę Duomo.",
-      "Leonardo da Vinci nie stworzył całej sieci, ale pracował w Mediolanie nad rozwiązaniami śluz i gospodarki wodnej.",
-      "Darsena pełniła funkcję miejskiego portu i punktu przeładunkowego.",
-      "Vicolo dei Lavandai przypomina o pralnikach i praczach korzystających z kanału jeszcze w XX wieku."
-    ]
+      "Początki Naviglio Grande sięgają XII wieku. Kanał stał się w pełni żeglowny w 1272 roku, czyli ponad 200 lat przed przyjazdem Leonarda da Vinci do Mediolanu.",
+      "Wielkie bloki marmuru z Candoglii przeznaczone na budowę Duomo transportowano łodziami systemem Navigli niemal do centrum Mediolanu.",
+      "Leonardo nie zbudował Navigli, jak czasami sugerują przewodniki. Badał istniejący system, projektował ulepszenia śluz i rozwiązania regulujące przepływ wody.",
+      "Jeszcze w XX wieku Darsena była prawdziwym portem handlowym. Do lat 50. zajmowała 13. miejsce wśród włoskich portów pod względem obsługi ładunków i 3. pod względem przepływu towarów.",
+      "Regularny transport towarów barkami po Navigli zakończył się dopiero w 1978 roku. Dawne magazyny, warsztaty i nabrzeża zamieniły się później w jeden z najbardziej znanych rejonów aperitivo i nocnego życia Mediolanu."
+    ],
+    "featuredFact": "Jeszcze w XX wieku Darsena była prawdziwym portem handlowym. Do lat 50. zajmowała 13. miejsce wśród włoskich portów pod względem obsługi ładunków i 3. pod względem przepływu towarów."
   },
   "d4-pignolo": {
     "tag": "BORGO DEL SAPERE",
@@ -631,11 +642,12 @@
     "tag": "MONUMENTALNY DWORZEC",
     "history": "Milano Centrale otwarto w 1931 roku jako nowy główny dworzec miasta. Projekt Ulisse Stacchiniego rozrósł się do monumentalnej formy łączącej klasycyzujące detale, nowoczesną konstrukcję i reprezentacyjny język epoki.",
     "facts": [
-      "Obecny dworzec otwarto w 1931 roku, zastępując wcześniejszą stację centralną.",
-      "Głównym projektantem był architekt Ulisse Stacchini.",
-      "Perony przykrywają ogromne stalowe hale o łukowych przekryciach.",
-      "Fasada łączy kamienną monumentalność z dekoracjami typowymi dla pierwszej połowy XX wieku.",
-      "Pod dworcem krzyżują się linie metra M2 i M3, dzięki czemu można szybko ominąć długi marsz do Duomo."
-    ]
+      "Obecny dworzec otwarto w 1931 roku, ale to już druga stacja Centrale. Poprzednia, z 1864 roku, znajdowała się w okolicy dzisiejszego Piazza della Repubblica.",
+      "Fasada ma około 200 metrów długości, a ogromne stalowe zadaszenia nad peronami ciągną się na ponad 300 metrów.",
+      "Architekt Ulisse Stacchini inspirował się przy projektowaniu dworca między innymi monumentalnym Union Station w Waszyngtonie.",
+      "Na dworcu znajduje się Sala Reale, prywatna poczekalnia włoskiej rodziny królewskiej, przygotowana tak, by monarcha nie musiał korzystać ze zwykłych przestrzeni dla pasażerów.",
+      "Pod dworcem kryje się bardzo mroczna historia. W latach 1943–1944 z jego podziemi deportowano Żydów i więźniów politycznych do obozów koncentracyjnych. Dziś przypomina o tym Memoriale della Shoah."
+    ],
+    "featuredFact": "Pod dworcem kryje się bardzo mroczna historia. W latach 1943–1944 z jego podziemi deportowano Żydów i więźniów politycznych do obozów koncentracyjnych. Dziś przypomina o tym Memoriale della Shoah."
   }
 }
