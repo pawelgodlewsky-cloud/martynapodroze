@@ -47,13 +47,73 @@ const POINT_IMAGE_OVERRIDES = Object.freeze({
   "mi-navigli": "assets/places/navigli-generated.webp"
 });
 
+const POINT_EDITORIAL_IMAGES = Object.freeze({
+  "bg-porta-nuova": [
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-porta-nuova-900.webp", width: 900, height: 1200, alt: "Porta Nuova i widok na Città Alta w Bergamo", position: "50% 48%" },
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-pomnik-donizettiego-900.webp", width: 900, height: 1200, alt: "Martyna przy pomniku Gaetana Donizettiego w dolnym Bergamo", position: "50% 35%" }
+  ],
+  "d4-porta-nuova": [
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-porta-nuova-900.webp", width: 900, height: 1200, alt: "Porta Nuova i widok na Città Alta w Bergamo", position: "50% 48%" },
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-pomnik-donizettiego-900.webp", width: 900, height: 1200, alt: "Martyna przy pomniku Gaetana Donizettiego w dolnym Bergamo", position: "50% 35%" }
+  ],
+  "bg-mercato": [
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-via-gombito-900.webp", width: 900, height: 1200, alt: "Via Gombito prowadząca przez Città Alta w Bergamo", position: "50% 52%" },
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-boczna-uliczka-900.webp", width: 900, height: 1373, alt: "Spokojna brukowana uliczka w Città Alta", position: "50% 52%" }
+  ],
+  "bg-piazza-vecchia": [
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-piazza-vecchia-campanone-900.webp", width: 900, height: 1200, alt: "Piazza Vecchia i wieża Campanone w Bergamo", position: "50% 42%" },
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-palazzo-della-ragione-900.webp", width: 900, height: 962, alt: "Schody Palazzo della Ragione na Piazza Vecchia", position: "50% 47%" },
+    { src: "../blog/assets/lombardia/bergamo-gelato-piazza-vecchia-900.webp", width: 900, height: 1200, alt: "Gelato na Piazza Vecchia w Bergamo", position: "50% 48%" }
+  ],
+  "bg-basilica": [
+    { src: "../blog/assets/lombardia/bergamo-cappella-colleoni-900.webp", width: 900, height: 1200, alt: "Martyna przed Cappella Colleoni w Bergamo", position: "50% 42%" },
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-cappella-colleoni-martyna-900.webp", width: 814, height: 1600, alt: "Martyna na tle zdobionej fasady Cappella Colleoni", position: "50% 34%" }
+  ],
+  "bg-campanone": [
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-piazza-vecchia-campanone-900.webp", width: 900, height: 1200, alt: "Wieża Campanone nad Piazza Vecchia", position: "50% 35%" }
+  ],
+  "bg-colle-aperto": [
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-aperitivo-900.webp", width: 900, height: 1037, alt: "Aperitivo z przekąskami w Bergamo", position: "50% 50%" },
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-pizza-900.webp", width: 900, height: 1200, alt: "Pizza i kieliszek wina w Bergamo", position: "50% 42%" },
+    { src: "../blog/assets/lombardia/bergamo-lokalny-lunch-900.webp", width: 900, height: 1129, alt: "Lokalny lunch z makaronem w Bergamo", position: "50% 50%" }
+  ],
+  "bg-porta-san-giacomo": [
+    { src: "../blog/assets/bergamo-jeden-dzien/bergamo-porta-san-giacomo-900.webp", width: 900, height: 1200, alt: "Porta San Giacomo i widok na dolne Bergamo", position: "50% 48%" }
+  ],
+  "co-lovers": [
+    { src: "../blog/assets/lombardia/varenna-promenada-jezioro-como-900.webp", width: 900, height: 1200, alt: "Martyna na promenadzie nad jeziorem Como w Varennie", position: "50% 47%" }
+  ],
+  "co-villa-monastero": [
+    { src: "../blog/assets/lombardia/varenna-villa-monastero-900.webp", width: 900, height: 1200, alt: "Martyna na tarasie Villa Monastero nad jeziorem Como", position: "50% 43%" }
+  ],
+  "mi-duomo": [
+    { src: "../blog/assets/lombardia/mediolan-duomo-martyna-900.webp", width: 900, height: 1389, alt: "Martyna przed katedrą Duomo w Mediolanie", position: "50% 40%" }
+  ],
+  "mi-galleria": [
+    { src: "../blog/assets/lombardia/mediolan-mozaika-byka-900.webp", width: 900, height: 902, alt: "Mozaika z bykiem w Galleria Vittorio Emanuele II", position: "50% 50%" }
+  ],
+  "mi-castello": [
+    { src: "../blog/assets/lombardia/mediolan-castello-sforzesco-900.webp", width: 900, height: 1164, alt: "Martyna przed Castello Sforzesco w Mediolanie", position: "50% 45%" }
+  ]
+});
+
 const pointImage = point => POINT_IMAGE_OVERRIDES[point.id] || point.image;
+const editorialImages = point => POINT_EDITORIAL_IMAGES[point.id] || [];
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
 const mapLink = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 const guideLink = point => `https://www.google.com/maps/dir/?api=1&destination=${point.lat}%2C${point.lng}&travelmode=walking`;
+
+function responsiveImageAttributes(image, sizes) {
+  const source = image.src;
+  const responsive = /-900\.webp$/.test(source)
+    ? ` srcset="${source.replace(/-900\.webp$/, "-520.webp")} 520w, ${source} ${image.width || 900}w" sizes="${sizes}"`
+    : "";
+  const dimensions = image.width && image.height ? ` width="${image.width}" height="${image.height}"` : "";
+  return `src="${source}"${responsive}${dimensions}`;
+}
 
 let data = {};
 let leafletMapInstance = null;
@@ -599,10 +659,11 @@ function pointCard(point, disabledMode = null) {
   const recommendation = recommendationFor(point);
   const isCurrent = state.currentPoint[point.day] === point.id;
   const shortened = state.delayPlans[point.day]?.shortened?.[point.id];
-  const cardImages = point.images?.length ? point.images : [{ src: pointImage(point) || day.hero, alt: point.name, position: point.position || "center" }];
+  const realImages = editorialImages(point);
+  const cardImages = realImages.length ? realImages : point.images?.length ? point.images : [{ src: pointImage(point) || day.hero, alt: point.name, position: point.position || "center" }];
   const cardImageMarkup = cardImages.length === 1
-    ? `<img class="point-image" src="${cardImages[0].src}" style="object-position:${cardImages[0].position || "center"}" alt="${escapeHtml(cardImages[0].alt || point.name)}" loading="lazy">`
-    : `<div class="point-image-stack" data-count="${Math.min(cardImages.length, 2)}">${cardImages.slice(0, 2).map(image => `<img class="point-image" src="${image.src}" style="object-position:${image.position || "center"}" alt="${escapeHtml(image.alt || point.name)}" loading="lazy">`).join("")}</div>`;
+    ? `<div class="point-image-frame"><img class="point-image" ${responsiveImageAttributes(cardImages[0], "(max-width: 719px) calc(100vw - 32px), 310px")} style="object-position:${cardImages[0].position || "center"}" alt="${escapeHtml(cardImages[0].alt || point.name)}" loading="lazy" decoding="async">${realImages.length ? `<span class="photo-source">kadr Martyny</span>` : ""}</div>`
+    : `<div class="point-image-stack" data-count="${Math.min(cardImages.length, 2)}">${cardImages.slice(0, 2).map(image => `<img class="point-image" ${responsiveImageAttributes(image, "(max-width: 719px) 50vw, 310px")} style="object-position:${image.position || "center"}" alt="${escapeHtml(image.alt || point.name)}" loading="lazy" decoding="async">`).join("")}${realImages.length ? `<span class="photo-source">kadry Martyny</span>` : ""}</div>`;
   return `<article class="point-card ${point.pointKind === "major" ? "major-point" : "supporting-point"} ${done ? "completed" : ""} ${isCurrent ? "is-current" : ""} ${disabled ? `mode-disabled ${disabledMode}-disabled` : ""}" data-order="${point.order}" data-place-id="${point.id}" id="point-${point.id}" style="--point-accent:${day.accent}" ${disabled ? `aria-disabled="true"` : ""}>
     ${cardImageMarkup}
     <div class="point-content">
@@ -646,7 +707,8 @@ function renderPlace(point) {
   const completed = placePoints.filter(item => state.done.includes(item.id)).length;
   const percent = placePoints.length ? Math.round(completed / placePoints.length * 100) : 0;
   const done = state.done.includes(point.id);
-  const images = detail.images?.length ? detail.images : [{ src: pointImage(point) || day.hero, alt: point.name, position: point.position || "center" }];
+  const realImages = editorialImages(point);
+  const images = realImages.length ? realImages : detail.images?.length ? detail.images : [{ src: pointImage(point) || day.hero, alt: point.name, position: point.position || "center" }];
   const hero = images[0];
   const quickInfo = [
     ["Ile czasu", detail.duration || point.visit],
@@ -674,8 +736,9 @@ function renderPlace(point) {
     <main class="place-main">
       <section class="place-hero">
         <button class="place-hero-image" data-action="open-image" data-src="${hero.src}" data-alt="${escapeHtml(hero.alt || point.name)}" aria-label="Powiększ zdjęcie: ${escapeHtml(point.name)}">
-          <img src="${hero.src}" alt="${escapeHtml(hero.alt || point.name)}" style="object-position:${hero.position || "center"}" fetchpriority="high">
+          <img ${responsiveImageAttributes(hero, "(max-width: 759px) 100vw, 44vw")} alt="${escapeHtml(hero.alt || point.name)}" style="object-position:${hero.position || "center"}" fetchpriority="high" decoding="async">
           <span class="place-zoom" aria-hidden="true">Powiększ</span>
+          ${realImages.length ? `<span class="place-photo-source">zdjęcie Martyny z trasy</span>` : ""}
         </button>
         <div class="place-route-mark" aria-hidden="true"><b>${String(index + 1).padStart(2, "0")}</b><span>/ ${String(placePoints.length).padStart(2, "0")}</span></div>
       </section>
@@ -715,7 +778,7 @@ function renderPlace(point) {
 
         ${detail.sources?.length ? `<section class="place-section place-sources" aria-labelledby="placeSourcesTitle"><div class="place-section-heading"><span>Sprawdzone informacje</span><h2 id="placeSourcesTitle">Źródła</h2></div><ul>${detail.sources.map(source => `<li><a href="${source.url}" target="_blank" rel="noopener">${escapeHtml(source.label)} ↗</a></li>`).join("")}</ul></section>` : ""}
 
-        ${images.length > 1 ? `<section class="place-section gallery-section" aria-labelledby="galleryTitle"><div class="place-section-heading"><span>${images.length} zdjęcia</span><h2 id="galleryTitle">Galeria</h2></div><div class="place-gallery">${images.map((image, imageIndex) => `<button data-action="open-image" data-src="${image.src}" data-alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}"><img src="${image.src}" alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}" style="object-position:${image.position || "center"}" loading="lazy"></button>`).join("")}</div></section>` : ""}
+        ${images.length > 1 ? `<section class="place-section gallery-section" aria-labelledby="galleryTitle"><div class="place-section-heading"><span>${images.length} zdjęcia</span><h2 id="galleryTitle">Galeria z trasy</h2></div><div class="place-gallery">${images.map((image, imageIndex) => `<button data-action="open-image" data-src="${image.src}" data-alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}"><img ${responsiveImageAttributes(image, "(max-width: 759px) 86vw, 430px")} alt="${escapeHtml(image.alt || `${point.name}, zdjęcie ${imageIndex + 1}`)}" style="object-position:${image.position || "center"}" loading="lazy" decoding="async"></button>`).join("")}</div></section>` : ""}
 
         <nav class="place-sequence" aria-label="Poprzednie i następne ważne miejsce">
           ${previous ? `<button data-action="place-nav" data-id="${previous.id}"><span>← Poprzednie</span><b>${escapeHtml(previous.name)}</b></button>` : `<span></span>`}
@@ -1025,7 +1088,7 @@ async function prepareOffline() {
   const button = $('[data-action="offline-prepare"]');
   if (button) { button.disabled = true; button.textContent = "Przygotowuję…"; }
   try {
-    const urls = ["./", "index.html", "styles.css?v=40", "app.js?v=40", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
+    const urls = ["./", "index.html", "styles.css?v=41", "app.js?v=41", "manifest.webmanifest", ...DATA_FILES.map(name => `data/${name}.json`)];
     await Promise.all(urls.map(url => fetch(url, {cache:"reload"}).then(response => { if (!response.ok) throw new Error(url); })));
     if ("serviceWorker" in navigator) await navigator.serviceWorker.ready;
     state.offlinePreparedAt = new Date().toISOString();
@@ -1299,7 +1362,7 @@ async function init() {
     updateNetwork();
     window.addEventListener("online", updateNetwork);
     window.addEventListener("offline", updateNetwork);
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=40", { updateViaCache: "none" }).catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=41", { updateViaCache: "none" }).catch(() => {});
   } catch (error) {
     $("#homeView").innerHTML = `<div class="content-shell empty-state" style="margin-top:40px"><h1>Nie udało się otworzyć przewodnika</h1><p>Uruchom folder przez lokalny serwer WWW. Szczegóły: ${escapeHtml(error.message)}</p></div>`;
   }
