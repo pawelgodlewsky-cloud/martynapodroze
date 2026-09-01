@@ -9,7 +9,7 @@ z rodziną, w rozsądnym budżecie.
 Aktualnie repozytorium zawiera pierwszą, responsywną wersję strony głównej.
 Najważniejszym elementem jest formularz pomagający wybrać odpowiednie wsparcie:
 
-- 4-dniowy interaktywny przewodnik „Lombardia bez stresu” (59 zł promocyjnie, później 79 zł),
+- interaktywny przewodnik „Gotowy plan na 4 dni Bergamo - Mediolan - Como” (59 zł promocyjnie, później 79 zł),
 - indywidualny plan podróży od A do Z (349 / 549 / 749 zł),
 - godzinną konsultację podróżniczą (169 zł na start),
 - lotniska wylotu,
