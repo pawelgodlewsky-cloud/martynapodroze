@@ -53,6 +53,6 @@ describe("commerce security", () => {
     const response = await publicRomePreview(new Request(`https://martynapodroze.pl/podglad/rzym/${token}/data/guide.json`), { GUIDE_PREVIEW_TOKEN: token } as never);
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/json");
-    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/rome/data/guide.json", expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/0751c8ad15feec896cb7ce10c7db0796b83b460f/rome/data/guide.json", expect.any(Object));
   });
 });
