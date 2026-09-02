@@ -40,7 +40,7 @@ describe("commerce security", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("text/css; charset=utf-8");
     expect(response.headers.get("X-Robots-Tag")).toBe("noindex, nofollow, noarchive");
-    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/51430de204e1a90e69461c7e15a3cd74add488d8/como/styles.css", expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/f8200f534ea8ac506aa24681e54237aa6799532f/como/styles.css", expect.any(Object));
 
     const denied = await publicGuidePreview(new Request("https://martynapodroze.pl/podglad/como/not-a-real-token/"), { GUIDE_PREVIEW_TOKEN: token } as never);
     expect(denied.status).toBe(404);

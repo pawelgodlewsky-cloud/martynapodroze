@@ -6,7 +6,7 @@ const GUIDE_CURRENCY = "pln";
 const MAX_GUIDE_DEVICES = 3;
 const DEVICE_COOKIE = "mp_lombardia_access";
 const TOKEN_TOLERANCE_SECONDS = 300;
-const GITHUB_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/51430de204e1a90e69461c7e15a3cd74add488d8/como";
+const GITHUB_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/f8200f534ea8ac506aa24681e54237aa6799532f/como";
 const GUIDE_PREVIEW_ROOT = "/podglad/como/";
 const GUIDE_CSP = [
   "default-src 'self'",
