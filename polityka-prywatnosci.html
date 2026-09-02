@@ -36,8 +36,8 @@
         <p>Dostawcy hostingu mogą przetwarzać dane techniczne, takie jak adres IP, czas żądania, typ przeglądarki i żądany adres, aby dostarczyć stronę, zapewnić bezpieczeństwo i diagnozować awarie. Podstawą jest prawnie uzasadniony interes polegający na bezpiecznym utrzymaniu serwisu (art. 6 ust. 1 lit. f RODO).</p>
         <h3>Newsletter</h3>
         <p>Po zapisaniu się i potwierdzeniu adresu w wiadomości double opt-in wykorzystujemy Twój adres e-mail do przesyłania informacji o premierach, propozycji tanich lotów i praktycznych wskazówek. Podstawą jest dobrowolna zgoda (art. 6 ust. 1 lit. a RODO), którą możesz wycofać w każdej chwili przez link wypisu w wiadomości.</p>
-        <h3>Statystyki ofert</h3>
-        <p>Po dobrowolnym zaakceptowaniu cookies statystycznych zapisujemy pseudonimowy identyfikator, wejścia na indywidualne oferty oraz kliknięcia w przyciski dostawców. Nie zapisujemy pełnego adresu IP ani danych reklamowych. Podstawą jest zgoda (art. 6 ust. 1 lit. a RODO oraz art. 399 Prawa komunikacji elektronicznej).</p>
+        <h3>Statystyki korzystania ze strony</h3>
+        <p>Po dobrowolnym zaakceptowaniu cookies statystycznych używamy PostHog w regionie UE. Zapisujemy pseudonimowy identyfikator, odsłony oraz interakcje ze stroną, w tym kliknięcia w oferty i przyciski zakupu. Nie tworzymy profili reklamowych, a nagrywanie sesji jest wyłączone. Podstawą jest zgoda (art. 6 ust. 1 lit. a RODO oraz art. 399 Prawa komunikacji elektronicznej).</p>
       </section>
       <section>
         <h2>3. Odbiorcy i dostawcy</h2>
@@ -47,6 +47,7 @@
           <li>GitHub Pages — hosting statycznej części strony; GitHub informuje, że zapisuje adres IP odwiedzającego w celach bezpieczeństwa;</li>
           <li>FormSubmit — techniczna obsługa formularza kontaktowego;</li>
           <li>MailerLite — obsługa zapisów double opt-in, listy odbiorców, wysyłki newslettera i wypisów;</li>
+          <li>PostHog Cloud EU — dobrowolne statystyki korzystania ze strony, uruchamiane wyłącznie po zgodzie;</li>
           <li>dostawcę poczty elektronicznej oraz usługodawców IT działających na nasze polecenie;</li>
           <li>Google Fonts — dostarczenie krojów pisma, co wiąże się z połączeniem przeglądarki z serwerami Google.</li>
         </ul>
@@ -71,6 +72,7 @@
             <tr><td data-label="Nazwa"><code>mp_cookie_consent</code></td><td data-label="Rodzaj">niezbędny</td><td data-label="Cel">zapamiętanie wyboru dotyczącego cookies</td><td data-label="Okres">180 dni</td></tr>
             <tr><td data-label="Nazwa"><code>__Host-mp_admin</code></td><td data-label="Rodzaj">niezbędny</td><td data-label="Cel">bezpieczna sesja administratora panelu</td><td data-label="Okres">12 godzin</td></tr>
             <tr><td data-label="Nazwa"><code>mp_visitor</code></td><td data-label="Rodzaj">statystyczny, opcjonalny</td><td data-label="Cel">deduplikacja anonimowych wejść i kliknięć w ofertach</td><td data-label="Okres">180 dni</td></tr>
+            <tr><td data-label="Nazwa"><code>ph_*</code></td><td data-label="Rodzaj">statystyczny, opcjonalny</td><td data-label="Cel">anonimowe statystyki PostHog: odsłony i interakcje ze stroną</td><td data-label="Okres">do 12 miesięcy</td></tr>
           </tbody>
         </table>
         <p>Zgodę możesz w każdej chwili zmienić. Wycofanie zgody nie wpływa na zgodność z prawem wcześniejszego przetwarzania.</p>
@@ -87,6 +89,6 @@
     </article>
   </main>
   <footer class="site-footer"><a href="/">← Wróć na stronę główną</a></footer>
-  <script src="assets/cookie-consent.js?v=1"></script>
+  <script src="assets/cookie-consent.js?v=2"></script>
 </body>
 </html>

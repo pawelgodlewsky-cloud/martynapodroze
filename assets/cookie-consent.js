@@ -3,6 +3,9 @@
   const analyticsValue = "analytics-v1";
   const necessaryValue = "necessary-v1";
   const maxAge = 60 * 60 * 24 * 180;
+  const posthogToken = "phc_BFE8LRokqLUhN4EKRF2vdgGJ3U3BtFZ2ZsMeXrv5GWt4";
+  const posthogHost = "https://eu.i.posthog.com";
+  let posthogStarted = false;
 
   const readConsent = () => {
     const prefix = `${consentName}=`;
@@ -16,7 +19,63 @@
 
   const removeAnalyticsCookie = () => {
     document.cookie = "mp_visitor=; Path=/; Max-Age=0; Secure; SameSite=Lax";
+    document.cookie.split(";").forEach((item) => {
+      const name = item.split("=", 1)[0].trim();
+      if (name.startsWith("ph_")) {
+        document.cookie = `${name}=; Path=/; Max-Age=0; Secure; SameSite=Lax`;
+      }
+    });
+    Object.keys(window.localStorage).filter((key) => key.startsWith("ph_") || key.includes("posthog")).forEach((key) => {
+      window.localStorage.removeItem(key);
+    });
   };
+
+  const startPostHog = () => {
+    if (posthogStarted || readConsent() !== analyticsValue) return;
+    posthogStarted = true;
+
+    const posthog = window.posthog = window.posthog || [];
+    if (!posthog.__SV) {
+      posthog._i = [];
+      posthog.init = (token, config, name = "posthog") => {
+        const instance = name === "posthog" ? posthog : (posthog[name] = posthog[name] || []);
+        const methods = "capture identify alias people.set people.set_once reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing register register_once unregister get_distinct_id get_session_id captureException".split(" ");
+        methods.forEach((method) => {
+          const parts = method.split(".");
+          const target = parts.length === 2 ? (instance[parts[0]] = instance[parts[0]] || []) : instance;
+          const key = parts.length === 2 ? parts[1] : parts[0];
+          target[key] = (...args) => instance.push([method, ...args]);
+        });
+        posthog._i.push([token, config, name]);
+      };
+      posthog.__SV = 1;
+    }
+
+    const script = document.createElement("script");
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.src = `${posthogHost.replace(".i.posthog.com", "-assets.i.posthog.com")}/static/array.js`;
+    document.head.append(script);
+
+    posthog.init(posthogToken, {
+      api_host: posthogHost,
+      defaults: "2026-05-30",
+      person_profiles: "identified_only",
+      disable_session_recording: true,
+      respect_dnt: true,
+      persistence: "localStorage+cookie"
+    });
+  };
+
+  document.addEventListener("martyna:analytics", (event) => {
+    if (readConsent() !== analyticsValue) return;
+    startPostHog();
+    const detail = event.detail && typeof event.detail === "object" ? event.detail : {};
+    const eventName = typeof detail.event === "string" ? detail.event : "martyna_interaction";
+    const properties = { ...detail };
+    delete properties.event;
+    window.posthog?.capture?.(eventName, properties);
+  });
 
   const wrapper = document.createElement("section");
   wrapper.className = "cookie-consent";
@@ -54,7 +113,13 @@
     const previous = readConsent();
     const accepted = button.dataset.cookieChoice === "analytics";
     setConsent(accepted ? analyticsValue : necessaryValue);
-    if (!accepted) removeAnalyticsCookie();
+    if (accepted) startPostHog();
+    else {
+      window.posthog?.opt_out_capturing?.();
+      window.posthog?.reset?.();
+      removeAnalyticsCookie();
+      posthogStarted = false;
+    }
     close();
     document.dispatchEvent(new CustomEvent("mp:cookie-consent", { detail: { analytics: accepted } }));
     if (accepted && previous !== analyticsValue && document.body.dataset.cookieAnalytics === "worker") {
@@ -79,5 +144,6 @@
 
   const choice = readConsent();
   if (choice !== analyticsValue && choice !== necessaryValue) open();
+  if (choice === analyticsValue) startPostHog();
   if (choice === necessaryValue) removeAnalyticsCookie();
 })();
