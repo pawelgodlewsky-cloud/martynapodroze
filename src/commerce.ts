@@ -253,7 +253,7 @@ export async function publicGuidePreview(request: Request, env: Env): Promise<Re
   if (!upstream.ok) return new Response("Nie znaleziono pliku.", { status: upstream.status === 404 ? 404 : 502 });
   const headers = new Headers(upstream.headers);
   headers.set("Content-Type", contentType(relative));
-  headers.set("Cache-Control", relative.endsWith("index.html") ? "no-store" : "public, max-age=3600");
+  headers.set("Cache-Control", relative.endsWith("index.html") || relative.endsWith("sw.js") ? "no-store" : "public, max-age=3600");
   headers.set("Content-Security-Policy", GUIDE_CSP);
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("X-Content-Type-Options", "nosniff");
@@ -284,7 +284,7 @@ export async function protectedGuide(request: Request, env: Env): Promise<Respon
   if (!upstream.ok) return new Response("Nie znaleziono pliku.", { status: upstream.status === 404 ? 404 : 502 });
   const headers = new Headers(upstream.headers);
   headers.set("Content-Type", contentType(relative));
-  headers.set("Cache-Control", relative.endsWith("index.html") ? "private, no-store" : "private, max-age=3600");
+  headers.set("Cache-Control", relative.endsWith("index.html") || relative.endsWith("sw.js") ? "private, no-store" : "private, max-age=3600");
   headers.set("Content-Security-Policy", GUIDE_CSP);
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("X-Content-Type-Options", "nosniff");
