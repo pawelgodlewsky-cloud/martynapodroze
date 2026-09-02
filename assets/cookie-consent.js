@@ -30,8 +30,8 @@
     });
   };
 
-  const startPostHog = () => {
-    if (posthogStarted || readConsent() !== analyticsValue) return;
+  const startPostHog = (force = false) => {
+    if (posthogStarted || (!force && readConsent() !== analyticsValue)) return;
     posthogStarted = true;
 
     const posthog = window.posthog = window.posthog || [];
@@ -113,7 +113,7 @@
     const previous = readConsent();
     const accepted = button.dataset.cookieChoice === "analytics";
     setConsent(accepted ? analyticsValue : necessaryValue);
-    if (accepted) startPostHog();
+    if (accepted) startPostHog(true);
     else {
       window.posthog?.opt_out_capturing?.();
       window.posthog?.reset?.();
