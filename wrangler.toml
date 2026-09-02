@@ -14,6 +14,10 @@ routes = [
   { pattern = "martynapodroze.pl/zakup/lombardia*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/podglad/como*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/como*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/dostep/rzym*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/podglad/rzym*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/rzym*", zone_name = "martynapodroze.pl" },
+  { pattern = "martynapodroze.pl/guides*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/w/*", zone_name = "martynapodroze.pl" },
   { pattern = "martynapodroze.pl/go/*", zone_name = "martynapodroze.pl" }
 ]

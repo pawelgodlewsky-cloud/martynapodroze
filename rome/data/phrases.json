@@ -1,0 +1,9 @@
+{
+  "restauracja":[["Poproszę stolik dla dwóch osób.","Un tavolo per due, per favore.","un tawolo per due"],["Czy macie dania wegetariańskie?","Avete piatti vegetariani?","awete piatti wedżetariani"],["Poproszę rachunek.","Il conto, per favore.","il konto per fawore"]],
+  "bilety":[["Mam rezerwację na godzinę dziesiątą trzydzieści.","Ho una prenotazione per le dieci e trenta.","o una prenotacjone"],["Gdzie jest oficjalna kasa?","Dov'è la biglietteria ufficiale?","dowe la biljetteria ufficzale"]],
+  "transport":[["Czy ten autobus jedzie do Termini?","Questo autobus va a Termini?","kuesto autobus wa a termini"],["Gdzie mam skasować bilet?","Dove devo convalidare il biglietto?","dowe dewo konwalidare"]],
+  "hotel":[["Czy mogę zostawić bagaż?","Posso lasciare il bagaglio?","posso laszare il bagalio"],["Proszę zapisać adres.","Può scrivere l'indirizzo, per favore?","puo skriwere lindirizzo"]],
+  "pomoc":[["Potrzebuję pomocy.","Ho bisogno di aiuto.","o bizonio di ajuto"],["Proszę zadzwonić pod 112.","Chiami il 112, per favore.","kiami il cento dodiczi"]],
+  "droga":[["Jak dojść do metra?","Come arrivo alla metropolitana?","kome arriwo alla metropolitana"],["Czy to daleko pieszo?","È lontano a piedi?","e lontano a piedi"]]
+}
+

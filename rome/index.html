@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#17243b">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="Rzym w 3 dni. Interaktywna trasa, mapa, bilety i plan awaryjny od martyna_podroze.">
+  <title>Interaktywny przewodnik po Rzymie: Martyna Podróże</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhJb+zWcvxI0t5ufmLClrypFZ+Kk=" crossorigin="">
+  <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+  <a class="skip-link" href="#main">Przejdź do treści</a>
+  <header class="topbar">
+    <a class="wordmark" href="#today" aria-label="Martyna Podróże, Rzym"><span>martyna_podroze</span><b>ROMA / 01</b></a>
+    <div class="network" id="networkStatus" aria-live="polite">online</div>
+  </header>
+
+  <main id="main">
+    <section class="view is-active" id="today" data-view="today" aria-labelledby="todayTitle">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">INTERAKTYWNY PRZEWODNIK / RZYM 2026</p>
+          <h1 id="todayTitle">Rzym.<br><i>Bez zgadywania.</i></h1>
+          <p class="hero-lead">Otwierasz telefon i wiesz, co teraz. Trzy dni ułożone wokół biletów, tłumów i realnych odległości.</p>
+          <div class="hero-actions">
+            <button class="button primary" data-action="continue">Prowadź mnie dalej</button>
+            <button class="button quiet" data-action="open-planner">Dopasuj plan</button>
+          </div>
+        </div>
+        <div class="hero-mark" aria-hidden="true"><span>SPQR</span><b>41°54′N</b></div>
+      </div>
+      <div class="today-grid" id="todayPanel"></div>
+      <section class="section reservations" id="reservations"></section>
+      <section class="section compact-tools" id="practical"></section>
+    </section>
+
+    <section class="view" id="plan" data-view="plan" aria-labelledby="planTitle">
+      <header class="section-head"><p class="eyebrow">PLAN KROK PO KROKU</p><h2 id="planTitle">Nie wszystko naraz.<br>W dobrej kolejności.</h2></header>
+      <div class="day-switcher" id="daySwitcher" role="tablist" aria-label="Wybierz dzień"></div>
+      <div id="dayOverview"></div>
+      <div class="timeline" id="timeline"></div>
+      <section class="section" id="foodSection"></section>
+      <section class="section utility-grid" id="extraSections"></section>
+    </section>
+
+    <section class="view map-view" id="map" data-view="map" aria-labelledby="mapTitle">
+      <header class="section-head"><p class="eyebrow">MAPA CAŁEGO RZYMU</p><h2 id="mapTitle">Wszystko na swoim miejscu.</h2><p>Filtruj punkty. Kafle mapy wymagają internetu, ale adresy i kolejność zostają dostępne offline.</p></header>
+      <div class="map-filters" id="mapFilters"></div>
+      <div id="romeMap" class="map-canvas" aria-label="Interaktywna mapa Rzymu"></div>
+      <div class="offline-map-fallback" id="mapFallback"></div>
+    </section>
+
+    <section class="view" id="saved" data-view="saved" aria-labelledby="savedTitle">
+      <header class="section-head"><p class="eyebrow">MOJA PODRÓŻ</p><h2 id="savedTitle">Mój Rzym</h2></header>
+      <div id="passport"></div>
+      <section class="section" id="savedPlaces"></section>
+      <section class="section" id="checklist"></section>
+      <section class="section" id="budget"></section>
+      <button class="text-button danger" data-action="reset">Wyczyść moje dane na tym urządzeniu</button>
+    </section>
+
+    <section class="view" id="help" data-view="help" aria-labelledby="helpTitle">
+      <header class="help-hero"><p class="eyebrow">POTRZEBUJĘ POMOCY</p><h2 id="helpTitle">Co się zmieniło?</h2><p>Wybierz sytuację. Przewodnik skróci plan bez rozsypania reszty dnia.</p></header>
+      <div class="scenario-grid" id="scenarioGrid"></div>
+      <div class="help-result" id="helpResult" aria-live="polite"></div>
+      <section class="section" id="phrases"></section>
+      <section class="section emergency" id="emergency"></section>
+    </section>
+  </main>
+
+  <button class="floating-help" data-action="view" data-view="help" aria-label="Otwórz panel pomocy">?</button>
+  <nav class="bottom-nav" aria-label="Główna nawigacja">
+    <button class="is-active" data-action="view" data-view="today"><span>01</span>Dzisiaj</button>
+    <button data-action="view" data-view="plan"><span>02</span>Plan</button>
+    <button data-action="view" data-view="map"><span>03</span>Mapa</button>
+    <button data-action="view" data-view="saved"><span>04</span>Zapisane</button>
+    <button data-action="view" data-view="help"><span>05</span>Pomoc</button>
+  </nav>
+
+  <dialog id="plannerDialog" class="sheet">
+    <form method="dialog" id="plannerForm">
+      <button class="sheet-close" value="cancel" aria-label="Zamknij">×</button>
+      <p class="eyebrow">DOPASUJ RZYM DO SIEBIE</p><h2>Trzy krótkie decyzje.</h2>
+      <fieldset><legend>Ile masz czasu?</legend><div class="choice-grid" data-choice="duration"></div></fieldset>
+      <fieldset><legend>Jak zwiedzasz?</legend><div class="choice-grid" data-choice="pace"></div></fieldset>
+      <fieldset><legend>Co jest dla Ciebie najważniejsze?</legend><div class="choice-grid multi" data-choice="interests"></div></fieldset>
+      <fieldset><legend>Z kim podróżujesz?</legend><div class="choice-grid" data-choice="company"></div></fieldset>
+      <button class="button primary full" value="default">Ułóż mój plan</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+  <script type="module" src="app.js?v=4"></script>
+</body>
+</html>

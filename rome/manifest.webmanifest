@@ -1,0 +1,11 @@
+{
+  "name": "Martyna Podróże: Rzym",
+  "short_name": "Mój Rzym",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f0e8",
+  "theme_color": "#17243b",
+  "lang": "pl",
+  "description": "Interaktywny przewodnik po Rzymie krok po kroku"
+}
+

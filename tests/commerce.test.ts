@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { commerceInternals, publicGuidePreview } from "../src/commerce";
+import { commerceInternals, publicGuidePreview, publicRomePreview } from "../src/commerce";
 
 describe("commerce security", () => {
   beforeEach(() => vi.restoreAllMocks());
@@ -44,5 +44,15 @@ describe("commerce security", () => {
 
     const denied = await publicGuidePreview(new Request("https://martynapodroze.pl/podglad/como/not-a-real-token/"), { GUIDE_PREVIEW_TOKEN: token } as never);
     expect(denied.status).toBe(404);
+  });
+
+  it("serves Rome preview from its own product root", async () => {
+    const token = "Fn4Cd3FXCfkEWI-8K7qZRR20ZXuTHNkv";
+    const fetchMock = vi.fn().mockResolvedValue(new Response("{}", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    const response = await publicRomePreview(new Request(`https://martynapodroze.pl/podglad/rzym/${token}/data/guide.json`), { GUIDE_PREVIEW_TOKEN: token } as never);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("application/json");
+    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/rome/data/guide.json", expect.any(Object));
   });
 });

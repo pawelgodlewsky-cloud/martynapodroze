@@ -30,7 +30,7 @@ import {
 import { renderPublicTrip } from "../src/public-page";
 import { parseTripInput, validateHttpUrl, ValidationError } from "../src/trips";
 import type { Env } from "../src/types";
-import { activateGuide, protectedGuide, publicGuidePreview, purchaseComplete, stripeWebhook } from "../src/commerce";
+import { activateGuide, activateRomeGuide, protectedGuide, protectedRomeGuide, publicGuidePreview, publicRomePreview, purchaseComplete, sharedGuideAsset, stripeWebhook } from "../src/commerce";
 import {
   listGuideAccessCustomers,
   resendGuideAccess,
@@ -281,6 +281,10 @@ export default {
         return publicGuidePreview(request, env);
       }
       if (url.pathname === "/como" || url.pathname.startsWith("/como/")) return protectedGuide(request, env);
+      if (url.pathname === "/dostep/rzym" || url.pathname.startsWith("/dostep/rzym/")) return activateRomeGuide(request, env);
+      if (url.pathname === "/podglad/rzym" || url.pathname.startsWith("/podglad/rzym/")) return publicRomePreview(request, env);
+      if (url.pathname === "/rzym" || url.pathname.startsWith("/rzym/")) return protectedRomeGuide(request, env);
+      if (url.pathname.startsWith("/guides/")) return sharedGuideAsset(request);
       if (url.pathname === "/api/admin/trips" || url.pathname.startsWith("/api/admin/trips/") ||
           url.pathname === "/api/admin/guide-access" || url.pathname.startsWith("/api/admin/guide-access/")) {
         if (!(await authorizeAdmin(request, env))) return errorJson("Sesja wygasła. Zaloguj się ponownie.", 401);

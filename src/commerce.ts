@@ -8,6 +8,10 @@ const DEVICE_COOKIE = "mp_lombardia_access";
 const TOKEN_TOLERANCE_SECONDS = 300;
 const GITHUB_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/f8200f534ea8ac506aa24681e54237aa6799532f/como";
 const GUIDE_PREVIEW_ROOT = "/podglad/como/";
+const ROME_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/rome";
+const SHARED_GUIDE_ROOT = "https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/main/guides";
+const ROME_PREVIEW_ROOT = "/podglad/rzym/";
+const ROME_DEVICE_COOKIE = "mp_rome_access";
 const GUIDE_CSP = [
   "default-src 'self'",
   "script-src 'self' https://unpkg.com",
@@ -294,6 +298,81 @@ export async function protectedGuide(request: Request, env: Env): Promise<Respon
   headers.delete("Access-Control-Allow-Origin");
   headers.delete("Cross-Origin-Resource-Policy");
   return new Response(request.method === "HEAD" ? null : upstream.body, { status: upstream.status, headers });
+}
+
+async function proxyGuideFile(request: Request, upstreamRoot: string, relative: string, isPrivate: boolean): Promise<Response> {
+  if (!relative || relative.endsWith("/")) relative += "index.html";
+  if (relative.includes("..")) return new Response("Not found", { status: 404 });
+  const upstream = await fetch(`${upstreamRoot}${relative}`, { headers: { "User-Agent": "martynapodroze-guide-worker" } });
+  if (!upstream.ok) return new Response("Nie znaleziono pliku.", { status: upstream.status === 404 ? 404 : 502 });
+  const headers = new Headers(upstream.headers);
+  headers.set("Content-Type", contentType(relative));
+  headers.set("Cache-Control", relative.endsWith("index.html") || relative.endsWith("sw.js") ? `${isPrivate ? "private, " : ""}no-store` : `${isPrivate ? "private" : "public"}, max-age=3600`);
+  headers.set("Content-Security-Policy", GUIDE_CSP);
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  headers.delete("Access-Control-Allow-Origin");
+  headers.delete("Cross-Origin-Resource-Policy");
+  return new Response(request.method === "HEAD" ? null : upstream.body, { status: upstream.status, headers });
+}
+
+export async function publicRomePreview(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+  const url = new URL(request.url);
+  const path = url.pathname.slice(ROME_PREVIEW_ROOT.length);
+  const separator = path.indexOf("/");
+  const token = separator >= 0 ? path.slice(0, separator) : path;
+  if (!env.GUIDE_PREVIEW_TOKEN || !/^[A-Za-z0-9_-]{24,128}$/.test(token) || !safeEqual(token, env.GUIDE_PREVIEW_TOKEN)) {
+    return new Response("Not found", { status: 404, headers: { "X-Robots-Tag": "noindex, nofollow, noarchive" } });
+  }
+  if (separator < 0) return Response.redirect(`${url.origin}${ROME_PREVIEW_ROOT}${token}/`, 308);
+  return proxyGuideFile(request, ROME_GUIDE_ROOT, path.slice(separator), false);
+}
+
+export async function activateRomeGuide(request: Request, env: Env): Promise<Response> {
+  if (!env.COMMERCE_ACCESS_SECRET || !env.DB) return page("Dostęp niedostępny", "Spróbuj ponownie później", "<p>System dostępu jest chwilowo niedostępny.</p>", 503);
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token") ?? "";
+  if (!token) return page("Dostęp do przewodnika po Rzymie", "Otwórz link z wiadomości", '<p>Po zakupie otrzymasz indywidualny link aktywacyjny.</p><p>Pomoc: <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>.</p>');
+  const orderId = await validAccessToken(token, env.COMMERCE_ACCESS_SECRET);
+  if (!orderId) return page("Nieprawidłowy link", "Ten link nie działa", '<p>Skontaktuj się z nami: <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>.</p>', 403);
+  const order = await env.DB.prepare("SELECT id FROM commerce_orders WHERE id=? AND status='paid' AND access_disabled_at IS NULL AND product_slug='rzym'").bind(orderId).first();
+  if (!order) return page("Brak dostępu", "Ten zakup nie obejmuje przewodnika po Rzymie", '<p>Jeśli to błąd, napisz na <a class="text" href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a>.</p>', 403);
+  const current = cookieValue(request, ROME_DEVICE_COOKIE);
+  if (current) {
+    const active = await env.DB.prepare("SELECT id FROM commerce_devices WHERE order_id=? AND token_hash=? AND revoked_at IS NULL").bind(orderId, await sha256(current)).first();
+    if (active) return Response.redirect(`${url.origin}/rzym/`, 302);
+  }
+  const raw = bytesToBase64Url(crypto.getRandomValues(new Uint8Array(32)));
+  const hash = await sha256(raw);
+  for (let slot=1; slot<=MAX_GUIDE_DEVICES; slot+=1) {
+    const result = await env.DB.prepare(`INSERT INTO commerce_devices (id,order_id,slot,token_hash) VALUES (?,?,?,?)
+      ON CONFLICT(order_id,slot) DO UPDATE SET id=excluded.id,token_hash=excluded.token_hash,created_at=CURRENT_TIMESTAMP,last_used_at=CURRENT_TIMESTAMP,revoked_at=NULL
+      WHERE commerce_devices.revoked_at IS NOT NULL`).bind(crypto.randomUUID(),orderId,slot,hash).run();
+    if (result.meta.changes > 0) return new Response(null,{status:302,headers:{Location:`${url.origin}/rzym/`,"Cache-Control":"no-store","Set-Cookie":`${ROME_DEVICE_COOKIE}=${encodeURIComponent(raw)}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`}});
+  }
+  return page("Limit urządzeń", "Dostęp jest już aktywny na trzech urządzeniach", '<p>Napisz do nas, jeśli potrzebujesz zresetować urządzenia.</p>', 403);
+}
+
+export async function protectedRomeGuide(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+  const url = new URL(request.url);
+  if (url.searchParams.has("token")) return activateRomeGuide(request, env);
+  const token = cookieValue(request, ROME_DEVICE_COOKIE);
+  if (!token || !env.DB) return Response.redirect(`${url.origin}/dostep/rzym/`, 302);
+  const device = await env.DB.prepare(`SELECT d.id FROM commerce_devices d JOIN commerce_orders o ON o.id=d.order_id
+    WHERE d.token_hash=? AND d.revoked_at IS NULL AND o.status='paid' AND o.access_disabled_at IS NULL AND o.product_slug='rzym'`).bind(await sha256(token)).first<{id:string}>();
+  if (!device) return Response.redirect(`${url.origin}/dostep/rzym/`, 302);
+  await env.DB.prepare("UPDATE commerce_devices SET last_used_at=CURRENT_TIMESTAMP WHERE id=?").bind(device.id).run();
+  return proxyGuideFile(request, ROME_GUIDE_ROOT, url.pathname.slice("/rzym".length), true);
+}
+
+export async function sharedGuideAsset(request: Request): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+  return proxyGuideFile(request, SHARED_GUIDE_ROOT, new URL(request.url).pathname.slice("/guides".length), false);
 }
 
 export const commerceInternals = { verifyStripeSignature, accessToken, guideAccessLink, validAccessToken, sha256 };
