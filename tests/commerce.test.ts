@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { commerceInternals, publicGuidePreview, publicRomePreview } from "../src/commerce";
+import { commerceInternals, publicGuidePreview, publicRomePreview, publicRomeTest } from "../src/commerce";
 
 describe("commerce security", () => {
   beforeEach(() => vi.restoreAllMocks());
@@ -54,5 +54,14 @@ describe("commerce security", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/json");
     expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/0751c8ad15feec896cb7ce10c7db0796b83b460f/rome/data/guide.json", expect.any(Object));
+  });
+
+  it("serves the public Rome test route without an access token", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response("<!doctype html>", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    const response = await publicRomeTest(new Request("https://martynapodroze.pl/romatest123/"));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("X-Robots-Tag")).toContain("noindex");
+    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/0751c8ad15feec896cb7ce10c7db0796b83b460f/rome/index.html", expect.any(Object));
   });
 });

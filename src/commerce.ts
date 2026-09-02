@@ -332,6 +332,13 @@ export async function publicRomePreview(request: Request, env: Env): Promise<Res
   return proxyGuideFile(request, ROME_GUIDE_ROOT, path.slice(separator), false);
 }
 
+export async function publicRomeTest(request: Request): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+  const url = new URL(request.url);
+  if (url.pathname === "/romatest123") return Response.redirect(`${url.origin}/romatest123/`, 308);
+  return proxyGuideFile(request, ROME_GUIDE_ROOT, url.pathname.slice("/romatest123".length), false);
+}
+
 export async function activateRomeGuide(request: Request, env: Env): Promise<Response> {
   if (!env.COMMERCE_ACCESS_SECRET || !env.DB) return page("Dostęp niedostępny", "Spróbuj ponownie później", "<p>System dostępu jest chwilowo niedostępny.</p>", 503);
   const url = new URL(request.url);

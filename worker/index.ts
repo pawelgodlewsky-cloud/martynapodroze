@@ -30,7 +30,7 @@ import {
 import { renderPublicTrip } from "../src/public-page";
 import { parseTripInput, validateHttpUrl, ValidationError } from "../src/trips";
 import type { Env } from "../src/types";
-import { activateGuide, activateRomeGuide, protectedGuide, protectedRomeGuide, publicGuidePreview, publicRomePreview, purchaseComplete, sharedGuideAsset, stripeWebhook } from "../src/commerce";
+import { activateGuide, activateRomeGuide, protectedGuide, protectedRomeGuide, publicGuidePreview, publicRomePreview, publicRomeTest, purchaseComplete, sharedGuideAsset, stripeWebhook } from "../src/commerce";
 import {
   listGuideAccessCustomers,
   resendGuideAccess,
@@ -283,6 +283,7 @@ export default {
       if (url.pathname === "/como" || url.pathname.startsWith("/como/")) return protectedGuide(request, env);
       if (url.pathname === "/dostep/rzym" || url.pathname.startsWith("/dostep/rzym/")) return activateRomeGuide(request, env);
       if (url.pathname === "/podglad/rzym" || url.pathname.startsWith("/podglad/rzym/")) return publicRomePreview(request, env);
+      if (url.pathname === "/romatest123" || url.pathname.startsWith("/romatest123/")) return publicRomeTest(request);
       if (url.pathname === "/rzym" || url.pathname.startsWith("/rzym/")) return protectedRomeGuide(request, env);
       if (url.pathname.startsWith("/guides/")) return sharedGuideAsset(request);
       if (url.pathname === "/api/admin/trips" || url.pathname.startsWith("/api/admin/trips/") ||
