@@ -6,7 +6,7 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
 const money = value => `${Number(value || 0).toFixed(2).replace(".", ",")} €`;
 const demoMode = new URLSearchParams(location.search).get("demo") === "1" || location.pathname.includes("/demo/");
-const defaults = { view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null };
+const defaults = { view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null, arrivalAirport:null, arrivalTransfer:null, arrivalComplete:false, hotelAddress:"" };
 const store = createStore("rome", defaults);
 let state = store.get();
 let data = {};
@@ -15,7 +15,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=9`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=10`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -62,7 +62,48 @@ function setView(view) {
   scrollTo({ top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 }
 
+function transitDirections(origin, destination) {
+  const url = new URL("https://www.google.com/maps/dir/");
+  url.searchParams.set("api", "1");
+  url.searchParams.set("origin", origin);
+  url.searchParams.set("destination", destination);
+  url.searchParams.set("travelmode", "transit");
+  return url.toString();
+}
+
+function renderArrivalJourney() {
+  const node = $("#arrivalJourney");
+  if (state.arrivalComplete) {
+    node.innerHTML = `<div class="arrival-complete"><span class="arrival-seal" aria-hidden="true">✓</span><div><p class="eyebrow">KROK 0 · GOTOWE</p><h2 id="arrivalTitle">Benvenuta a Roma</h2><p>Dojazd z lotniska za Tobą. Teraz przewodnik prowadzi do pierwszego punktu dnia.</p></div><div class="arrival-complete-actions"><button class="button primary" data-action="continue">Rozpocznij dzień 1</button><button class="text-button" data-action="arrival-reset">Zmień lotnisko lub dojazd</button></div></div>`;
+    return;
+  }
+  const airport = state.arrivalAirport === "FCO" ? data.transport.fiumicino : state.arrivalAirport === "CIA" ? data.transport.ciampino : null;
+  const hasTransfer = state.arrivalTransfer !== null && state.arrivalTransfer !== undefined;
+  const selectedOption = hasTransfer ? airport?.options?.[Number(state.arrivalTransfer)] : null;
+  const origin = airport?.code === "FCO" ? "Aeroporto di Roma Fiumicino" : "Aeroporto di Roma Ciampino";
+  const fallbackDestination = airport?.code === "FCO" && Number(state.arrivalTransfer) === 1 ? "Roma Trastevere" : airport?.code === "CIA" && Number(state.arrivalTransfer) === 1 ? "Subaugusta, Roma" : airport?.code === "CIA" && Number(state.arrivalTransfer) === 2 ? "Laurentina, Roma" : "Roma Termini";
+  const destination = state.hotelAddress.trim() || fallbackDestination;
+  node.innerHTML = `<div class="arrival-heading"><div><p class="eyebrow">KROK 0 · TU ZACZYNA SIĘ PODRÓŻ</p><h2 id="arrivalTitle">Od wyjścia z lotniska.<br>Bez zgadywania.</h2><p>Tak jak w przewodniku o Como: zaczynamy od pierwszej realnej decyzji po przylocie, nie od pierwszego zabytku.</p></div><span class="travel-stamp">USCITA<br><b>→ ROMA</b></span></div>
+    <div class="airport-choice" role="group" aria-label="Wybierz lotnisko przylotu">
+      ${[data.transport.fiumicino,data.transport.ciampino].map(item => `<button class="airport-choice-card ${airport?.code === item.code ? "is-active" : ""}" data-action="arrival-airport" data-airport="${item.code}" aria-pressed="${airport?.code === item.code}"><span>${item.code}</span><div><small>PRZYLATUJĘ NA</small><b>${escapeHtml(item.title)}</b></div></button>`).join("")}
+    </div>
+    ${!airport ? `<div class="arrival-empty"><span>01</span><p>Wybierz lotnisko. Od razu pokażę Ci, gdzie iść po wyjściu z hali przylotów.</p></div>` : `<div class="arrival-route">
+      <ol class="arrival-steps">
+        <li class="is-active"><span>01</span><div><small>TERAZ</small><h3>Wyjdź do hali przylotów</h3><p>${escapeHtml(airport.arrival)}</p></div></li>
+        <li class="${selectedOption ? "is-active" : ""}"><span>02</span><div><small>NASTĘPNIE</small><h3>Wybierz dojazd do swojej dzielnicy</h3><p>${selectedOption ? `Wybrano: ${escapeHtml(selectedOption.best)}. ${escapeHtml(selectedOption.detail)}` : "Nie jedź automatycznie na Termini — wybierz wariant pasujący do adresu noclegu."}</p></div></li>
+        <li class="${selectedOption ? "is-active" : ""}"><span>03</span><div><small>CEL</small><h3>Dojedź do noclegu</h3><p>${state.hotelAddress ? `Cel zapisany na tym urządzeniu: ${escapeHtml(state.hotelAddress)}` : `Domyślny punkt orientacyjny: ${escapeHtml(fallbackDestination)}. Możesz wpisać dokładny adres noclegu poniżej.`}</p></div></li>
+      </ol>
+      <div class="arrival-decisions"><div><p class="card-label">NAJLEPSZY DOJAZD DLA CIEBIE</p><div class="arrival-options">${airport.options.map((option,index) => `<button class="arrival-option ${hasTransfer && Number(state.arrivalTransfer) === index ? "is-active" : ""}" data-action="arrival-transfer" data-index="${index}" aria-pressed="${hasTransfer && Number(state.arrivalTransfer) === index}"><small>${escapeHtml(option.for)}</small><b>${escapeHtml(option.best)}</b><span>${escapeHtml(option.detail)}</span></button>`).join("")}</div></div>
+      <form class="hotel-route-form" id="hotelRouteForm"><label for="hotelAddress"><span>Adres noclegu <small>(opcjonalnie, zapis tylko na tym urządzeniu)</small></span><input id="hotelAddress" name="hotelAddress" value="${escapeHtml(state.hotelAddress)}" placeholder="np. Via Cavour 20, Roma" autocomplete="street-address"></label><button class="mini-button" type="submit">Zapisz adres</button></form>
+      ${selectedOption ? `<div class="arrival-go"><div><span>GOTOWA TRASA</span><b>${escapeHtml(airport.code)} → ${escapeHtml(destination)}</b></div><a class="button primary" href="${transitDirections(origin,destination)}" target="_blank" rel="noopener">Prowadź mnie z lotniska</a><button class="button quiet" data-action="arrival-complete">Jestem już w Rzymie</button></div>` : `<p class="arrival-hint">Wybierz wariant dojazdu, aby dostać gotową trasę i przejść dalej.</p>`}</div>
+    </div>`}`;
+}
+
 function renderToday() {
+  if (!state.arrivalComplete && state.done.length === 0) {
+    $("#todayPanel").innerHTML = `<article class="today-card arrival-prompt"><span class="card-label">NAJPIERW DOJAZD</span><h2>Zwiedzanie zaczeka chwilę</h2><p>Wybierz lotnisko i dojedź do noclegu. Gdy potwierdzisz przyjazd do Rzymu, pokażę pierwszy punkt trasy.</p><div class="today-actions"><button class="mini-button" data-action="arrival-start">Wróć do kroku 0</button></div></article>`;
+    return;
+  }
   const selected = day();
   const stats = progress(selected);
   const current = currentPlace();
@@ -251,12 +292,17 @@ function applyPlanner(form) {
   renderAll(); toast("Plan dopasowany i zapisany"); setView("today");
 }
 
-function renderAll() { renderToday(); renderAirportGuide(); renderTicketGuide(); renderReservations(); renderPractical(); renderPlan(); renderMapFilters(); renderMapFallback(); renderSaved(); renderHelp(); }
+function renderAll() { renderArrivalJourney(); renderToday(); renderAirportGuide(); renderTicketGuide(); renderReservations(); renderPractical(); renderPlan(); renderMapFilters(); renderMapFallback(); renderSaved(); renderHelp(); }
 function bindEvents() {
   document.addEventListener("click", event => {
     const target = event.target.closest("[data-action]"); if (!target) return;
     const action = target.dataset.action;
     if (action === "view") setView(target.dataset.view);
+    if (action === "arrival-start") { setView("today"); setTimeout(() => $("#arrivalJourney")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "arrival-airport") { persist({arrivalAirport:target.dataset.airport,arrivalTransfer:null}); renderArrivalJourney(); renderToday(); }
+    if (action === "arrival-transfer") { persist({arrivalTransfer:Number(target.dataset.index)}); renderArrivalJourney(); }
+    if (action === "arrival-complete") { persist({arrivalComplete:true}); renderArrivalJourney(); renderToday(); toast("Benvenuta a Roma — zaczynamy zwiedzanie"); setTimeout(() => $("#todayPanel")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "arrival-reset") { persist({arrivalAirport:null,arrivalTransfer:null,arrivalComplete:false}); renderArrivalJourney(); renderToday(); }
     if (action === "continue") { setView("plan"); setTimeout(() => $(`#place-${currentPlace()?.id}`)?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "open-planner") $("#plannerDialog").showModal();
     if (action === "day") { persist({dayId:target.dataset.id,mode:"full"}); renderAll(); }
@@ -276,6 +322,7 @@ function bindEvents() {
   });
   document.addEventListener("submit", event => {
     if (event.target.id === "budgetForm") { event.preventDefault(); const values=new FormData(event.target); update(s=>({...s,expenses:[...s.expenses,{label:values.get("label"),amount:Number(values.get("amount"))}]})); renderBudget(); }
+    if (event.target.id === "hotelRouteForm") { event.preventDefault(); const values=new FormData(event.target); persist({hotelAddress:String(values.get("hotelAddress") || "").trim()}); renderArrivalJourney(); toast("Adres noclegu zapisany na tym urządzeniu"); }
   });
   document.addEventListener("change", event => { if(event.target.id === "budgetLimit"){persist({budgetLimit:Number(event.target.value)});renderBudget();} });
   $("#plannerForm").addEventListener("submit", event => { event.preventDefault(); applyPlanner(event.target); $("#plannerDialog").close(); });
@@ -284,7 +331,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=9"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=10"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init();

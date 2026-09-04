@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
   <script>
     (() => {
-      const release = "9";
+      const release = "10";
       const releaseKey = "rome-guide-release";
       if (localStorage.getItem(releaseKey) === release) return;
       window.addEventListener("load", async () => {
@@ -38,7 +38,7 @@
       }, { once: true });
     })();
   </script>
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -56,7 +56,7 @@
           <p class="hero-route">Antyczne serce · Watykan · dolce vita</p>
           <p class="hero-lead">Otwierasz telefon i wiesz, co teraz. Gotowe dni, realne odległości i najważniejsze decyzje zebrane w jednym miejscu.</p>
           <div class="hero-actions">
-            <button class="button primary" data-action="continue">Rozpocznij zwiedzanie <span aria-hidden="true">→</span></button>
+            <button class="button primary" data-action="arrival-start">Zacznij od lotniska <span aria-hidden="true">→</span></button>
             <button class="button quiet" data-action="open-planner">Dopasuj plan do siebie</button>
           </div>
           <nav class="hero-shortcuts" aria-label="Informacje przed podróżą">
@@ -75,6 +75,7 @@
         <div><strong>na żywo</strong><span>kolejny krok i mapa</span></div>
         <div><strong>offline</strong><span>plan i adresy</span></div>
       </div>
+      <section class="arrival-journey" id="arrivalJourney" aria-labelledby="arrivalTitle"></section>
       <div class="today-grid" id="todayPanel"></div>
       <section class="section travel-section" id="airportGuide"></section>
       <section class="section ticket-section" id="ticketGuide"></section>
@@ -139,6 +140,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <script type="module" src="app.js?v=9"></script>
+  <script type="module" src="app.js?v=10"></script>
 </body>
 </html>
