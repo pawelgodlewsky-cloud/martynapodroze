@@ -90,8 +90,8 @@ a { color: inherit; }
   z-index: -1;
   top: 50%;
   left: 50%;
-  width: calc(100% + 58px);
-  height: calc(100% + 48px);
+  width: calc(100% + 78px);
+  height: calc(100% + 58px);
   overflow: visible;
   pointer-events: none;
   transform: translate(-50%, -50%) rotate(-2deg);
