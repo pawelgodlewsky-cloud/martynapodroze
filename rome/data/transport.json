@@ -34,9 +34,11 @@
     "title":"Fiumicino · Leonardo da Vinci",
     "arrival":"Po odbiorze bagażu idź za znakami Train. Stacja znajduje się przy terminalach i prowadzi do niej zadaszone przejście.",
     "options":[
-      {"for":"Termini, Monti, Esquilino","best":"Leonardo Express","detail":"Bez przesiadek do Termini: 32 min, zwykle co 15 min, 14 €. Bilet kupisz także przez TAP&TAP przy peronie."},
-      {"for":"Trastevere, Ostiense, Tiburtina","best":"pociąg regionalny FL1","detail":"Nie jedź przez Termini, jeśli nocleg jest przy stacji linii FL1. Sprawdź aktualny pociąg i cenę w Trenitalia."},
-      {"for":"kilka osób lub adres bez wygodnej kolei","best":"oficjalna biała taksówka","detail":"Do adresu wewnątrz Murów Aureliana obowiązuje stała taryfa 55 € za samochód. Korzystaj z oznaczonego postoju."}
+      {"for":"Termini, Monti, Esquilino","best":"Leonardo Express","detail":"Bez przesiadek do Termini: 32 min, zwykle co 15 min, 14 €. Bilet kupisz także przez TAP&TAP przy peronie.","destination":"Roma Termini","travelMode":"transit"},
+      {"for":"Trastevere, Ostiense, Tiburtina","best":"pociąg regionalny FL1","detail":"Nie jedź przez Termini, jeśli nocleg jest przy stacji linii FL1. Sprawdź aktualny pociąg i cenę w Trenitalia.","destination":"Roma Trastevere","travelMode":"transit"},
+      {"for":"Termini i centrum, jeśli ważniejsza jest cena","best":"autokar: Terravision / SIT / TAM","detail":"Bezpośrednie autokary odjeżdżają z Bus Station przy Terminalu 3 – Arrivi. Przed zakupem porównaj najbliższy realny odjazd; przejazd zależy od korków.","destination":"Roma Termini","travelMode":"transit"},
+      {"for":"Termini lub Tiburtina, także wybrane kursy nocne","best":"autobus regionalny Cotral","detail":"Osobny bilet Cotral; sprawdź aktualny kierunek i stanowisko po wyjściu do Regional Bus Station. To nie jest bilet ATAC ani Leonardo Express.","destination":"Roma Tiburtina","travelMode":"transit"},
+      {"for":"kilka osób lub adres bez wygodnej kolei","best":"oficjalna biała taksówka","detail":"Do adresu wewnątrz Murów Aureliana obowiązuje stała taryfa 55 € za samochód. Korzystaj z oznaczonego postoju.","destination":"Centro Storico, Roma","travelMode":"driving"}
     ],
     "departure":["Sprawdź terminal i godzinę odprawy w aplikacji linii lotniczej.","Na Leonardo Express przyjdź z zapasem; bilet miejski i Roma Pass nie są w nim ważne.","Przy taksówce potwierdź stałą taryfę przed odjazdem i poproś o paragon."],
     "officialUrl":"https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-train",
@@ -49,10 +51,11 @@
     "title":"Ciampino · G.B. Pastine",
     "arrival":"Po wyjściu z terminalu wybierz połączenie do dzielnicy noclegu, nie zawsze do Termini. Przystanki autobusów znajdują się przed terminalem.",
     "options":[
-      {"for":"Termini i okolice","best":"autobus lotniskowy do Termini","detail":"Najprostszy z dużym bagażem. Sprawdź rozkład i stanowisko konkretnego operatora na stronie ADR."},
-      {"for":"nocleg przy metrze A","best":"linia 520 + metro A","detail":"Jedź do Subaugusta lub Cinecittà. Obowiązuje zwykły bilet ATAC oraz Roma Pass."},
-      {"for":"nocleg przy metrze B lub w EUR","best":"linia 720 + metro B","detail":"Jedź do Laurentina. Nie nadrabiaj drogi przez Termini."},
-      {"for":"kilka osób lub późny przylot","best":"oficjalna biała taksówka","detail":"Do adresu wewnątrz Murów Aureliana obowiązuje stała taryfa 40 € za samochód."}
+      {"for":"Termini i okolice","best":"autokar: Terravision / SIT / RomeAirportBus","detail":"Bezpośrednio do Termini, wygodnie z bagażem. Bilety kupisz online, u autoryzowanego sprzedawcy w hali przylotów albo — zależnie od operatora — w autobusie.","destination":"Roma Termini","travelMode":"transit"},
+      {"for":"nocleg przy metrze A","best":"autobus miejski 520 + metro A","detail":"Jedź do Subaugusta lub Cinecittà. Obowiązuje zwykły bilet ATAC oraz Roma Pass.","destination":"Subaugusta, Roma","travelMode":"transit"},
+      {"for":"nocleg przy metrze B lub w EUR","best":"autobus miejski 720 + metro B","detail":"Jedź do Laurentina. Nie nadrabiaj drogi przez Termini.","destination":"Laurentina, Roma","travelMode":"transit"},
+      {"for":"Anagnina lub przesiadka na pociąg w Ciampino","best":"autobus regionalny ATRAL","detail":"Łączy lotnisko z Roma Anagnina i stacją kolejową Ciampino. Sprawdź aktualny odjazd i stanowisko na tablicy ADR.","destination":"Anagnina, Roma","travelMode":"transit"},
+      {"for":"kilka osób lub późny przylot","best":"oficjalna biała taksówka","detail":"Do adresu wewnątrz Murów Aureliana obowiązuje stała taryfa 40 € za samochód.","destination":"Centro Storico, Roma","travelMode":"driving"}
     ],
     "departure":["Sprawdź rozkład autobusu w dniu wyjazdu — kursy są dopasowywane do ruchu lotniczego.","Dla 520/720 zostaw zapas na przesiadkę z metra i ruch uliczny.","Przystanki autobusów dalekobieżnych są naprzeciwko odlotów międzynarodowych; sprawdź numer stanowiska."],
     "officialUrl":"https://www.adr.it/web/aeroporti-di-roma-en/pax-cia-bus",

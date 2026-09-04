@@ -15,7 +15,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=10`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=11`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -62,12 +62,12 @@ function setView(view) {
   scrollTo({ top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 }
 
-function transitDirections(origin, destination) {
+function transitDirections(origin, destination, travelMode = "transit") {
   const url = new URL("https://www.google.com/maps/dir/");
   url.searchParams.set("api", "1");
   url.searchParams.set("origin", origin);
   url.searchParams.set("destination", destination);
-  url.searchParams.set("travelmode", "transit");
+  url.searchParams.set("travelmode", travelMode);
   return url.toString();
 }
 
@@ -81,7 +81,7 @@ function renderArrivalJourney() {
   const hasTransfer = state.arrivalTransfer !== null && state.arrivalTransfer !== undefined;
   const selectedOption = hasTransfer ? airport?.options?.[Number(state.arrivalTransfer)] : null;
   const origin = airport?.code === "FCO" ? "Aeroporto di Roma Fiumicino" : "Aeroporto di Roma Ciampino";
-  const fallbackDestination = airport?.code === "FCO" && Number(state.arrivalTransfer) === 1 ? "Roma Trastevere" : airport?.code === "CIA" && Number(state.arrivalTransfer) === 1 ? "Subaugusta, Roma" : airport?.code === "CIA" && Number(state.arrivalTransfer) === 2 ? "Laurentina, Roma" : "Roma Termini";
+  const fallbackDestination = selectedOption?.destination || "Roma Termini";
   const destination = state.hotelAddress.trim() || fallbackDestination;
   node.innerHTML = `<div class="arrival-heading"><div><p class="eyebrow">KROK 0 · TU ZACZYNA SIĘ PODRÓŻ</p><h2 id="arrivalTitle">Od wyjścia z lotniska.<br>Bez zgadywania.</h2><p>Tak jak w przewodniku o Como: zaczynamy od pierwszej realnej decyzji po przylocie, nie od pierwszego zabytku.</p></div><span class="travel-stamp">USCITA<br><b>→ ROMA</b></span></div>
     <div class="airport-choice" role="group" aria-label="Wybierz lotnisko przylotu">
@@ -95,7 +95,7 @@ function renderArrivalJourney() {
       </ol>
       <div class="arrival-decisions"><div><p class="card-label">NAJLEPSZY DOJAZD DLA CIEBIE</p><div class="arrival-options">${airport.options.map((option,index) => `<button class="arrival-option ${hasTransfer && Number(state.arrivalTransfer) === index ? "is-active" : ""}" data-action="arrival-transfer" data-index="${index}" aria-pressed="${hasTransfer && Number(state.arrivalTransfer) === index}"><small>${escapeHtml(option.for)}</small><b>${escapeHtml(option.best)}</b><span>${escapeHtml(option.detail)}</span></button>`).join("")}</div></div>
       <form class="hotel-route-form" id="hotelRouteForm"><label for="hotelAddress"><span>Adres noclegu <small>(opcjonalnie, zapis tylko na tym urządzeniu)</small></span><input id="hotelAddress" name="hotelAddress" value="${escapeHtml(state.hotelAddress)}" placeholder="np. Via Cavour 20, Roma" autocomplete="street-address"></label><button class="mini-button" type="submit">Zapisz adres</button></form>
-      ${selectedOption ? `<div class="arrival-go"><div><span>GOTOWA TRASA</span><b>${escapeHtml(airport.code)} → ${escapeHtml(destination)}</b></div><a class="button primary" href="${transitDirections(origin,destination)}" target="_blank" rel="noopener">Prowadź mnie z lotniska</a><button class="button quiet" data-action="arrival-complete">Jestem już w Rzymie</button></div>` : `<p class="arrival-hint">Wybierz wariant dojazdu, aby dostać gotową trasę i przejść dalej.</p>`}</div>
+      ${selectedOption ? `<div class="arrival-go"><div><span>GOTOWA TRASA</span><b>${escapeHtml(airport.code)} → ${escapeHtml(destination)}</b></div><a class="button primary" href="${transitDirections(origin,destination,selectedOption.travelMode)}" target="_blank" rel="noopener">Prowadź mnie z lotniska</a><button class="button quiet" data-action="arrival-complete">Jestem już w Rzymie</button></div>` : `<p class="arrival-hint">Wybierz wariant dojazdu, aby dostać gotową trasę i przejść dalej.</p>`}</div>
     </div>`}`;
 }
 
@@ -331,7 +331,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=10"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=11"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init();
