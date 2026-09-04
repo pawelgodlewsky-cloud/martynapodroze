@@ -1,6 +1,6 @@
-const CACHE = "martyna-rome-v11";
+const CACHE = "martyna-rome-v12";
 const APP = [
-  "./","./index.html","./styles.css?v=11","./app.js?v=11","./manifest.webmanifest",
+  "./","./index.html","./styles.css?v=12","./app.js?v=12","./manifest.webmanifest",
   "/assets/postcard-rome.jpg",
   "./data/guide.json","./data/days.json","./data/places.json","./data/restaurants.json",
   "./data/tickets.json","./data/transport.json","./data/phrases.json","./data/emergency.json",

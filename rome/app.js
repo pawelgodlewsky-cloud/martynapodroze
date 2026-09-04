@@ -15,7 +15,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=11`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=12`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -43,7 +43,7 @@ function currentPlace() {
   const selected = day();
   const active = activePlaces(selected);
   const explicit = place(state.current[selected.id]);
-  return explicit || active.find(item => !state.done.includes(item.id)) || active.at(-1);
+  return explicit && active.some(item => item.id === explicit.id) && !state.done.includes(explicit.id) ? explicit : active.find(item => !state.done.includes(item.id)) || null;
 }
 function nextPlace(current = currentPlace()) {
   const list = activePlaces();
@@ -107,7 +107,7 @@ function renderToday() {
   const selected = day();
   const stats = progress(selected);
   const current = currentPlace();
-  const next = nextPlace(current);
+  const next = current ? nextPlace(current) : null;
   const remaining = activePlaces(selected).filter(item => !state.done.includes(item.id));
   const minutes = remaining.reduce((sum, item) => sum + item.duration + (item.next?.minutes || 0), 0);
   const booking = data.tickets.find(ticket => selected.reservations.includes(ticket.id));
@@ -157,11 +157,57 @@ function renderPractical() {
 
 function modeLabel() { return ({full:"pełny",quick:"mało czasu",rain:"deszcz",tired:"spokojny"})[state.mode] || "pełny"; }
 function renderDaySwitcher() {
-  $("#daySwitcher").innerHTML = data.days.map(item => `<button role="tab" aria-selected="${item.id === state.dayId}" class="${item.id === state.dayId ? "is-active" : ""}" data-action="day" data-id="${item.id}"><small>${item.number}</small>${escapeHtml(item.title)}</button>`).join("");
+  const selectedMain = state.dayId.startsWith("day-4") ? "4" : state.dayId.replace("day-", "");
+  const labels = [
+    ["1","Starożytny Rzym","Koloseum i Forum"],
+    ["2","Watykan","Bazylika i muzea"],
+    ["3","Dolce vita","Trevi i Trastevere"],
+    ["4","Dzień dodatkowy","Borghese lub Via Appia"]
+  ];
+  $("#daySwitcher").innerHTML = labels.map(([number,title,subtitle]) => `<button role="tab" aria-selected="${selectedMain === number}" class="${selectedMain === number ? "is-active" : ""}" data-action="day-main" data-day="${number}"><span>${number}</span><div><small>DZIEŃ ${number}</small><b>${title}</b><em>${subtitle}</em></div></button>`).join("");
 }
 function renderDayOverview() {
   const selected = day();
-  $("#dayOverview").innerHTML = `<article class="day-intro"><p class="eyebrow">DZIEŃ ${selected.number} / ${modeLabel()}</p><h3>${escapeHtml(selected.title)}</h3><p>${escapeHtml(selected.anchor)}</p><div class="day-facts"><span><b>${selected.duration}</b>czas</span><span><b>${selected.distance}</b>pieszo</span><span><b>${selected.intensity}</b>tempo</span><span><b>${selected.cost}</b>atrakcje</span><span><b>${selected.start}</b>start</span></div><div class="today-actions"><button class="mini-button" data-action="mode" data-mode="full">Pełna</button><button class="mini-button" data-action="mode" data-mode="quick">Mam mało czasu</button><button class="mini-button" data-action="mode" data-mode="tired">Jestem zmęczona</button><button class="mini-button" data-action="mode" data-mode="rain">Pada</button><a href="${routeUrl(activePlaces(selected).map(item => item.coordinates))}" target="_blank" rel="noopener">Otwórz całą trasę</a></div></article>`;
+  const fourthDayChoice = selected.id.startsWith("day-4") ? `<div class="fourth-day-choice" role="group" aria-label="Wybierz wariant dnia czwartego"><button class="${selected.id === "day-4a" ? "is-active" : ""}" data-action="day" data-id="day-4a"><small>WARIANT A</small><b>Borghese i park</b><span>spokojniej · 4,2 km</span></button><button class="${selected.id === "day-4b" ? "is-active" : ""}" data-action="day" data-id="day-4b"><small>WARIANT B</small><b>Via Appia i katakumby</b><span>dalej od centrum · 6–10 km</span></button></div>` : "";
+  const dayLabel = selected.number.startsWith("04") ? `04 · WARIANT ${selected.number.at(-1)}` : selected.number;
+  $("#dayOverview").innerHTML = `${fourthDayChoice}<article class="day-intro"><p class="eyebrow">DZIEŃ ${dayLabel} / ${modeLabel()}</p><h3>${escapeHtml(selected.title)}</h3><p>${escapeHtml(selected.anchor)}</p><div class="day-facts"><span><b>${selected.duration}</b>cały plan</span><span><b>${selected.distance}</b>łączna trasa</span><span><b>${selected.intensity}</b>tempo</span><span><b>${selected.cost}</b>atrakcje</span><span><b>${selected.start}</b>zacznij</span></div><div class="route-modes" aria-label="Wybierz wariant intensywności"><button class="${state.mode === "full" ? "is-active" : ""}" data-action="mode" data-mode="full"><b>Pełna trasa</b><span>wszystkie punkty</span></button><button class="${state.mode === "quick" ? "is-active" : ""}" data-action="mode" data-mode="quick"><b>Mam mało czasu</b><span>tylko najważniejsze</span></button><button class="${state.mode === "tired" ? "is-active" : ""}" data-action="mode" data-mode="tired"><b>Spokojniej</b><span>mniej chodzenia</span></button><button class="${state.mode === "rain" ? "is-active" : ""}" data-action="mode" data-mode="rain"><b>Pada</b><span>więcej wnętrz</span></button></div></article>`;
+}
+
+function modeIcon(mode = "") {
+  if (mode.includes("autobus") || mode.includes("transport") || mode.includes("metro")) return "BUS";
+  return "PIESZO";
+}
+
+function legInfo(from, to) {
+  if (!from || !to) return null;
+  if (from.next?.to === to.id) return { minutes:from.next.minutes, distance:from.next.distance, mode:from.next.mode, approximate:false };
+  const km = Math.max(.1, distanceKm(from.coordinates,to.coordinates) * 1.22);
+  return { minutes:Math.max(3,Math.round(km / 4.5 * 60)), distance:`około ${km.toFixed(1).replace(".",",")} km`, mode:"pieszo", approximate:true };
+}
+
+function nextDayId() {
+  if (state.dayId === "day-1") return "day-2";
+  if (state.dayId === "day-2") return "day-3";
+  if (state.dayId === "day-3") return "day-4a";
+  return null;
+}
+
+function renderDayCompanion() {
+  const selected = day();
+  const items = activePlaces(selected);
+  const current = currentPlace();
+  const stats = progress(selected);
+  const completedActive = items.filter(item => state.done.includes(item.id)).length;
+  if (!current) {
+    const following = nextDayId();
+    $("#dayCompanion").innerHTML = `<article class="companion-complete"><span class="companion-laurel" aria-hidden="true">✓</span><div><p class="eyebrow">DZIEŃ UKOŃCZONY</p><h3>${escapeHtml(selected.title)} za Tobą</h3><p>Wszystkie punkty tego wariantu są oznaczone jako odwiedzone.</p></div>${following ? `<button class="button primary" data-action="day" data-id="${following}">Przejdź do następnego dnia</button>` : `<button class="button primary" data-action="view" data-view="saved">Zobacz całą podróż</button>`}</article>`;
+    return;
+  }
+  const index = items.findIndex(item => item.id === current.id);
+  const upcoming = items[index + 1];
+  const leg = legInfo(current,upcoming);
+  const booking = data.tickets.find(ticket => selected.reservations.includes(ticket.id) && current.name.toLowerCase().includes(ticket.name.split(" ")[0].toLowerCase()));
+  $("#dayCompanion").innerHTML = `<div class="companion-progress"><span style="width:${items.length ? completedActive/items.length*100 : 0}%"></span></div><article class="companion-card"><div class="companion-now"><p class="eyebrow">TERAZ · PUNKT ${index+1} Z ${items.length}</p><h3>${escapeHtml(current.name)}</h3><p>${escapeHtml(current.description)}</p><div class="companion-facts"><span><small>GODZINA</small><b>${escapeHtml(current.time)}</b></span><span><small>NA MIEJSCU</small><b>${current.duration} min</b></span><span><small>ADRES</small><b>${escapeHtml(current.address)}</b></span></div>${booking ? `<div class="companion-alert"><b>Masz rezerwację godzinową</b><span>${escapeHtml(booking.when)} · ${escapeHtml(booking.price)}</span></div>` : ""}<div class="companion-actions"><a class="button primary" href="${mapsUrl(current.coordinates)}" target="_blank" rel="noopener">Prowadź mnie tutaj</a><button class="button quiet" data-action="done" data-id="${current.id}">Gotowe — pokaż następny krok</button></div></div><aside class="companion-next">${upcoming && leg ? `<p class="card-label">POTEM</p><span class="leg-mode">${modeIcon(leg.mode)}</span><h4>${escapeHtml(upcoming.name)}</h4><div class="leg-numbers"><b>${leg.minutes} min</b><span>${escapeHtml(leg.distance)}</span></div><p>${leg.approximate ? "Szacunkowy spacer w skróconym wariancie." : `${escapeHtml(leg.mode)} — przewodnik zachowuje właściwą kolejność.`}</p><a href="${routeUrl([current.coordinates,upcoming.coordinates])}" target="_blank" rel="noopener">Otwórz ten odcinek</a>` : `<p class="card-label">PO TYM PUNKCIE</p><span class="leg-mode">FINAŁ</span><h4>${current.next?.distance === "powrót autobusem" ? "Wróć autobusem do centrum" : "To ostatni punkt dnia"}</h4><p>${current.next?.distance === "powrót autobusem" ? "Sprawdź najbliższe połączenie w Mapach Google — rozkład zależy od dnia i godziny." : "Oznacz go jako gotowy, a zapiszę cały dzień jako ukończony."}</p>`}</aside></article><div class="companion-overview"><span><b>${stats.done}/${stats.total}</b> miejsc całego dnia</span><span><b>${escapeHtml(selected.distance)}</b> łącznie</span><a href="${routeUrl(items.map(item => item.coordinates))}" target="_blank" rel="noopener">Cała trasa w Google Maps</a></div>`;
 }
 
 function renderTimeline() {
@@ -171,7 +217,9 @@ function renderTimeline() {
   $("#timeline").innerHTML = items.map((item, index) => {
     if (isDemoLocked(item, index)) return `<article class="place-card demo-lock" data-order="${index + 1}"><h3>Dalsza część trasy premium</h3><p>W wersji demo widzisz początek dnia i sposób prowadzenia. Pełny produkt zawiera wszystkie dni, warianty i mapy.</p><a class="button primary" href="${data.guide.demo.ctaUrl}">Zapytaj o przewodnik</a></article>`;
     const done = state.done.includes(item.id), saved = state.saved.includes(item.id);
-    return `<article class="place-card" data-order="${index + 1}" id="place-${item.id}"><header class="place-head"><div><span class="card-label">${escapeHtml(item.category)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></header><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p><div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div><div class="source-line">Zweryfikowano ${item.lastVerified} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></div>${item.next?.to ? `<div class="next-leg"><span>Dalej: ${escapeHtml(place(item.next.to)?.name || item.next.to)}</span><span>${item.next.minutes} min · ${escapeHtml(item.next.distance)} · ${escapeHtml(item.next.mode)}</span></div>` : ""}</article>`;
+    const following = items[index + 1];
+    const leg = legInfo(item,following);
+    return `<article class="place-card ${done ? "is-done" : currentPlace()?.id === item.id ? "is-current" : ""}" data-order="${index + 1}" id="place-${item.id}"><header class="place-head"><div><span class="card-label">${done ? "UKOŃCZONE" : currentPlace()?.id === item.id ? "TERAZ" : escapeHtml(item.category)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></header><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p><div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div><div class="source-line">Zweryfikowano ${item.lastVerified} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></div>${following && leg ? `<div class="next-leg"><span><b>${modeIcon(leg.mode)}</b> Dalej: ${escapeHtml(following.name)}</span><span>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</span><a href="${routeUrl([item.coordinates,following.coordinates])}" target="_blank" rel="noopener">Trasa</a></div>` : ""}</article>`;
   }).join("");
 }
 
@@ -182,7 +230,7 @@ function renderFood() {
 function renderExtras() {
   $("#extraSections").innerHTML = `<article class="utility-card"><span class="card-label">0 €</span><h3>Najlepsze rzeczy za darmo</h3>${data.guide.free.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Rzymskie smaki</span><h3>Tego spróbuj</h3>${data.guide.flavours.map(([name, desc]) => `<p><b>${escapeHtml(name)}</b><br>${escapeHtml(desc)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Bez straszenia</span><h3>Tego lepiej nie robić</h3>${data.guide.mistakes.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article>`;
 }
-function renderPlan() { renderDaySwitcher(); renderDayOverview(); renderTimeline(); renderFood(); renderExtras(); }
+function renderPlan() { renderDaySwitcher(); renderDayOverview(); renderDayCompanion(); renderTimeline(); renderFood(); renderExtras(); }
 
 function markerColor(item) { return ({attraction:"#9a543b",viewpoint:"#17243b",food:"#73806b",toilet:"#4f7585",water:"#4f7585",transport:"#665c52",optional:"#8a7a64",rest:"#73806b"})[item.category] || "#17243b"; }
 function mapItems() {
@@ -305,11 +353,12 @@ function bindEvents() {
     if (action === "arrival-reset") { persist({arrivalAirport:null,arrivalTransfer:null,arrivalComplete:false}); renderArrivalJourney(); renderToday(); }
     if (action === "continue") { setView("plan"); setTimeout(() => $(`#place-${currentPlace()?.id}`)?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "open-planner") $("#plannerDialog").showModal();
-    if (action === "day") { persist({dayId:target.dataset.id,mode:"full"}); renderAll(); }
+    if (action === "day-main") { const id=target.dataset.day === "4" ? (state.dayId.startsWith("day-4") ? state.dayId : "day-4a") : `day-${target.dataset.day}`; persist({dayId:id,mode:"full"}); renderAll(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
+    if (action === "day") { persist({dayId:target.dataset.id,mode:"full"}); renderAll(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
     if (action === "map-day") { persist({mapDay:target.dataset.id}); renderMapFilters(); renderMap(); }
     if (action === "map-category") { persist({mapCategory:target.dataset.id}); renderMapFilters(); renderMap(); }
-    if (action === "mode") { persist({mode:target.dataset.mode}); renderToday(); renderPlan(); }
-    if (action === "done") { const id=target.dataset.id; update(s => ({...s,done:s.done.includes(id)?s.done.filter(x=>x!==id):[...s.done,id],current:{...s.current,[day().id]:nextPlace(place(id))?.id || id}})); renderToday(); renderPlan(); }
+    if (action === "mode") { persist({mode:target.dataset.mode}); renderToday(); renderPlan(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
+    if (action === "done") { const id=target.dataset.id; update(s => ({...s,done:s.done.includes(id)?s.done.filter(x=>x!==id):[...s.done,id],current:{...s.current,[day().id]:nextPlace(place(id))?.id || id}})); renderToday(); renderPlan(); if(state.view === "plan") setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
     if (action === "save") { const id=target.dataset.id; update(s => ({...s,saved:s.saved.includes(id)?s.saved.filter(x=>x!==id):[...s.saved,id]})); renderPlan(); if (state.view === "saved") renderSaved(); }
     if (action === "food-filter") { persist({foodVegetarian:target.dataset.value === "veg" ? !state.foodVegetarian : false}); renderFood(); renderMapFilters(); if(state.view === "map")renderMap(); }
     if (action === "scenario") scenarioResult(target.dataset.scenario);
@@ -331,7 +380,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=11"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=12"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init();

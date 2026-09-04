@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
   <script>
     (() => {
-      const release = "11";
+      const release = "12";
       const releaseKey = "rome-guide-release";
       if (localStorage.getItem(releaseKey) === release) return;
       window.addEventListener("load", async () => {
@@ -38,7 +38,7 @@
       }, { once: true });
     })();
   </script>
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -87,6 +87,7 @@
       <header class="section-head"><p class="eyebrow">PLAN KROK PO KROKU</p><h2 id="planTitle">Nie wszystko naraz.<br>W dobrej kolejności.</h2></header>
       <div class="day-switcher" id="daySwitcher" role="tablist" aria-label="Wybierz dzień"></div>
       <div id="dayOverview"></div>
+      <section class="day-companion" id="dayCompanion" aria-live="polite"></section>
       <div class="timeline" id="timeline"></div>
       <section class="section" id="foodSection"></section>
       <section class="section utility-grid" id="extraSections"></section>
@@ -140,6 +141,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <script type="module" src="app.js?v=11"></script>
+  <script type="module" src="app.js?v=12"></script>
 </body>
 </html>
