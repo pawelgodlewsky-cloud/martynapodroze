@@ -454,6 +454,30 @@ h1 {
 
 .blog-about h2 { margin: 0; font-size: 52px; }
 
+.blog-about-intro figure {
+  position: relative;
+  max-width: 440px;
+  margin: 34px 14px 0 0;
+  transform: rotate(-1.2deg);
+}
+
+.blog-about-intro figure::before {
+  position: absolute;
+  inset: 13px -13px -13px 13px;
+  z-index: -1;
+  border: 1px solid var(--ink);
+  background: var(--yellow);
+  content: "";
+}
+
+.blog-about-intro img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--ink);
+  object-fit: cover;
+  object-position: center 58%;
+}
+
 .blog-principles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -524,6 +548,7 @@ h1 {
   .article-hero figure { max-width: 620px; }
   .toc { position: static; }
   .posts-grid { grid-template-columns: 1fr; }
+  .blog-about-intro figure { max-width: 540px; margin-right: 13px; }
 }
 
 @media (max-width: 640px) {
@@ -545,6 +570,7 @@ h1 {
   .post-card { grid-template-columns: 1fr; }
   .post-card img { height: 280px; }
   .post-card img.post-card-cover { height: auto; aspect-ratio: 3 / 4; }
+  .blog-about-intro figure { margin-top: 26px; }
   .photo-story {
     grid-template-columns: none;
     grid-auto-flow: column;
