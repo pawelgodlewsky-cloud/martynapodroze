@@ -90,8 +90,8 @@ a { color: inherit; }
   z-index: -1;
   top: 50%;
   left: 50%;
-  width: calc(100% + 42px);
-  height: calc(100% + 34px);
+  width: calc(100% + 58px);
+  height: calc(100% + 48px);
   overflow: visible;
   pointer-events: none;
   transform: translate(-50%, -50%) rotate(-2deg);
@@ -105,8 +105,8 @@ a { color: inherit; }
   stroke-linejoin: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  opacity: 0.78;
-  animation: draw-blog-ring 1.9s cubic-bezier(0.42, 0, 0.23, 1) 0.55s forwards;
+  opacity: 0.74;
+  animation: draw-blog-ring 3.4s cubic-bezier(0.42, 0, 0.23, 1) 0.65s forwards;
   vector-effect: non-scaling-stroke;
 }
 
