@@ -30,6 +30,10 @@ a { color: inherit; }
 .main-nav { display: flex; align-items: center; gap: 23px; font-size: 13px; font-weight: 700; }
 .main-nav a { text-decoration: none; }
 .main-nav a:hover, .main-nav a[aria-current="page"] { color: var(--coral-dark); }
+.nav-blog-label { position: relative; display: inline-block; isolation: isolate; }
+.nav-blog-ring { position: absolute; z-index: -1; top: 50%; left: 50%; width: calc(100% + 26px); height: calc(100% + 20px); overflow: visible; pointer-events: none; transform: translate(-50%, -50%) rotate(-2.5deg); }
+.nav-blog-ring path { fill: none; stroke: var(--coral); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0.78; animation: draw-blog-ring 1.9s cubic-bezier(0.42, 0, 0.23, 1) 0.55s forwards; vector-effect: non-scaling-stroke; }
+@keyframes draw-blog-ring { to { stroke-dashoffset: 0; } }
 .header-contact { display: none; min-height: 40px; align-items: center; padding: 8px 15px; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; font-size: 12px; font-weight: 700; }
 
 .breadcrumbs { display: flex; gap: 9px; padding-block: 22px; color: var(--muted); font-size: 13px; }
@@ -108,4 +112,5 @@ h1 { margin: 0 0 27px; font-size: clamp(60px, 8vw, 102px); font-weight: 600; let
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
+  .nav-blog-ring path { animation: none; stroke-dashoffset: 0; }
 }
