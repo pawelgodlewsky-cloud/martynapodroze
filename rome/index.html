@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#7c2f27">
+  <meta name="theme-color" content="#193c34">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="description" content="Rzym w 3 dni. Interaktywna trasa, mapa, bilety i plan awaryjny od martyna_podroze.">
   <title>Interaktywny przewodnik po Rzymie: Martyna Podróże</title>
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
   <script>
     (() => {
-      const release = "12";
+      const release = "14";
       const releaseKey = "rome-guide-release";
       if (localStorage.getItem(releaseKey) === release) return;
       window.addEventListener("load", async () => {
@@ -38,7 +38,7 @@
       }, { once: true });
     })();
   </script>
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="design.css?v=14">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -51,22 +51,21 @@
     <section class="view is-active" id="today" data-view="today" aria-labelledby="todayTitle">
       <div class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">TWÓJ PRZEWODNIK · MARTYNA PODRÓŻE</p>
-          <h1 id="todayTitle">Rzym</h1>
-          <p class="hero-route">Antyczne serce · Watykan · dolce vita</p>
-          <p class="hero-lead">Otwierasz telefon i wiesz, co teraz. Gotowe dni, realne odległości i najważniejsze decyzje zebrane w jednym miejscu.</p>
+          <p class="eyebrow">CIAO, ROMA! · TWÓJ OSOBISTY PRZEWODNIK</p>
+          <h1 id="todayTitle">Rzym.<br><em>Po Twojemu.</em></h1>
+          <p class="hero-route">Mniej planowania. Więcej zachwytu.</p>
+          <p class="hero-lead">Od pierwszego espresso do ostatniego spaceru. Cztery gotowe dni, dojazdy i małe podpowiedzi, które robią wielką różnicę.</p>
           <div class="hero-actions">
             <button class="button primary" data-action="arrival-start">Zacznij od lotniska <span aria-hidden="true">→</span></button>
-            <button class="button quiet" data-action="open-planner">Dopasuj plan do siebie</button>
+            <button class="button quiet" data-action="view" data-view="plan">Wybierz dzień zwiedzania</button>
           </div>
           <nav class="hero-shortcuts" aria-label="Informacje przed podróżą">
-            <a href="#airportGuide">Przylot i odlot</a>
-            <a href="#ticketGuide">Bilety i Roma Pass</a>
+            <button data-action="view" data-view="prepare">Co przygotować przed wyjazdem? →</button>
           </nav>
         </div>
         <figure class="hero-mark">
           <img src="../assets/postcard-rome.jpg" alt="Martyna przy Koloseum w Rzymie" width="1145" height="1526">
-          <figcaption><span>ROMA</span><b>41°54′N · 12°29′E</b></figcaption>
+          <figcaption><span>Chodź, pokażę Ci Rzym.</span><b>Martyna ♡</b></figcaption>
         </figure>
       </div>
       <div class="hero-facts" aria-label="Najważniejsze informacje o przewodniku">
@@ -75,23 +74,25 @@
         <div><strong>na żywo</strong><span>kolejny krok i mapa</span></div>
         <div><strong>offline</strong><span>plan i adresy</span></div>
       </div>
-      <section class="arrival-journey" id="arrivalJourney" aria-labelledby="arrivalTitle"></section>
       <div class="today-grid" id="todayPanel"></div>
-      <section class="section travel-section" id="airportGuide"></section>
-      <section class="section ticket-section" id="ticketGuide"></section>
-      <section class="section reservations" id="reservations"></section>
-      <section class="section compact-tools" id="practical"></section>
+      <section class="home-days" id="homeDays"></section>
+      <section class="home-shortcuts"><header><p class="eyebrow">POD RĘKĄ</p><h2>Na każdą część podróży.</h2></header><div class="shortcut-grid"><button data-action="arrival-start"><span>↗</span><b>Lotnisko i dojazd</b><small>Od hali przylotów do noclegu</small></button><button data-action="view" data-view="prepare"><span>▤</span><b>Bilety i rezerwacje</b><small>Roma Pass, wejścia, komunikacja</small></button><button data-action="view" data-view="food"><span>◡</span><b>Gdzie zjeść</b><small>Przystanki na trasie Twojego dnia</small></button><button data-action="view" data-view="help"><span>?</span><b>Plan się zmienił?</b><small>Deszcz, zmęczenie i małe kryzysy</small></button></div></section>
+      <div class="author-note"><span>MP</span><p>Zwiedzaj w swoim tempie. Zatrzymaj się na kawę, skręć w boczną uliczkę. Twój kolejny krok będzie tutaj czekał.</p><b>Buon viaggio!<br>Martyna</b></div>
     </section>
 
+    <section class="view" id="journey" data-view="journey" aria-labelledby="journeyTitle"><header class="section-head"><p class="eyebrow">PRZYLOT I POWRÓT</p><h2 id="journeyTitle">Z lotniska.<br>Prosto do Rzymu.</h2><p>Wybierz lotnisko i sposób dojazdu. Instrukcje powrotu znajdziesz pod trasą przylotu.</p></header><section class="arrival-journey" id="arrivalJourney" aria-labelledby="arrivalTitle"></section><section class="section travel-section" id="airportGuide"></section></section>
+    <section class="view" id="prepare" data-view="prepare" aria-labelledby="prepareTitle"><header class="section-head"><p class="eyebrow">NIEZBĘDNIK</p><h2 id="prepareTitle">Spokojna głowa.<br>Wszystko pod ręką.</h2><p>Bilety, rezerwacje i praktyczne informacje — przygotuj je przed wyjściem.</p><nav class="section-links"><a href="#reservations">Rezerwacje</a><a href="#ticketGuide">Bilety i Roma Pass</a><a href="#practical">Praktycznie</a><button data-action="arrival-start">Lotnisko →</button></nav></header><section class="section reservations" id="reservations"></section><section class="section ticket-section" id="ticketGuide"></section><section class="section compact-tools" id="practical"></section></section>
+
     <section class="view" id="plan" data-view="plan" aria-labelledby="planTitle">
-      <header class="section-head"><p class="eyebrow">PLAN KROK PO KROKU</p><h2 id="planTitle">Nie wszystko naraz.<br>W dobrej kolejności.</h2></header>
-      <div class="day-switcher" id="daySwitcher" role="tablist" aria-label="Wybierz dzień"></div>
-      <div id="dayOverview"></div>
+      <header class="section-head"><p class="eyebrow">TWÓJ RZYM · DZIEŃ PO DNIU</p><h2 id="planTitle">Dzisiaj idziemy tutaj.</h2><p>Wybierz dzień. Otwórz nawigację. Po zwiedzaniu kliknij „Gotowe” — pokażę Ci kolejny krok.</p></header>
+      <div class="day-switcher" id="daySwitcher" role="group" aria-label="Wybierz dzień"></div>
+      <details class="plan-settings"><summary>Tempo, czas i wariant dnia <span>Rozwiń +</span></summary><div id="dayOverview"></div></details>
       <section class="day-companion" id="dayCompanion" aria-live="polite"></section>
+      <div class="route-heading"><p class="eyebrow">CAŁY DZIEŃ W JEDNYM MIEJSCU</p><h2>Twoja trasa</h2><p>Kliknij miejsce, żeby rozwinąć podpowiedzi i bilety. Godziny są przykładowe — pierwszeństwo ma godzina Twojej rezerwacji.</p></div>
       <div class="timeline" id="timeline"></div>
-      <section class="section" id="foodSection"></section>
       <section class="section utility-grid" id="extraSections"></section>
     </section>
+    <section class="view" id="food" data-view="food" aria-labelledby="foodTitle"><header class="section-head"><p class="eyebrow">PAUZA NA DOLCE VITA</p><h2 id="foodTitle">A teraz coś dobrego.</h2><p>Jedzenie w okolicy wybranego dnia. Zmień dzień w Planie, aby dopasować propozycje.</p><button class="button quiet" data-action="view" data-view="plan">Zmień dzień →</button></header><section class="section" id="foodSection"></section></section>
 
     <section class="view map-view" id="map" data-view="map" aria-labelledby="mapTitle">
       <header class="section-head"><p class="eyebrow">MAPA CAŁEGO RZYMU</p><h2 id="mapTitle">Wszystko na swoim miejscu.</h2><p>Filtruj punkty. Kafle mapy wymagają internetu, ale adresy i kolejność zostają dostępne offline.</p></header>
@@ -120,16 +121,16 @@
 
   <button class="floating-help" data-action="view" data-view="help" aria-label="Otwórz panel pomocy">?</button>
   <nav class="bottom-nav" aria-label="Główna nawigacja">
-    <button class="is-active" data-action="view" data-view="today"><span aria-hidden="true">⌂</span>Dzisiaj</button>
+    <button class="is-active" data-action="view" data-view="today"><span aria-hidden="true">⌂</span>Start</button>
     <button data-action="view" data-view="plan"><span aria-hidden="true">↝</span>Plan</button>
     <button data-action="view" data-view="map"><span aria-hidden="true">◇</span>Mapa</button>
-    <button data-action="view" data-view="saved"><span aria-hidden="true">♡</span>Zapisane</button>
-    <button data-action="view" data-view="help"><span aria-hidden="true">?</span>Pomoc</button>
+    <button data-action="view" data-view="prepare"><span aria-hidden="true">▤</span>Niezbędnik</button>
+    <button data-action="view" data-view="saved"><span aria-hidden="true">♡</span>Moje</button>
   </nav>
 
   <dialog id="plannerDialog" class="sheet">
     <form method="dialog" id="plannerForm">
-      <button class="sheet-close" value="cancel" aria-label="Zamknij">×</button>
+      <button class="sheet-close" type="button" data-action="close-planner" aria-label="Zamknij">×</button>
       <p class="eyebrow">DOPASUJ RZYM DO SIEBIE</p><h2>Trzy krótkie decyzje.</h2>
       <fieldset><legend>Ile masz czasu?</legend><div class="choice-grid" data-choice="duration"></div></fieldset>
       <fieldset><legend>Jak zwiedzasz?</legend><div class="choice-grid" data-choice="pace"></div></fieldset>
@@ -141,6 +142,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <script type="module" src="app.js?v=12"></script>
+  <script type="module" src="app.js?v=14"></script>
 </body>
 </html>

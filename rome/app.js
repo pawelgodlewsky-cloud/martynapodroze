@@ -15,7 +15,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=12`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=14`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -54,11 +54,15 @@ function isDemoLocked(item, index) { return demoMode && (!data.guide.demo.unlock
 function toast(message) { const node = $("#toast"); node.textContent = message; node.classList.add("show"); setTimeout(() => node.classList.remove("show"), 1800); }
 
 function setView(view) {
+  view = ["today","journey","prepare","plan","food","map","saved","help"].includes(view) ? view : "today";
   persist({ view });
   $$(".view").forEach(node => node.classList.toggle("is-active", node.dataset.view === view));
   $$(".bottom-nav [data-view]").forEach(node => node.classList.toggle("is-active", node.dataset.view === view));
+  document.body.dataset.activeView = view;
+  $$(".bottom-nav [data-view]").forEach(node => { if (node.dataset.view === view) node.setAttribute("aria-current","page"); else node.removeAttribute("aria-current"); });
   if (view === "map") setTimeout(renderMap, 80);
   if (view === "saved") renderSaved();
+  if (view === "plan" && state.dayId.startsWith("day-4")) $(".plan-settings").open = true;
   scrollTo({ top:0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 }
 
@@ -74,7 +78,7 @@ function transitDirections(origin, destination, travelMode = "transit") {
 function renderArrivalJourney() {
   const node = $("#arrivalJourney");
   if (state.arrivalComplete) {
-    node.innerHTML = `<div class="arrival-complete"><span class="arrival-seal" aria-hidden="true">✓</span><div><p class="eyebrow">KROK 0 · GOTOWE</p><h2 id="arrivalTitle">Benvenuta a Roma</h2><p>Dojazd z lotniska za Tobą. Teraz przewodnik prowadzi do pierwszego punktu dnia.</p></div><div class="arrival-complete-actions"><button class="button primary" data-action="continue">Rozpocznij dzień 1</button><button class="text-button" data-action="arrival-reset">Zmień lotnisko lub dojazd</button></div></div>`;
+    node.innerHTML = `<div class="arrival-complete"><span class="arrival-seal" aria-hidden="true">✓</span><div><p class="eyebrow">KROK 0 · GOTOWE</p><h2 id="arrivalTitle">Benvenuta a Roma</h2><p>Dojazd z lotniska za Tobą. Teraz przewodnik prowadzi do pierwszego punktu dnia.</p></div><div class="arrival-complete-actions"><button class="button primary" data-action="continue">Wybierz dzień zwiedzania</button><button class="text-button" data-action="arrival-reset">Zmień lotnisko lub dojazd</button></div></div>`;
     return;
   }
   const airport = state.arrivalAirport === "FCO" ? data.transport.fiumicino : state.arrivalAirport === "CIA" ? data.transport.ciampino : null;
@@ -83,7 +87,7 @@ function renderArrivalJourney() {
   const origin = airport?.code === "FCO" ? "Aeroporto di Roma Fiumicino" : "Aeroporto di Roma Ciampino";
   const fallbackDestination = selectedOption?.destination || "Roma Termini";
   const destination = state.hotelAddress.trim() || fallbackDestination;
-  node.innerHTML = `<div class="arrival-heading"><div><p class="eyebrow">KROK 0 · TU ZACZYNA SIĘ PODRÓŻ</p><h2 id="arrivalTitle">Od wyjścia z lotniska.<br>Bez zgadywania.</h2><p>Tak jak w przewodniku o Como: zaczynamy od pierwszej realnej decyzji po przylocie, nie od pierwszego zabytku.</p></div><span class="travel-stamp">USCITA<br><b>→ ROMA</b></span></div>
+  node.innerHTML = `<div class="arrival-heading"><div><p class="eyebrow">KROK 0 · TU ZACZYNA SIĘ PODRÓŻ</p><h2 id="arrivalTitle">Od wyjścia z lotniska.<br>Bez zgadywania.</h2><p>Odbierz bagaż, wybierz lotnisko i dojazd. Dalej pójdziemy krok po kroku.</p></div><span class="travel-stamp">USCITA<br><b>→ ROMA</b></span></div>
     <div class="airport-choice" role="group" aria-label="Wybierz lotnisko przylotu">
       ${[data.transport.fiumicino,data.transport.ciampino].map(item => `<button class="airport-choice-card ${airport?.code === item.code ? "is-active" : ""}" data-action="arrival-airport" data-airport="${item.code}" aria-pressed="${airport?.code === item.code}"><span>${item.code}</span><div><small>PRZYLATUJĘ NA</small><b>${escapeHtml(item.title)}</b></div></button>`).join("")}
     </div>
@@ -100,22 +104,24 @@ function renderArrivalJourney() {
 }
 
 function renderToday() {
-  if (!state.arrivalComplete && state.done.length === 0) {
-    $("#todayPanel").innerHTML = `<article class="today-card arrival-prompt"><span class="card-label">NAJPIERW DOJAZD</span><h2>Zwiedzanie zaczeka chwilę</h2><p>Wybierz lotnisko i dojedź do noclegu. Gdy potwierdzisz przyjazd do Rzymu, pokażę pierwszy punkt trasy.</p><div class="today-actions"><button class="mini-button" data-action="arrival-start">Wróć do kroku 0</button></div></article>`;
-    return;
-  }
-  const selected = day();
-  const stats = progress(selected);
   const current = currentPlace();
-  const next = current ? nextPlace(current) : null;
-  const remaining = activePlaces(selected).filter(item => !state.done.includes(item.id));
-  const minutes = remaining.reduce((sum, item) => sum + item.duration + (item.next?.minutes || 0), 0);
-  const booking = data.tickets.find(ticket => selected.reservations.includes(ticket.id));
-  $("#todayPanel").innerHTML = `
-    <article class="today-card next"><span class="card-label">Teraz / ${escapeHtml(selected.number)}</span><h2>${escapeHtml(current?.name || "Dzień ukończony")}</h2><p>${escapeHtml(current?.description || "Masz zrobioną całą aktywną trasę.")}</p><div class="today-meta"><span>${escapeHtml(current?.time || "")}</span><span>${current?.duration || 0} min</span><span>${escapeHtml(current?.price || "")}</span></div><div class="today-actions">${current ? `<a href="${mapsUrl(current.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a><button class="mini-button" data-action="done" data-id="${current.id}">${state.done.includes(current.id) ? "Cofnij ukończenie" : "Jestem po tym punkcie"}</button>` : ""}</div></article>
-    <article class="today-card"><span class="card-label">Twój dzień</span><h2>${escapeHtml(selected.title)}</h2><p>${escapeHtml(selected.anchor)}</p><div class="today-meta"><span>${stats.done}/${stats.total} miejsc</span><span>około ${Math.ceil(minutes/60)} godz. zostało</span><span>tryb: ${modeLabel()}</span></div><div class="today-actions"><button class="mini-button" data-action="view" data-view="plan">Zobacz timeline</button>${next ? `<a href="${mapsUrl(next.coordinates)}" target="_blank" rel="noopener">Następny: ${escapeHtml(next.name)}</a>` : ""}</div></article>
-    <article class="today-card"><span class="card-label">Najbliższa rezerwacja</span><h2>${escapeHtml(booking?.name || "Brak sztywnej rezerwacji")}</h2><p>${booking ? `${escapeHtml(booking.when)}. ${escapeHtml(booking.price)}.` : "Dziś możesz przesuwać trasę bez ryzyka utraty wejścia godzinowego."}</p>${booking ? `<div class="today-actions"><a href="${booking.ticketUrl}" target="_blank" rel="noopener">Oficjalne bilety</a></div>` : ""}</article>
-    <article class="today-card"><span class="card-label">Szybkie działania</span><h2>Zmienił się plan?</h2><div class="today-actions"><button class="mini-button" data-action="scenario" data-scenario="delay">Mam opóźnienie</button><button class="mini-button" data-action="scenario" data-scenario="rain">Pada</button><button class="mini-button" data-action="scenario" data-scenario="hungry">Jestem głodna</button><a href="https://www.meteoam.it/it/meteo-citta/roma" target="_blank" rel="noopener">Prognoza dla Rzymu</a></div></article>${plannerSummary()}`;
+  const arrived = state.arrivalComplete || state.done.length > 0;
+  $("#todayPanel").innerHTML = `<article class="resume-card"><span class="resume-icon" aria-hidden="true">${arrived ? "↝" : "✈"}</span><div><p class="eyebrow">${arrived ? "TWOJA PODRÓŻ TRWA" : "ZACZYNAMY OD PRZYLOTU"}</p><h2>${arrived ? escapeHtml(current?.name || "Ten dzień już za Tobą") : "Wylądowałaś? Chodźmy do miasta."}</h2><p>${arrived ? `Dzień ${escapeHtml(day().number)} · ${progress().done}/${progress().total} miejsc · Twój postęp jest zapisany.` : "Fiumicino czy Ciampino? Pokażę Ci wyjście, transport i trasę do noclegu."}</p></div><button class="button primary" data-action="${arrived ? "continue" : "arrival-start"}">${arrived ? "Kontynuuj trasę" : "Prowadź mnie"} <span aria-hidden="true">→</span></button></article>`;
+  renderHomeDays();
+}
+
+function landmark(number) {
+  const drawings = {
+    1:'<path d="M20 95V51Q90 20 160 51V95M20 62Q90 35 160 62M20 79Q90 53 160 79M20 95H160"/><path d="M32 89V77m20 12V71m20 18V68m20 21V68m20 21V71m20 18V76m16 13V80M32 61v-9m20 4v-10m20 7V42m20 11V42m20 14V46m20 15V52m16 14v-9"/>',
+    2:'<path d="M20 96H160M42 95V70H138V95M55 68Q58 31 90 29Q122 31 125 68M65 65Q67 36 90 29Q112 36 115 65M90 29V17m-6 4h12M52 76H128M68 95V83m22 12V83m22 12V83M32 95V60h12m92 0h12v35"/>',
+    3:'<path d="M20 100H160M35 90H145M50 80H130M62 70H118M75 60H105M60 50V25h60v25M73 24V13m34 11V13M80 50V38h20v12M20 92V58m-8 8 8-15 8 15M152 88V55m-8 8 8-15 8 15"/>',
+    4:'<path d="M20 100H160M85 98V51M53 53Q27 49 39 31Q43 12 69 22Q89 5 110 23Q140 15 145 35Q152 53 123 56Z M35 99V81h32v18m-37-18h42M109 99V79h28v20m-33-20h38"/>'
+  };
+  return `<svg viewBox="0 0 180 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${drawings[number]}</svg>`;
+}
+function renderHomeDays() {
+  const short = ["Koloseum, Forum i ślady cesarzy","Watykan, mosty i wielkie place","Trevi, zaułki i Trastevere","Borghese lub starożytna Via Appia"];
+  $("#homeDays").innerHTML = `<header><div><p class="eyebrow">CZTERY DNI. TYSIĄCE WSPOMNIEŃ.</p><h2>Wybierz swój kawałek Rzymu.</h2></div><button class="text-button" data-action="open-planner">Dopasuj plan do siebie ↗</button></header><div class="day-gallery">${["day-1","day-2","day-3","day-4a"].map((id,i) => { const d=data.days.find(x=>x.id===id); return `<button class="day-tile day-color-${i+1}" data-action="day-main" data-day="${i+1}"><div class="day-art"><span>DZIEŃ ${i+1}</span>${landmark(i+1)}<b aria-hidden="true">↗</b></div><div class="day-tile-copy"><h3>${["Antyczne serce","Watykan i centrum","La dolce vita","Jeszcze jeden dzień"][i]}</h3><p>${short[i]}</p><small>${d.duration} · ${d.distance}</small></div></button>`; }).join("")}</div>`;
 }
 
 function plannerSummary() {
@@ -164,7 +170,7 @@ function renderDaySwitcher() {
     ["3","Dolce vita","Trevi i Trastevere"],
     ["4","Dzień dodatkowy","Borghese lub Via Appia"]
   ];
-  $("#daySwitcher").innerHTML = labels.map(([number,title,subtitle]) => `<button role="tab" aria-selected="${selectedMain === number}" class="${selectedMain === number ? "is-active" : ""}" data-action="day-main" data-day="${number}"><span>${number}</span><div><small>DZIEŃ ${number}</small><b>${title}</b><em>${subtitle}</em></div></button>`).join("");
+  $("#daySwitcher").innerHTML = labels.map(([number,title,subtitle]) => `<button aria-pressed="${selectedMain === number}" class="${selectedMain === number ? "is-active" : ""}" data-action="day-main" data-day="${number}"><span>${number}</span><div><small>DZIEŃ ${number}</small><b>${title}</b><em>${subtitle}</em></div></button>`).join("");
 }
 function renderDayOverview() {
   const selected = day();
@@ -185,6 +191,9 @@ function legInfo(from, to) {
   return { minutes:Math.max(3,Math.round(km / 4.5 * 60)), distance:`około ${km.toFixed(1).replace(".",",")} km`, mode:"pieszo", approximate:true };
 }
 
+function segmentUrl(from,to,leg) {
+  return transitDirections(from.coordinates.join(","),to.coordinates.join(","),leg?.mode.includes("transport") || leg?.mode.includes("autobus") ? "transit" : "walking");
+}
 function nextDayId() {
   if (state.dayId === "day-1") return "day-2";
   if (state.dayId === "day-2") return "day-3";
@@ -207,7 +216,7 @@ function renderDayCompanion() {
   const upcoming = items[index + 1];
   const leg = legInfo(current,upcoming);
   const booking = data.tickets.find(ticket => selected.reservations.includes(ticket.id) && current.name.toLowerCase().includes(ticket.name.split(" ")[0].toLowerCase()));
-  $("#dayCompanion").innerHTML = `<div class="companion-progress"><span style="width:${items.length ? completedActive/items.length*100 : 0}%"></span></div><article class="companion-card"><div class="companion-now"><p class="eyebrow">TERAZ · PUNKT ${index+1} Z ${items.length}</p><h3>${escapeHtml(current.name)}</h3><p>${escapeHtml(current.description)}</p><div class="companion-facts"><span><small>GODZINA</small><b>${escapeHtml(current.time)}</b></span><span><small>NA MIEJSCU</small><b>${current.duration} min</b></span><span><small>ADRES</small><b>${escapeHtml(current.address)}</b></span></div>${booking ? `<div class="companion-alert"><b>Masz rezerwację godzinową</b><span>${escapeHtml(booking.when)} · ${escapeHtml(booking.price)}</span></div>` : ""}<div class="companion-actions"><a class="button primary" href="${mapsUrl(current.coordinates)}" target="_blank" rel="noopener">Prowadź mnie tutaj</a><button class="button quiet" data-action="done" data-id="${current.id}">Gotowe — pokaż następny krok</button></div></div><aside class="companion-next">${upcoming && leg ? `<p class="card-label">POTEM</p><span class="leg-mode">${modeIcon(leg.mode)}</span><h4>${escapeHtml(upcoming.name)}</h4><div class="leg-numbers"><b>${leg.minutes} min</b><span>${escapeHtml(leg.distance)}</span></div><p>${leg.approximate ? "Szacunkowy spacer w skróconym wariancie." : `${escapeHtml(leg.mode)} — przewodnik zachowuje właściwą kolejność.`}</p><a href="${routeUrl([current.coordinates,upcoming.coordinates])}" target="_blank" rel="noopener">Otwórz ten odcinek</a>` : `<p class="card-label">PO TYM PUNKCIE</p><span class="leg-mode">FINAŁ</span><h4>${current.next?.distance === "powrót autobusem" ? "Wróć autobusem do centrum" : "To ostatni punkt dnia"}</h4><p>${current.next?.distance === "powrót autobusem" ? "Sprawdź najbliższe połączenie w Mapach Google — rozkład zależy od dnia i godziny." : "Oznacz go jako gotowy, a zapiszę cały dzień jako ukończony."}</p>`}</aside></article><div class="companion-overview"><span><b>${stats.done}/${stats.total}</b> miejsc całego dnia</span><span><b>${escapeHtml(selected.distance)}</b> łącznie</span><a href="${routeUrl(items.map(item => item.coordinates))}" target="_blank" rel="noopener">Cała trasa w Google Maps</a></div>`;
+  $("#dayCompanion").innerHTML = `<div class="companion-progress"><span style="width:${items.length ? completedActive/items.length*100 : 0}%"></span></div><article class="companion-card"><div class="companion-now"><p class="eyebrow">TERAZ · PUNKT ${index+1} Z ${items.length}</p><h3>${escapeHtml(current.name)}</h3><p>${escapeHtml(current.description)}</p><div class="companion-facts"><span><small>PLANOWO</small><b>${escapeHtml(current.time)}</b></span><span><small>NA MIEJSCU</small><b>${current.duration} min</b></span><span><small>ADRES</small><b>${escapeHtml(current.address)}</b></span></div>${booking ? `<div class="companion-alert"><b>Tu potrzebujesz rezerwacji godzinowej</b><span>${escapeHtml(booking.when)} · ${escapeHtml(booking.price)}</span></div>` : ""}<div class="companion-actions"><a class="button primary" href="${mapsUrl(current.coordinates)}" target="_blank" rel="noopener">Prowadź mnie tutaj</a><button class="button quiet" data-action="done" data-id="${current.id}">Gotowe — pokaż następny krok</button></div></div><aside class="companion-next">${upcoming && leg ? `<p class="card-label">NASTĘPNY KROK</p><span class="leg-mode">${modeIcon(leg.mode)}</span><h4>${escapeHtml(upcoming.name)}</h4><div class="leg-numbers"><b>${leg.minutes} min</b><span>${escapeHtml(leg.distance)}</span></div><p>${leg.approximate ? "Szacunkowy spacer w skróconym wariancie." : `${escapeHtml(leg.mode)} — przewodnik zachowuje właściwą kolejność.`}</p><a href="${segmentUrl(current,upcoming,leg)}" target="_blank" rel="noopener">${leg.mode.includes("autobus") ? "Sprawdź przejazd" : "Otwórz ten spacer"}</a>${leg.mode.includes("autobus") ? `<a href="${routeUrl([current.coordinates,upcoming.coordinates])}" target="_blank" rel="noopener">Wolę iść pieszo</a>` : ""}` : `<p class="card-label">PO TYM PUNKCIE</p><span class="leg-mode">FINAŁ</span><h4>${current.next?.distance === "powrót autobusem" ? "Wróć autobusem do centrum" : "To ostatni punkt dnia"}</h4><p>${current.next?.distance === "powrót autobusem" ? "Sprawdź najbliższe połączenie w Mapach Google — rozkład zależy od dnia i godziny." : "Oznacz go jako gotowy, a zapiszę cały dzień jako ukończony."}</p>`}</aside></article><div class="companion-overview"><span><b>${stats.done}/${stats.total}</b> miejsc całego dnia</span><span><b>${escapeHtml(selected.distance)}</b> łącznie</span><a href="${routeUrl(items.map(item => item.coordinates))}" target="_blank" rel="noopener">Cała trasa w Google Maps</a></div>`;
 }
 
 function renderTimeline() {
@@ -219,13 +228,13 @@ function renderTimeline() {
     const done = state.done.includes(item.id), saved = state.saved.includes(item.id);
     const following = items[index + 1];
     const leg = legInfo(item,following);
-    return `<article class="place-card ${done ? "is-done" : currentPlace()?.id === item.id ? "is-current" : ""}" data-order="${index + 1}" id="place-${item.id}"><header class="place-head"><div><span class="card-label">${done ? "UKOŃCZONE" : currentPlace()?.id === item.id ? "TERAZ" : escapeHtml(item.category)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></header><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p><div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div><div class="source-line">Zweryfikowano ${item.lastVerified} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></div>${following && leg ? `<div class="next-leg"><span><b>${modeIcon(leg.mode)}</b> Dalej: ${escapeHtml(following.name)}</span><span>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</span><a href="${routeUrl([item.coordinates,following.coordinates])}" target="_blank" rel="noopener">Trasa</a></div>` : ""}</article>`;
+    return `<article class="place-card ${done ? "is-done" : currentPlace()?.id === item.id ? "is-current" : ""}" data-order="${index + 1}" id="place-${item.id}"><details ${currentPlace()?.id === item.id ? "open" : ""}><summary class="place-head"><div><span class="card-label">${done ? "UKOŃCZONE" : currentPlace()?.id === item.id ? "TERAZ" : escapeHtml(item.category)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></summary><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p><div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div><div class="source-line">Zweryfikowano ${item.lastVerified} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></div></details>${following && leg ? `<div class="next-leg"><span><b>${modeIcon(leg.mode)}</b> Dalej: ${escapeHtml(following.name)}</span><span>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</span><a href="${segmentUrl(item,following,leg)}" target="_blank" rel="noopener">Trasa</a></div>` : ""}</article>`;
   }).join("");
 }
 
 function restaurantsOnRoute() { const ids = new Set(day().placeIds); return data.restaurants.filter(item => ids.has(item.stage) && (!state.foodVegetarian || item.vegetarian)); }
 function renderFood() {
-  $("#foodSection").innerHTML = `<p class="eyebrow">JEDZENIE NA TRASIE</p><h2>Nie cofaj się na obiad</h2><div class="filter-row"><button class="${!state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="all">Wszystkie</button><button class="${state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="veg">Tylko wege</button></div><div class="food-grid">${restaurantsOnRoute().map(item => `<article class="food-card"><span class="status-pill">${escapeHtml(item.category)} · ${escapeHtml(item.price)}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.note)}</p><p><b>Zamów:</b> ${escapeHtml(item.order)}</p><a href="${item.maps}" target="_blank" rel="noopener">Otwórz w Google Maps</a></article>`).join("") || "<p>Brak lokali spełniających filtr na tym odcinku.</p>"}</div>`;
+  $("#foodSection").innerHTML = `<p class="eyebrow">JEDZENIE NA TRASIE</p><h2>Przerwa na trasie: dzień ${escapeHtml(day().number)}</h2><div class="filter-row"><button class="${!state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="all">Wszystkie</button><button class="${state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="veg">Tylko wege</button></div><div class="food-grid">${restaurantsOnRoute().map(item => `<article class="food-card"><span class="status-pill">${escapeHtml(item.category)} · ${escapeHtml(item.price)}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.note)}</p><p><b>Zamów:</b> ${escapeHtml(item.order)}</p><a href="${item.maps}" target="_blank" rel="noopener">Otwórz w Google Maps</a></article>`).join("") || "<p>Brak lokali spełniających filtr na tym odcinku.</p>"}</div>`;
 }
 function renderExtras() {
   $("#extraSections").innerHTML = `<article class="utility-card"><span class="card-label">0 €</span><h3>Najlepsze rzeczy za darmo</h3>${data.guide.free.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Rzymskie smaki</span><h3>Tego spróbuj</h3>${data.guide.flavours.map(([name, desc]) => `<p><b>${escapeHtml(name)}</b><br>${escapeHtml(desc)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Bez straszenia</span><h3>Tego lepiej nie robić</h3>${data.guide.mistakes.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article>`;
@@ -314,7 +323,7 @@ function scenarioResult(key) {
   } else if (key === "hungry") {
     body = `<p>Te miejsca nie cofają Cię z aktualnej trasy:</p>${restaurantsOnRoute().slice(0,4).map(item => `<p><b>${escapeHtml(item.name)}</b> · ${escapeHtml(item.category)} · ${escapeHtml(item.note)} <a href="${item.maps}" target="_blank" rel="noopener">Mapa</a></p>`).join("")}`;
   } else if (key === "lost") {
-    const current = currentPlace(); body = `<p>Aktualny punkt to <b>${escapeHtml(current?.name)}</b>.</p><a class="button primary" href="${mapsUrl(current.coordinates)}" target="_blank" rel="noopener">Prowadź mnie tutaj</a>`;
+    const current = currentPlace() || data.places[0]; body = `<p>Aktualny punkt to <b>${escapeHtml(current?.name)}</b>.</p><a class="button primary" href="${mapsUrl(current.coordinates)}" target="_blank" rel="noopener">Prowadź mnie tutaj</a>`;
   } else if (key === "termini") body = `<a class="button primary" href="${data.transport.back.termini}" target="_blank" rel="noopener">Trasa na Termini</a>`;
   else if (key === "airport") body = `<p><b>Fiumicino:</b> Leonardo Express do Termini albo FL1 do Trastevere/Ostiense/Tiburtina.</p><p><b>Ciampino:</b> autobus do Termini albo 520/720 do metra.</p><div class="today-actions"><a href="${data.transport.back.fco}" target="_blank" rel="noopener">Fiumicino</a><a href="${data.transport.back.cia}" target="_blank" rel="noopener">Ciampino</a></div>`;
   else if (key === "hotel") body = `<p>Przewodnik nie zapisuje adresu hotelu bez Twojej decyzji. Wpisz go jako cel w Google Maps i zapisz offline przed wyjściem.</p><a class="button primary" href="https://www.google.com/maps/dir/?api=1&travelmode=transit" target="_blank" rel="noopener">Otwórz trasę</a>`;
@@ -346,19 +355,20 @@ function bindEvents() {
     const target = event.target.closest("[data-action]"); if (!target) return;
     const action = target.dataset.action;
     if (action === "view") setView(target.dataset.view);
-    if (action === "arrival-start") { setView("today"); setTimeout(() => $("#arrivalJourney")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "arrival-start") { setView("journey"); setTimeout(() => $("#arrivalJourney")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "arrival-airport") { persist({arrivalAirport:target.dataset.airport,arrivalTransfer:null}); renderArrivalJourney(); renderToday(); }
     if (action === "arrival-transfer") { persist({arrivalTransfer:Number(target.dataset.index)}); renderArrivalJourney(); }
-    if (action === "arrival-complete") { persist({arrivalComplete:true}); renderArrivalJourney(); renderToday(); toast("Benvenuta a Roma — zaczynamy zwiedzanie"); setTimeout(() => $("#todayPanel")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "arrival-complete") { persist({arrivalComplete:true}); renderArrivalJourney(); renderToday(); setView("plan"); toast("Benvenuta a Roma — wybierz swój dzień"); }
     if (action === "arrival-reset") { persist({arrivalAirport:null,arrivalTransfer:null,arrivalComplete:false}); renderArrivalJourney(); renderToday(); }
-    if (action === "continue") { setView("plan"); setTimeout(() => $(`#place-${currentPlace()?.id}`)?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "continue") { setView("plan"); $(".plan-settings").open = state.dayId.startsWith("day-4"); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "open-planner") $("#plannerDialog").showModal();
-    if (action === "day-main") { const id=target.dataset.day === "4" ? (state.dayId.startsWith("day-4") ? state.dayId : "day-4a") : `day-${target.dataset.day}`; persist({dayId:id,mode:"full"}); renderAll(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
-    if (action === "day") { persist({dayId:target.dataset.id,mode:"full"}); renderAll(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
+    if (action === "close-planner") $("#plannerDialog").close();
+    if (action === "day-main") { const id=target.dataset.day === "4" ? (state.dayId.startsWith("day-4") ? state.dayId : "day-4a") : `day-${target.dataset.day}`; persist({dayId:id,mapDay:id,mode:"full"}); renderAll(); setView("plan"); $(".plan-settings").open = state.dayId.startsWith("day-4"); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "day") { persist({dayId:target.dataset.id,mapDay:target.dataset.id,mode:"full"}); renderAll(); setView("plan"); $(".plan-settings").open = state.dayId.startsWith("day-4"); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "map-day") { persist({mapDay:target.dataset.id}); renderMapFilters(); renderMap(); }
     if (action === "map-category") { persist({mapCategory:target.dataset.id}); renderMapFilters(); renderMap(); }
-    if (action === "mode") { persist({mode:target.dataset.mode}); renderToday(); renderPlan(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
-    if (action === "done") { const id=target.dataset.id; update(s => ({...s,done:s.done.includes(id)?s.done.filter(x=>x!==id):[...s.done,id],current:{...s.current,[day().id]:nextPlace(place(id))?.id || id}})); renderToday(); renderPlan(); if(state.view === "plan") setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"center"}),100); }
+    if (action === "mode") { persist({mode:target.dataset.mode}); renderToday(); renderPlan(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "done") { const id=target.dataset.id; update(s => ({...s,done:s.done.includes(id)?s.done.filter(x=>x!==id):[...s.done,id],current:{...s.current,[day().id]:nextPlace(place(id))?.id || id}})); renderToday(); renderPlan(); if(state.view === "plan") setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "save") { const id=target.dataset.id; update(s => ({...s,saved:s.saved.includes(id)?s.saved.filter(x=>x!==id):[...s.saved,id]})); renderPlan(); if (state.view === "saved") renderSaved(); }
     if (action === "food-filter") { persist({foodVegetarian:target.dataset.value === "veg" ? !state.foodVegetarian : false}); renderFood(); renderMapFilters(); if(state.view === "map")renderMap(); }
     if (action === "scenario") scenarioResult(target.dataset.scenario);
@@ -380,7 +390,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=12"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=14"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init();

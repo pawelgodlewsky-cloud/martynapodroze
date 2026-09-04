@@ -1,9 +1,9 @@
-const CACHE = "martyna-rome-v12";
+const CACHE = "martyna-rome-v14";
 const APP = [
-  "./","./index.html","./styles.css?v=12","./app.js?v=12","./manifest.webmanifest",
+  "./","./index.html","./styles.css?v=14","./design.css?v=14","./app.js?v=14","./manifest.webmanifest",
   "/assets/postcard-rome.jpg",
-  "./data/guide.json","./data/days.json","./data/places.json","./data/restaurants.json",
-  "./data/tickets.json","./data/transport.json","./data/phrases.json","./data/emergency.json",
+  "./data/guide.json?v=14","./data/days.json?v=14","./data/places.json?v=14","./data/restaurants.json?v=14",
+  "./data/tickets.json?v=14","./data/transport.json?v=14","./data/phrases.json?v=14","./data/emergency.json?v=14",
   "/guides/core/storage.js","/guides/core/geo.js"
 ];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP)).then(() => self.skipWaiting())));
