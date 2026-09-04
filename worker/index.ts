@@ -40,6 +40,7 @@ import {
   validCommerceDeviceId,
   validCommerceOrderId
 } from "../src/commerce-admin";
+import { incrementArticleView, isPublishedArticleSlug } from "../src/article-views";
 
 const ADMIN_CSP = "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl data:; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
 const PUBLIC_CSP = "default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self'; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
@@ -217,6 +218,14 @@ async function newsletterApi(request: Request, env: Env): Promise<Response> {
   }
 }
 
+async function articleViewsApi(request: Request, env: Env, slug: string): Promise<Response> {
+  if (request.method !== "POST") return errorJson("Nieobsługiwana metoda.", 405);
+  if (!validSameOrigin(request)) return errorJson("Żądanie ma nieprawidłowe źródło.", 403);
+  if (!databaseReady(env)) return errorJson("Licznik jest chwilowo niedostępny.", 503);
+  if (!isPublishedArticleSlug(slug)) return errorJson("Nie znaleziono artykułu.", 404);
+  return json({ views: await incrementArticleView(env, slug) });
+}
+
 async function publicTrip(request: Request, env: Env, slug: string, context: ExecutionContext): Promise<Response> {
   if (!databaseReady(env)) return new Response("Moduł jest chwilowo niedostępny.", { status: 503 });
   const trip = await getPublicTripBySlug(env, slug);
@@ -270,6 +279,8 @@ export default {
       }
       if (url.pathname === "/api/admin/session") return adminSession(request, env);
       if (url.pathname.replace(/\/$/, "") === "/api/newsletter/subscribe") return newsletterApi(request, env);
+      const articleViewsMatch = url.pathname.match(/^\/api\/blog\/views\/([a-z0-9-]+)\/?$/);
+      if (articleViewsMatch) return articleViewsApi(request, env, articleViewsMatch[1] ?? "");
       if (url.pathname.replace(/\/$/, "") === "/api/stripe/webhook") return stripeWebhook(request, env);
       if (url.pathname === "/dostep/lombardia" || url.pathname.startsWith("/dostep/lombardia/")) {
         return activateGuide(request, env);
