@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
   <script>
     (() => {
-      const release = "8";
+      const release = "9";
       const releaseKey = "rome-guide-release";
       if (localStorage.getItem(releaseKey) === release) return;
       window.addEventListener("load", async () => {
@@ -38,7 +38,7 @@
       }, { once: true });
     })();
   </script>
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -139,6 +139,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <script type="module" src="app.js?v=8"></script>
+  <script type="module" src="app.js?v=9"></script>
 </body>
 </html>
