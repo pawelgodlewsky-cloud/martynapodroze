@@ -3,9 +3,8 @@
   "short_name": "Mój Rzym",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f4f0e8",
-  "theme_color": "#17243b",
+  "background_color": "#f7f2e9",
+  "theme_color": "#7c2f27",
   "lang": "pl",
   "description": "Interaktywny przewodnik po Rzymie krok po kroku"
 }
-

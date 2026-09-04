@@ -3,21 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#17243b">
+  <meta name="theme-color" content="#7c2f27">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="description" content="Rzym w 3 dni. Interaktywna trasa, mapa, bilety i plan awaryjny od martyna_podroze.">
   <title>Interaktywny przewodnik po Rzymie: Martyna Podróże</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <script>
+    (() => {
+      const release = "6";
+      const releaseKey = "rome-guide-release";
+      if (localStorage.getItem(releaseKey) === release) return;
+      window.addEventListener("load", async () => {
+        try {
+          const scopePath = new URL("./", location.href).pathname;
+          if ("serviceWorker" in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations
+              .filter(registration => new URL(registration.scope).pathname === scopePath)
+              .map(registration => registration.unregister()));
+          }
+          if ("caches" in window) {
+            const names = await caches.keys();
+            await Promise.all(names.filter(name => name.startsWith("martyna-rome-")).map(name => caches.delete(name)));
+          }
+          localStorage.setItem(releaseKey, release);
+        } catch (_) {}
+      }, { once: true });
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
   <header class="topbar">
-    <a class="wordmark" href="#today" aria-label="Martyna Podróże, Rzym"><span>martyna_podroze</span><b>ROMA / 01</b></a>
+    <a class="wordmark" href="#today" data-action="view" data-view="today" aria-label="Martyna Podróże, Rzym — wróć na początek"><span>martyna_podroze</span><b>przewodnik · Rzym</b></a>
     <div class="network" id="networkStatus" aria-live="polite">online</div>
   </header>
 
@@ -25,15 +48,25 @@
     <section class="view is-active" id="today" data-view="today" aria-labelledby="todayTitle">
       <div class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">INTERAKTYWNY PRZEWODNIK / RZYM 2026</p>
-          <h1 id="todayTitle">Rzym.<br><i>Bez zgadywania.</i></h1>
-          <p class="hero-lead">Otwierasz telefon i wiesz, co teraz. Trzy dni ułożone wokół biletów, tłumów i realnych odległości.</p>
+          <p class="eyebrow">TWÓJ PRZEWODNIK · MARTYNA PODRÓŻE</p>
+          <h1 id="todayTitle">Rzym</h1>
+          <p class="hero-route">Antyczne serce · Watykan · dolce vita</p>
+          <p class="hero-lead">Otwierasz telefon i wiesz, co teraz. Gotowe dni, realne odległości i najważniejsze decyzje zebrane w jednym miejscu.</p>
           <div class="hero-actions">
-            <button class="button primary" data-action="continue">Prowadź mnie dalej</button>
-            <button class="button quiet" data-action="open-planner">Dopasuj plan</button>
+            <button class="button primary" data-action="continue">Rozpocznij zwiedzanie <span aria-hidden="true">→</span></button>
+            <button class="button quiet" data-action="open-planner">Dopasuj plan do siebie</button>
           </div>
         </div>
-        <div class="hero-mark" aria-hidden="true"><span>SPQR</span><b>41°54′N</b></div>
+        <figure class="hero-mark">
+          <img src="../assets/postcard-rome.jpg" alt="Martyna przy Koloseum w Rzymie" width="1145" height="1526">
+          <figcaption><span>ROMA</span><b>41°54′N · 12°29′E</b></figcaption>
+        </figure>
+      </div>
+      <div class="hero-facts" aria-label="Najważniejsze informacje o przewodniku">
+        <div><strong>3+1</strong><span>gotowe dni</span></div>
+        <div><strong>4</strong><span>tryby zwiedzania</span></div>
+        <div><strong>na żywo</strong><span>kolejny krok i mapa</span></div>
+        <div><strong>offline</strong><span>plan i adresy</span></div>
       </div>
       <div class="today-grid" id="todayPanel"></div>
       <section class="section reservations" id="reservations"></section>
@@ -76,11 +109,11 @@
 
   <button class="floating-help" data-action="view" data-view="help" aria-label="Otwórz panel pomocy">?</button>
   <nav class="bottom-nav" aria-label="Główna nawigacja">
-    <button class="is-active" data-action="view" data-view="today"><span>01</span>Dzisiaj</button>
-    <button data-action="view" data-view="plan"><span>02</span>Plan</button>
-    <button data-action="view" data-view="map"><span>03</span>Mapa</button>
-    <button data-action="view" data-view="saved"><span>04</span>Zapisane</button>
-    <button data-action="view" data-view="help"><span>05</span>Pomoc</button>
+    <button class="is-active" data-action="view" data-view="today"><span aria-hidden="true">⌂</span>Dzisiaj</button>
+    <button data-action="view" data-view="plan"><span aria-hidden="true">↝</span>Plan</button>
+    <button data-action="view" data-view="map"><span aria-hidden="true">◇</span>Mapa</button>
+    <button data-action="view" data-view="saved"><span aria-hidden="true">♡</span>Zapisane</button>
+    <button data-action="view" data-view="help"><span aria-hidden="true">?</span>Pomoc</button>
   </nav>
 
   <dialog id="plannerDialog" class="sheet">
@@ -97,6 +130,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <script type="module" src="app.js?v=5"></script>
+  <script type="module" src="app.js?v=6"></script>
 </body>
 </html>
