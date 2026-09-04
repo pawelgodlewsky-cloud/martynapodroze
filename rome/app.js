@@ -15,7 +15,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=8`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -95,7 +95,7 @@ function renderReservations() {
 
 function renderAirportGuide() {
   const airports = [data.transport.fiumicino, data.transport.ciampino];
-  $("#airportGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">PIERWSZY I OSTATNI ODCINEK</p><h2>Przylot i odlot bez chaosu</h2><p>Najpierw wybierz lotnisko, potem dzielnicę noclegu. Termini nie zawsze jest najlepszą przesiadką.</p></div><span class="travel-stamp">ARRIVI<br><b>PARTENZE</b></span></div><div class="airport-grid">${airports.map(airport => `<article class="airport-card"><header><span>${escapeHtml(airport.code)}</span><div><small>LOTNISKO</small><h3>${escapeHtml(airport.title)}</h3></div></header><div class="airport-arrival"><b>Po przylocie</b><p>${escapeHtml(airport.arrival)}</p></div><div class="transfer-options">${airport.options.map(option => `<div><small>${escapeHtml(option.for)}</small><h4>${escapeHtml(option.best)}</h4><p>${escapeHtml(option.detail)}</p></div>`).join("")}</div><details><summary>Plan odlotu krok po kroku</summary><ol>${airport.departure.map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol></details><div class="airport-actions"><a href="${airport.officialUrl}" target="_blank" rel="noopener">Aktualne połączenia</a>${airport.ticketUrl ? `<a href="${airport.ticketUrl}" target="_blank" rel="noopener">Kup pociąg</a>` : ""}<a href="${data.transport.back[airport.code === "FCO" ? "fco" : "cia"]}" target="_blank" rel="noopener">Trasa na lotnisko</a></div><div class="source-line">Zweryfikowano ${airport.lastVerified} · <a href="${airport.taxiUrl}" target="_blank" rel="noopener">oficjalne taryfy taxi</a></div></article>`).join("")}</div>`;
+  $("#airportGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">PIERWSZY I OSTATNI ODCINEK</p><h2>Przylot i odlot bez chaosu</h2><p>Najpierw wybierz lotnisko, potem dzielnicę noclegu. Termini nie zawsze jest najlepszą przesiadką.</p></div><span class="travel-stamp">ARRIVI<br><b>PARTENZE</b></span></div><div class="airport-grid">${airports.map(airport => `<article class="airport-card"><header><span>${escapeHtml(airport.code)}</span><div><small>LOTNISKO</small><h3>${escapeHtml(airport.title)}</h3></div></header><div class="airport-arrival"><b>Po przylocie</b><p>${escapeHtml(airport.arrival)}</p></div><div class="transfer-options">${(airport.options || []).map(option => `<div><small>${escapeHtml(option.for)}</small><h4>${escapeHtml(option.best)}</h4><p>${escapeHtml(option.detail)}</p></div>`).join("")}</div><details><summary>Plan odlotu krok po kroku</summary><ol>${(airport.departure || []).map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol></details><div class="airport-actions"><a href="${airport.officialUrl}" target="_blank" rel="noopener">Aktualne połączenia</a>${airport.ticketUrl ? `<a href="${airport.ticketUrl}" target="_blank" rel="noopener">Kup pociąg</a>` : ""}<a href="${data.transport.back[airport.code === "FCO" ? "fco" : "cia"]}" target="_blank" rel="noopener">Trasa na lotnisko</a></div><div class="source-line">Zweryfikowano ${airport.lastVerified} · <a href="${airport.taxiUrl}" target="_blank" rel="noopener">oficjalne taryfy taxi</a></div></article>`).join("")}</div>`;
 }
 
 function renderTicketGuide() {
@@ -284,7 +284,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=7"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=8"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init();
