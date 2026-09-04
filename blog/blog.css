@@ -472,6 +472,7 @@ h1 {
 
 .blog-about-intro img {
   width: 100%;
+  height: 520px;
   aspect-ratio: 1.08 / 1;
   border: 1px solid var(--ink);
   object-fit: cover;
@@ -549,6 +550,7 @@ h1 {
   .toc { position: static; }
   .posts-grid { grid-template-columns: 1fr; }
   .blog-about-intro figure { max-width: 540px; margin-right: 13px; }
+  .blog-about-intro img { height: min(74vw, 520px); }
 }
 
 @media (max-width: 640px) {
@@ -571,6 +573,7 @@ h1 {
   .post-card img { height: 280px; }
   .post-card img.post-card-cover { height: auto; aspect-ratio: 3 / 4; }
   .blog-about-intro figure { margin-top: 26px; }
+  .blog-about-intro img { height: min(88vw, 480px); }
   .photo-story {
     grid-template-columns: none;
     grid-auto-flow: column;
