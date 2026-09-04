@@ -1,7 +1,67 @@
 {
-  "city":{"title":"Jak poruszać się po Rzymie","best":"W historycznym centrum najczęściej wygrywa spacer. Metro wykorzystaj do dłuższych osi: Termini–Watykan, Flaminio, Colosseo i powrót z dalszej dzielnicy.","tickets":[{"name":"BIT 100 minut","price":"sprawdź aktualną cenę w ATAC","note":"Aktywuj przed przejazdem. Przy zmianie na metro ponownie przejdź przez bramkę zgodnie z zasadami."},{"name":"Roma 24H","price":"8,50 €","note":"Ma sens przy kilku przejazdach jednego dnia."},{"name":"Roma 48H","price":"15 €","note":"Licz od pierwszej aktywacji, nie od północy."},{"name":"Roma 72H","price":"22 €","note":"Obejmuje miejskie linie 520 i 720 na Ciampino, ale nie Leonardo Express ani specjalne połączenia Fiumicino."}],"tap":"Tap&Go działa z kartą lub urządzeniem zbliżeniowym. Używaj tego samego nośnika przez całą podróż i pamiętaj o tapnięciu przy bramkach.","officialUrl":"https://www.atac.roma.it/en/tickets-and-passes","sourceUrl":"https://www.atac.roma.it/en/tickets-and-passes/roma72h","lastVerified":"2026-09-02"},
-  "fiumicino":{"title":"Z lotniska Fiumicino","options":[{"for":"Termini, Monti, Esquilino","best":"Leonardo Express","detail":"Bezpośrednio do Termini w 32 min, zwykle co 15 min. 14 €."},{"for":"Trastevere, Ostiense, Tiburtina","best":"pociąg regionalny FL1","detail":"Nie jedź przez Termini, jeśli hotel jest przy stacji na linii FL1. Sprawdź połączenie w Trenitalia."},{"for":"adres poza koleją lub późny przylot w kilka osób","best":"oficjalna taksówka","detail":"Idź do oznaczonego postoju. Nie przyjmuj ofert transportu w hali."}],"officialUrl":"https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-train","ticketUrl":"https://www.trenitalia.com/en/connections/leonardo-express.html","sourceUrl":"https://www.trenitalia.com/en/connections/leonardo-express.html","lastVerified":"2026-09-02"},
-  "ciampino":{"title":"Z lotniska Ciampino","options":[{"for":"Termini i okolice","best":"autobus lotniskowy do Termini","detail":"Najprostszy z bagażem. Porównaj aktualne odjazdy operatorów na stronie ADR."},{"for":"hotel przy metrze A","best":"linia 520 do Subaugusta + metro A","detail":"Miejski bilet ATAC obowiązuje na 520. Dobry wybór bez dużej walizki."},{"for":"hotel przy metrze B, EUR lub południe","best":"linia 720 do Laurentina + metro B","detail":"Nie jedź niepotrzebnie przez Termini."},{"for":"późny przylot lub kilka osób","best":"oficjalna taksówka","detail":"Korzystaj wyłącznie z oznaczonego postoju przed terminalem."}],"officialUrl":"https://www.adr.it/web/aeroporti-di-roma-en/pax-cia-bus","sourceUrl":"https://www.atac.roma.it/en/tickets-and-passes/roma72h","lastVerified":"2026-09-02"},
-  "back":{"termini":"https://www.google.com/maps/dir/?api=1&destination=Roma+Termini&travelmode=transit","fco":"https://www.google.com/maps/dir/?api=1&destination=Fiumicino+Aeroporto&travelmode=transit","cia":"https://www.google.com/maps/dir/?api=1&destination=Ciampino+Aeroporto&travelmode=transit"}
+  "city": {
+    "title": "Bilety komunikacji miejskiej",
+    "best": "W centrum najczęściej wygrywa spacer. Bilet okresowy opłaca się dopiero wtedy, gdy naprawdę planujesz kilka przejazdów dziennie.",
+    "tickets": [
+      {"name":"BIT 100 minut","price":"1,50 €","note":"Autobusy i tramwaje bez limitu w czasie ważności; w metrze jeden przejazd bez ponownego przekraczania bramek."},
+      {"name":"Roma 24H","price":"8,50 €","note":"Nielimitowane przejazdy przez 24 godziny od pierwszej aktywacji."},
+      {"name":"Roma 48H","price":"15 €","note":"Nielimitowane przejazdy przez 48 godzin od pierwszej aktywacji."},
+      {"name":"Roma 72H","price":"22 €","note":"Nielimitowane przejazdy przez 72 godziny; obejmuje miejskie linie 520 i 720 na Ciampino."},
+      {"name":"CIS tygodniowy","price":"29 €","note":"Nielimitowane przejazdy do północy siódmego dnia, licząc dzień pierwszej aktywacji."}
+    ],
+    "tap":"Tap&Go pobiera 1,50 € za BIT. Używaj przez cały dzień dokładnie tej samej karty albo tego samego telefonu — system może wtedy zastosować najkorzystniejszą stawkę dzienną.",
+    "scope":"Bilety miejskie działają w granicach Rzymu w autobusach, tramwajach, metrze i na wybranych odcinkach kolei miejskiej. Nie działają w Leonardo Express ani na specjalnych połączeniach do Fiumicino.",
+    "officialUrl":"https://www.atac.roma.it/en/tickets-and-passes",
+    "sourceUrl":"https://www.atac.roma.it/en/tickets-and-passes",
+    "lastVerified":"2026-09-04"
+  },
+  "romaPass": {
+    "title":"Roma Pass — co naprawdę daje",
+    "variants":[
+      {"name":"Roma Pass 48H","price":"36,50 €","included":"1 pierwsze muzeum lub stanowisko archeologiczne + komunikacja przez 48 godzin","after":"Od drugiego obiektu: ceny ulgowe w obiektach uczestniczących."},
+      {"name":"Roma Pass 72H","price":"58,50 €","included":"2 pierwsze muzea lub stanowiska archeologiczne + komunikacja przez 72 godziny","after":"Od trzeciego obiektu: ceny ulgowe w obiektach uczestniczących."}
+    ],
+    "extras":["zniżki w kolejnych obiektach uczestniczących","specjalne ceny wybranych wystaw i usług","bezpłatne toalety sieci P.Stop","Circo Maximo Experience według aktualnych zasad programu"],
+    "notIncluded":["Muzea Watykańskie i Kaplica Sykstyńska","Leonardo Express, FL1 i pozostałe transfery z Fiumicino","automatyczna rezerwacja wejścia do Koloseum lub Galerii Borghese"],
+    "activation":"Ważność zaczyna biec przy pierwszym użyciu w muzeum albo komunikacji. Do Koloseum i Galerii Borghese zarezerwuj godzinę przed zakupem karty lub niezależnie od niej.",
+    "decision":"Dla planu z Watykanem i dużą liczbą spacerów Roma Pass często nie jest najtańszy. 48H zaczyna mieć sens, gdy wartość pierwszego objętego obiektu i zniżek przekroczy 21,50 € ponad koszt biletu Roma 48H. Dla 72H próg wynosi 36,50 € ponad bilet Roma 72H.",
+    "officialUrl":"https://romapass.it/",
+    "faqUrl":"https://old.romapass.it/en/FAQ/",
+    "lastVerified":"2026-09-04"
+  },
+  "fiumicino": {
+    "code":"FCO",
+    "title":"Fiumicino · Leonardo da Vinci",
+    "arrival":"Po odbiorze bagażu idź za znakami Train. Stacja znajduje się przy terminalach i prowadzi do niej zadaszone przejście.",
+    "options":[
+      {"for":"Termini, Monti, Esquilino","best":"Leonardo Express","detail":"Bez przesiadek do Termini: 32 min, zwykle co 15 min, 14 €. Bilet kupisz także przez TAP&TAP przy peronie."},
+      {"for":"Trastevere, Ostiense, Tiburtina","best":"pociąg regionalny FL1","detail":"Nie jedź przez Termini, jeśli nocleg jest przy stacji linii FL1. Sprawdź aktualny pociąg i cenę w Trenitalia."},
+      {"for":"kilka osób lub adres bez wygodnej kolei","best":"oficjalna biała taksówka","detail":"Do adresu wewnątrz Murów Aureliana obowiązuje stała taryfa 55 € za samochód. Korzystaj z oznaczonego postoju."}
+    ],
+    "departure":["Sprawdź terminal i godzinę odprawy w aplikacji linii lotniczej.","Na Leonardo Express przyjdź z zapasem; bilet miejski i Roma Pass nie są w nim ważne.","Przy taksówce potwierdź stałą taryfę przed odjazdem i poproś o paragon."],
+    "officialUrl":"https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-train",
+    "ticketUrl":"https://www.trenitalia.com/en/connections/leonardo-express.html",
+    "taxiUrl":"https://romamobilita.it/muoversi-a-roma/taxi/",
+    "lastVerified":"2026-09-04"
+  },
+  "ciampino": {
+    "code":"CIA",
+    "title":"Ciampino · G.B. Pastine",
+    "arrival":"Po wyjściu z terminalu wybierz połączenie do dzielnicy noclegu, nie zawsze do Termini. Przystanki autobusów znajdują się przed terminalem.",
+    "options":[
+      {"for":"Termini i okolice","best":"autobus lotniskowy do Termini","detail":"Najprostszy z dużym bagażem. Sprawdź rozkład i stanowisko konkretnego operatora na stronie ADR."},
+      {"for":"nocleg przy metrze A","best":"linia 520 + metro A","detail":"Jedź do Subaugusta lub Cinecittà. Obowiązuje zwykły bilet ATAC oraz Roma Pass."},
+      {"for":"nocleg przy metrze B lub w EUR","best":"linia 720 + metro B","detail":"Jedź do Laurentina. Nie nadrabiaj drogi przez Termini."},
+      {"for":"kilka osób lub późny przylot","best":"oficjalna biała taksówka","detail":"Do adresu wewnątrz Murów Aureliana obowiązuje stała taryfa 40 € za samochód."}
+    ],
+    "departure":["Sprawdź rozkład autobusu w dniu wyjazdu — kursy są dopasowywane do ruchu lotniczego.","Dla 520/720 zostaw zapas na przesiadkę z metra i ruch uliczny.","Przystanki autobusów dalekobieżnych są naprzeciwko odlotów międzynarodowych; sprawdź numer stanowiska."],
+    "officialUrl":"https://www.adr.it/web/aeroporti-di-roma-en/pax-cia-bus",
+    "taxiUrl":"https://romamobilita.it/muoversi-a-roma/taxi/",
+    "lastVerified":"2026-09-04"
+  },
+  "back": {
+    "termini":"https://www.google.com/maps/dir/?api=1&destination=Roma+Termini&travelmode=transit",
+    "fco":"https://www.google.com/maps/dir/?api=1&destination=Fiumicino+Aeroporto&travelmode=transit",
+    "cia":"https://www.google.com/maps/dir/?api=1&destination=Ciampino+Aeroporto&travelmode=transit"
+  }
 }
-

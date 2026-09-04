@@ -382,3 +382,93 @@ main { width: 100%; max-width: 1280px; }
   .place-card { margin-left: 45px; }
   .place-card::before { left: -45px; }
 }
+
+/* Travel logistics and ticket guide */
+.hero-shortcuts { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 22px; }
+.hero-shortcuts a { color: var(--rust); font-size: 10px; font-weight: 800; text-decoration: underline; text-decoration-color: rgba(124,47,39,.35); text-underline-offset: 5px; }
+.hero-shortcuts a::after { content: " ↓"; }
+
+.section-heading-rome { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 30px; }
+.section-heading-rome h2 { max-width: 820px; margin: 0 0 12px; font: 400 clamp(43px,7vw,76px)/.95 var(--serif); letter-spacing: -.055em; }
+.section-heading-rome>div>p:last-child { max-width: 670px; margin: 0; color: var(--muted); font-size: 14px; }
+.travel-stamp { flex: 0 0 auto; padding: 13px 16px; border: 1px solid var(--rust); color: var(--rust); font: 15px/1.25 var(--serif); letter-spacing: .12em; text-align: center; transform: rotate(2deg); }
+.travel-stamp b { font-weight: 400; }
+
+.airport-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.airport-card { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); box-shadow: 0 12px 34px rgba(65,45,33,.07); }
+.airport-card>header { display: grid; grid-template-columns: 68px 1fr; align-items: center; gap: 18px; padding: 24px; background: var(--ink); color: white; }
+.airport-card>header>span { width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.46); border-radius: 50%; font: 19px var(--serif); letter-spacing: .07em; }
+.airport-card>header small { color: #d8b77e; font-size: 8px; font-weight: 800; letter-spacing: .16em; }
+.airport-card h3 { margin: 3px 0 0; font: 400 clamp(25px,3vw,34px)/1 var(--serif); }
+.airport-arrival { padding: 22px 24px; border-bottom: 1px solid var(--line); background: #f2e7dc; }
+.airport-arrival b { color: var(--rust); font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
+.airport-arrival p { margin: 7px 0 0; font-size: 12px; }
+.transfer-options { padding: 4px 24px; }
+.transfer-options>div { padding: 19px 0; border-bottom: 1px solid var(--line); }
+.transfer-options small { color: var(--muted); font-size: 9px; font-weight: 700; }
+.transfer-options h4 { margin: 4px 0 5px; color: var(--rust); font: 400 23px/1.1 var(--serif); }
+.transfer-options p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.airport-card details { margin: 0 24px; padding: 17px 0; border-bottom: 1px solid var(--line); }
+.airport-card summary { cursor: pointer; color: var(--ink); font-size: 11px; font-weight: 800; }
+.airport-card details ol { margin-bottom: 0; padding-left: 20px; color: var(--muted); font-size: 11px; }
+.airport-card details li { margin: 8px 0; padding-left: 4px; }
+.airport-actions { display: flex; flex-wrap: wrap; gap: 7px; padding: 20px 24px 12px; }
+.airport-actions a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); font-size: 9px; font-weight: 800; text-decoration: none; }
+.airport-actions a:first-child { border-color: var(--sun); background: var(--sun); }
+.airport-card>.source-line { margin: 0; padding: 0 24px 22px; }
+
+.ticket-section { overflow: hidden; }
+.fare-strip { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); border: solid var(--line); border-width: 1px 0; }
+.fare-strip article { min-width: 0; padding: 20px 16px; border-right: 1px solid var(--line); }
+.fare-strip article:last-child { border-right: 0; }
+.fare-strip span { min-height: 28px; display: block; color: var(--rust); font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.fare-strip strong { display: block; margin: 7px 0 9px; font: 400 clamp(24px,3vw,34px)/1 var(--serif); }
+.fare-strip p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.ticket-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 34px; }
+.ticket-notes p { margin: 0; padding: 16px; border-radius: var(--radius-sm); background: #ebe9df; color: var(--muted); font-size: 11px; }
+.ticket-notes b { color: var(--ink); }
+
+.roma-pass-card { overflow: hidden; border-radius: var(--radius); background: var(--rust); box-shadow: var(--shadow); color: white; }
+.roma-pass-card>header { display: flex; align-items: start; justify-content: space-between; gap: 20px; padding: clamp(26px,5vw,48px); border-bottom: 1px solid rgba(255,255,255,.18); }
+.roma-pass-card .eyebrow { color: #f2c47e; }
+.roma-pass-card h3 { max-width: 700px; margin: 0; font: 400 clamp(38px,6vw,64px)/.95 var(--serif); letter-spacing: -.045em; }
+.roma-pass-card>header>span { flex: 0 0 auto; padding: 10px 12px; border: 1px solid rgba(255,255,255,.52); font: 12px/1.15 var(--serif); letter-spacing: .12em; text-align: center; }
+.pass-variants { display: grid; grid-template-columns: 1fr 1fr; }
+.pass-variants>div { padding: clamp(24px,4vw,38px); border-right: 1px solid rgba(255,255,255,.18); }
+.pass-variants>div:last-child { border-right: 0; }
+.pass-variants small { color: #f2c47e; font-size: 9px; font-weight: 800; letter-spacing: .11em; }
+.pass-variants strong { display: block; margin: 7px 0 14px; font: 400 clamp(32px,5vw,52px)/1 var(--serif); }
+.pass-variants p { max-width: 480px; margin: 6px 0; color: rgba(255,255,255,.76); font-size: 11px; }
+.pass-columns { display: grid; grid-template-columns: 1fr 1fr; margin: 0 clamp(24px,4vw,38px); border-top: 1px solid rgba(255,255,255,.18); }
+.pass-columns>div { padding: 28px 28px 28px 0; }
+.pass-columns>.pass-no { padding-right: 0; padding-left: 28px; border-left: 1px solid rgba(255,255,255,.18); }
+.pass-columns h4 { margin: 0 0 12px; font: 400 24px var(--serif); }
+.pass-columns ul { margin: 0; padding-left: 18px; color: rgba(255,255,255,.75); font-size: 11px; }
+.pass-columns li { margin: 7px 0; }
+.pass-warning,.pass-verdict { margin: 0 clamp(24px,4vw,38px) 12px; padding: 18px; border-radius: var(--radius-sm); }
+.pass-warning { background: rgba(255,255,255,.1); }
+.pass-warning b,.pass-verdict span { color: #f2c47e; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.pass-warning p,.pass-verdict p { margin: 6px 0 0; font-size: 11px; }
+.pass-verdict { background: var(--white); color: var(--ink); }
+.pass-verdict span { color: var(--rust); }
+.roma-pass-card>.airport-actions { padding: 8px clamp(24px,4vw,38px) 14px; }
+.roma-pass-card>.airport-actions a { border-color: rgba(255,255,255,.36); color: white; }
+.roma-pass-card>.airport-actions a:first-child { border-color: var(--sun); color: var(--ink); }
+.roma-pass-card>.source-line { margin: 0; padding: 0 clamp(24px,4vw,38px) 28px; color: rgba(255,255,255,.58); }
+
+@media (max-width: 820px) {
+  .airport-grid { grid-template-columns: 1fr; }
+  .fare-strip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
+  .fare-strip article { flex: 0 0 190px; scroll-snap-align: start; }
+}
+
+@media (max-width: 560px) {
+  .hero-shortcuts { justify-content: center; }
+  .section-heading-rome { align-items: start; }
+  .travel-stamp { display: none; }
+  .ticket-notes,.pass-variants,.pass-columns { grid-template-columns: 1fr; }
+  .ticket-notes { gap: 7px; }
+  .pass-variants>div { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.18); }
+  .pass-columns>.pass-no { padding-left: 0; border-top: 1px solid rgba(255,255,255,.18); border-left: 0; }
+  .roma-pass-card>header>span { display: none; }
+}

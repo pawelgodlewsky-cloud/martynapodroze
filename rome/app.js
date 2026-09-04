@@ -93,10 +93,21 @@ function renderReservations() {
   $("#reservations").innerHTML = `<p class="eyebrow">PRZED WYJAZDEM</p><h2>Co zarezerwować wcześniej</h2><div class="booking-list">${data.tickets.map(ticket => `<article class="booking-card"><span class="status-pill ${ticket.required ? "required" : ""}">${ticket.required ? "rezerwuj" : "opcjonalnie"}</span><b>${escapeHtml(ticket.name)}</b><p><strong>Kiedy:</strong> ${escapeHtml(ticket.when)}</p><p><strong>Koszt:</strong> ${escapeHtml(ticket.price)}</p><p><strong>Nie rób:</strong> ${escapeHtml(ticket.avoid)}</p><div class="place-actions"><a href="${ticket.ticketUrl}" target="_blank" rel="noopener">Oficjalny zakup</a></div><div class="source-line">Zweryfikowano ${ticket.lastVerified} · <a href="${ticket.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></article>`).join("")}</div>`;
 }
 
+function renderAirportGuide() {
+  const airports = [data.transport.fiumicino, data.transport.ciampino];
+  $("#airportGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">PIERWSZY I OSTATNI ODCINEK</p><h2>Przylot i odlot bez chaosu</h2><p>Najpierw wybierz lotnisko, potem dzielnicę noclegu. Termini nie zawsze jest najlepszą przesiadką.</p></div><span class="travel-stamp">ARRIVI<br><b>PARTENZE</b></span></div><div class="airport-grid">${airports.map(airport => `<article class="airport-card"><header><span>${escapeHtml(airport.code)}</span><div><small>LOTNISKO</small><h3>${escapeHtml(airport.title)}</h3></div></header><div class="airport-arrival"><b>Po przylocie</b><p>${escapeHtml(airport.arrival)}</p></div><div class="transfer-options">${airport.options.map(option => `<div><small>${escapeHtml(option.for)}</small><h4>${escapeHtml(option.best)}</h4><p>${escapeHtml(option.detail)}</p></div>`).join("")}</div><details><summary>Plan odlotu krok po kroku</summary><ol>${airport.departure.map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol></details><div class="airport-actions"><a href="${airport.officialUrl}" target="_blank" rel="noopener">Aktualne połączenia</a>${airport.ticketUrl ? `<a href="${airport.ticketUrl}" target="_blank" rel="noopener">Kup pociąg</a>` : ""}<a href="${data.transport.back[airport.code === "FCO" ? "fco" : "cia"]}" target="_blank" rel="noopener">Trasa na lotnisko</a></div><div class="source-line">Zweryfikowano ${airport.lastVerified} · <a href="${airport.taxiUrl}" target="_blank" rel="noopener">oficjalne taryfy taxi</a></div></article>`).join("")}</div>`;
+}
+
+function renderTicketGuide() {
+  const city = data.transport.city;
+  const pass = data.transport.romaPass;
+  $("#ticketGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">CO KUPIĆ</p><h2>Bilety i Roma Pass</h2><p>${escapeHtml(city.best)}</p></div></div><div class="fare-strip">${city.tickets.map(ticket => `<article><span>${escapeHtml(ticket.name)}</span><strong>${escapeHtml(ticket.price)}</strong><p>${escapeHtml(ticket.note)}</p></article>`).join("")}</div><div class="ticket-notes"><p><b>Tap&Go:</b> ${escapeHtml(city.tap)}</p><p><b>Gdzie działa:</b> ${escapeHtml(city.scope)}</p></div><article class="roma-pass-card"><header><div><p class="eyebrow">KARTA TURYSTYCZNA</p><h3>${escapeHtml(pass.title)}</h3></div><span>ROMA<br>PASS</span></header><div class="pass-variants">${pass.variants.map(variant => `<div><small>${escapeHtml(variant.name)}</small><strong>${escapeHtml(variant.price)}</strong><p>${escapeHtml(variant.included)}</p><p>${escapeHtml(variant.after)}</p></div>`).join("")}</div><div class="pass-columns"><div><h4>Dodatkowo dostajesz</h4><ul>${pass.extras.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div><div class="pass-no"><h4>Tego karta nie obejmuje</h4><ul>${pass.notIncluded.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div></div><div class="pass-warning"><b>Ważna aktywacja</b><p>${escapeHtml(pass.activation)}</p></div><div class="pass-verdict"><span>WERDYKT DLA TEGO PLANU</span><p>${escapeHtml(pass.decision)}</p></div><div class="airport-actions"><a href="${pass.officialUrl}" target="_blank" rel="noopener">Sprawdź Roma Pass</a><a href="${city.officialUrl}" target="_blank" rel="noopener">Cennik ATAC</a></div><div class="source-line">Zweryfikowano ${pass.lastVerified} · ceny sprawdź ponownie przed zakupem</div></article>`;
+}
+
 function renderPractical() {
   const transport = data.transport;
   $("#practical").innerHTML = `<p class="eyebrow">PRAKTYCZNIE</p><h2>Rzeczy, które oszczędzają czas</h2><div class="utility-grid">
-    <article class="utility-card"><span class="card-label">Transport</span><h3>${transport.city.title}</h3><p>${transport.city.best}</p><button class="text-button" data-action="utility" data-utility="transport">Bilety i zasady</button></article>
+    <article class="utility-card"><span class="card-label">Transport</span><h3>${transport.city.title}</h3><p>${transport.city.best}</p><a class="text-button" href="#ticketGuide">Bilety i Roma Pass</a></article>
     <article class="utility-card"><span class="card-label">Woda</span><h3>Nasoni</h3><p>Darmowa woda pitna jest dostępna w tysiącach miejskich fontann. Wybrane punkty są na mapie.</p><a class="text-button" href="https://www.turismoroma.it/en/node/167736" target="_blank" rel="noopener">Oficjalna mapa wody</a></article>
     <article class="utility-card"><span class="card-label">Offline</span><h3>${state.offlinePreparedAt ? "Gotowe na wyjście" : "Zapisz przed wyjściem"}</h3><p>Plan, adresy, checklisty i postęp zostają na urządzeniu. Kafle map i bieżące rozkłady wymagają internetu.</p><button class="text-button" data-action="offline">${state.offlinePreparedAt ? "Odśwież dane offline" : "Przygotuj offline"}</button></article>
     <article class="utility-card"><span class="card-label">Upał</span><h3>Przesuń, nie przyspieszaj</h3><p>Zewnętrzne odcinki rób rano i po 17:00. W środku dnia wybierz muzeum, bazylikę lub dłuższy obiad.</p><button class="text-button" data-action="scenario" data-scenario="heat">Plan na upał</button></article>
@@ -240,7 +251,7 @@ function applyPlanner(form) {
   renderAll(); toast("Plan dopasowany i zapisany"); setView("today");
 }
 
-function renderAll() { renderToday(); renderReservations(); renderPractical(); renderPlan(); renderMapFilters(); renderMapFallback(); renderSaved(); renderHelp(); }
+function renderAll() { renderToday(); renderAirportGuide(); renderTicketGuide(); renderReservations(); renderPractical(); renderPlan(); renderMapFilters(); renderMapFallback(); renderSaved(); renderHelp(); }
 function bindEvents() {
   document.addEventListener("click", event => {
     const target = event.target.closest("[data-action]"); if (!target) return;
@@ -273,7 +284,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=6"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=7"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init();
