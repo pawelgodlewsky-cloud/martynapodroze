@@ -90,17 +90,17 @@ a { color: inherit; }
   z-index: -1;
   top: 50%;
   left: 50%;
-  width: calc(100% + 26px);
-  height: calc(100% + 20px);
+  width: calc(100% + 38px);
+  height: calc(100% + 28px);
   overflow: visible;
   pointer-events: none;
-  transform: translate(-50%, -50%) rotate(-2.5deg);
+  transform: translate(-50%, -50%) rotate(-3.5deg);
 }
 
 .nav-blog-ring path {
   fill: none;
   stroke: var(--coral);
-  stroke-width: 3.2;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 1;
