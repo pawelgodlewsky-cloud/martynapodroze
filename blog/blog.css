@@ -456,7 +456,7 @@ h1 {
 
 .blog-about-intro figure {
   position: relative;
-  max-width: 440px;
+  max-width: 560px;
   margin: 34px 14px 0 0;
   transform: rotate(-1.2deg);
 }
@@ -472,10 +472,10 @@ h1 {
 
 .blog-about-intro img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1.08 / 1;
   border: 1px solid var(--ink);
   object-fit: cover;
-  object-position: center 58%;
+  object-position: center 64%;
 }
 
 .blog-principles {
