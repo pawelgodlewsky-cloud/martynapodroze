@@ -17,7 +17,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=15`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=18`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -248,12 +248,12 @@ function decoratePlaces() {
   const index = current ? items.findIndex(item => item.id === current.id) : items.length;
   const previous = items[index-1];
   $("#dayCompanion").insertAdjacentHTML("beforeend", `<div class="route-controls">${previous ? `<button class="button quiet" data-action="resume-point" data-id="${previous.id}">← Wróć: ${escapeHtml(previous.name)}</button>` : ""}<button class="button quiet" data-action="restart-day">Zacznij dzień od nowa</button></div>`);
-  if (current) $(".companion-now").insertAdjacentHTML("afterbegin", `<button class="place-preview" data-action="open-place" data-id="${current.id}" aria-label="Otwórz kartę: ${escapeHtml(current.name)}">${placeVisual(current)}<span>Otwórz pełną kartę miejsca ↗</span></button>`);
+  if (current) $(".companion-now").insertAdjacentHTML("afterbegin", `<button class="place-preview companion-place-preview" data-action="open-place" data-id="${current.id}" aria-label="Otwórz kartę: ${escapeHtml(current.name)}">${placeVisual(current)}<span>Otwórz pełną kartę miejsca ↗</span></button>`);
   $$("#timeline .place-card:not(.demo-lock)").forEach(node => {
     const item = place(node.id.slice(6));
     const summary = $("summary",node);
     summary.dataset.action = "open-place"; summary.dataset.id = item.id;
-    node.insertAdjacentHTML("afterbegin", `<button class="place-preview" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">${placeVisual(item)}<span>Zobacz miejsce ↗</span></button>`);
+    node.insertAdjacentHTML("afterbegin", `<button class="point-image-frame place-preview" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">${placeVisual(item)}<span>Zobacz miejsce ↗</span></button>`);
     $(".photo-slot",node)?.remove();
   });
 }
@@ -441,7 +441,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=15"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=18"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init().then(() => { const id=new URLSearchParams(location.search).get("place"); if(id && data.places) openPlace(id,false); });

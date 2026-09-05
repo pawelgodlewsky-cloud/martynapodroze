@@ -1,5 +1,5 @@
 /* Roma — a pocket companion. One visual system for every stage of the trip. */
-@import url('styles.css?v=15');
+@import url('styles.css?v=18');
 :root{--ink:#193c34;--ink2:#2d5148;--paper:#f5f6f0;--paper2:#e9ede3;--white:#fff;--sage:#6b806a;--rust:#32604c;--blue:#dce9ec;--line:#dbe2d8;--muted:#576a60;--sun:#e4ee91;--serif:Marcellus,Georgia,serif;--sans:Manrope,Arial,sans-serif;--radius:22px;--radius-sm:12px;--shadow:0 8px 30px #193c3408;--nav:78px}
 body{font-size:15px;line-height:1.65;background:var(--paper);padding:0 0 105px;color:var(--ink)}
 button,a,input,summary{touch-action:manipulation}button{cursor:pointer}button,input,select{font:inherit}a{color:var(--rust)}button{color:inherit}p{text-wrap:pretty}h1,h2,h3,h4{text-wrap:balance}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #cf6a40;outline-offset:4px}button:disabled{opacity:.5;cursor:default}
