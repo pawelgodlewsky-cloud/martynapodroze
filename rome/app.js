@@ -1,7 +1,7 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
-import { resumePoint, resetDay, togglePoint } from "./progression.js";
-import { placeVisual } from "./place-visuals.js";
+import { resumePoint, resetDay, togglePoint } from "./progression.js?v=19";
+import { placeVisual } from "./place-visuals.js?v=19";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -17,7 +17,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=18`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=19`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -441,7 +441,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=18"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=19"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init().then(() => { const id=new URLSearchParams(location.search).get("place"); if(id && data.places) openPlace(id,false); });
