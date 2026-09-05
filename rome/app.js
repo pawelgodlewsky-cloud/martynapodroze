@@ -1,5 +1,7 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
+import { resumePoint, resetDay, togglePoint } from "./progression.js";
+import { placeVisual } from "./place-visuals.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -15,7 +17,7 @@ let mapLayer = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=14`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=15`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -239,7 +241,44 @@ function renderFood() {
 function renderExtras() {
   $("#extraSections").innerHTML = `<article class="utility-card"><span class="card-label">0 €</span><h3>Najlepsze rzeczy za darmo</h3>${data.guide.free.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Rzymskie smaki</span><h3>Tego spróbuj</h3>${data.guide.flavours.map(([name, desc]) => `<p><b>${escapeHtml(name)}</b><br>${escapeHtml(desc)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Bez straszenia</span><h3>Tego lepiej nie robić</h3>${data.guide.mistakes.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article>`;
 }
-function renderPlan() { renderDaySwitcher(); renderDayOverview(); renderDayCompanion(); renderTimeline(); renderFood(); renderExtras(); }
+function renderPlan() { renderDaySwitcher(); renderDayOverview(); renderDayCompanion(); renderTimeline(); renderFood(); renderExtras(); decoratePlaces(); }
+
+function decoratePlaces() {
+  const items = activePlaces(), current = currentPlace();
+  const index = current ? items.findIndex(item => item.id === current.id) : items.length;
+  const previous = items[index-1];
+  $("#dayCompanion").insertAdjacentHTML("beforeend", `<div class="route-controls">${previous ? `<button class="button quiet" data-action="resume-point" data-id="${previous.id}">← Wróć: ${escapeHtml(previous.name)}</button>` : ""}<button class="button quiet" data-action="restart-day">Zacznij dzień od nowa</button></div>`);
+  if (current) $(".companion-now").insertAdjacentHTML("afterbegin", `<button class="place-preview" data-action="open-place" data-id="${current.id}" aria-label="Otwórz kartę: ${escapeHtml(current.name)}">${placeVisual(current)}<span>Otwórz pełną kartę miejsca ↗</span></button>`);
+  $$("#timeline .place-card:not(.demo-lock)").forEach(node => {
+    const item = place(node.id.slice(6));
+    const summary = $("summary",node);
+    summary.dataset.action = "open-place"; summary.dataset.id = item.id;
+    node.insertAdjacentHTML("afterbegin", `<button class="place-preview" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">${placeVisual(item)}<span>Zobacz miejsce ↗</span></button>`);
+    $(".photo-slot",node)?.remove();
+  });
+}
+
+function openPlace(id, push = true) {
+  const item = place(id); if (!item) return;
+  if (demoMode && !data.guide.demo.unlockedDays.some(dayId => item.dayIds.includes(dayId))) return;
+  let dialog = $("#placeDialog");
+  if (!dialog) {
+    dialog = document.createElement("dialog"); dialog.id="placeDialog"; dialog.className="rome-place-dialog";
+    dialog.setAttribute("aria-labelledby","placeTitle"); document.body.append(dialog);
+    dialog.addEventListener("cancel", event => {event.preventDefault(); closePlace();});
+  }
+  const route = activePlaces(), index = route.findIndex(point => point.id === id), next = index >= 0 ? route[index+1] : null;
+  const leg = next && legInfo(item,next);
+  dialog.dataset.id=id;
+  dialog.innerHTML=`<header class="place-toolbar"><button class="button quiet" data-action="close-place">← Wróć do przewodnika</button><button class="button quiet" data-action="close-place" aria-label="Zamknij kartę">×</button></header><div class="place-editorial"><div class="place-cover">${placeVisual(item)}</div><div class="place-intro"><p class="eyebrow">RZYM · KARTA MIEJSCA</p><h2 id="placeTitle">${escapeHtml(item.name)}</h2><p>${escapeHtml(item.why)}</p><div class="place-fact-grid">${[["Na miejscu",`${item.duration} min`],["Koszt",item.price],["Adres",item.address],["Rezerwacja",item.bookingRequired ? "Zarezerwuj wcześniej" : "Sprawdź warunki na oficjalnej stronie"]].map(([label,value])=>`<div><small>${label}</small><strong>${escapeHtml(value)}</strong></div>`).join("")}</div><div class="place-actions"><a class="button primary" href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.ticketUrl ? `<a class="button quiet" href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="button quiet" data-action="save" data-id="${id}">${state.saved.includes(id)?"Usuń z zapisanych":"Zapisz miejsce"}</button></div></div></div><div class="place-reading"><section><h3>Jak zwiedzać</h3><p>${escapeHtml(item.description)}</p><h3>Nie przegap</h3><p>${escapeHtml(item.dontMiss || item.why)}</p><div class="tip"><b>Martyna podpowiada</b><p>${escapeHtml(item.tip)}</p></div>${item.warning?`<div class="tip warning"><b>Warto wiedzieć</b><p>${escapeHtml(item.warning)}</p></div>`:""}</section><aside><h3>Praktycznie</h3><p>Godzina w planie: ${escapeHtml(item.time)}. To propozycja trasy, nie godziny otwarcia.</p>${item.officialUrl?`<a href="${item.officialUrl}" target="_blank" rel="noopener">Sprawdź godziny i zasady na oficjalnej stronie ↗</a>`:""}<p class="source-line">Dane zweryfikowano: ${escapeHtml(item.lastVerified)} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">Źródło</a></p>${next&&leg?`<h3>Dalej: ${escapeHtml(next.name)}</h3><p>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</p><a href="${segmentUrl(item,next,leg)}" target="_blank" rel="noopener">Trasa do następnego punktu ↗</a><button class="button quiet" data-action="open-place" data-id="${next.id}">Karta następnego miejsca</button>`:""}</aside></div>${id==="colosseum"?`<div class="place-gallery"><img src="assets/places/colosseum-interior.jpg" alt="Wnętrze Koloseum i podziemia areny" loading="lazy"><img src="assets/places/colosseum-night.jpg" alt="Podświetlone Koloseum nocą" loading="lazy"></div>`:""}<footer class="place-footer"><button class="button primary" data-action="done" data-id="${id}">${state.done.includes(id)?"Cofnij oznaczenie jako odwiedzone":"Oznacz jako odwiedzone"}</button>${index>=0?`<button class="button quiet" data-action="resume-point" data-id="${id}">Kontynuuj od tego miejsca</button>`:""}</footer>`;
+  if(push) { const url=new URL(location.href); url.searchParams.set("place",id); history.pushState({romePlace:true},"",url); }
+  if(!dialog.open) dialog.showModal();
+  dialog.scrollTop=0;
+}
+function closePlace() {
+  $("#placeDialog")?.close();
+  const url=new URL(location.href); url.searchParams.delete("place"); history.replaceState(null,"",url);
+}
 
 function markerColor(item) { return ({attraction:"#9a543b",viewpoint:"#17243b",food:"#73806b",toilet:"#4f7585",water:"#4f7585",transport:"#665c52",optional:"#8a7a64",rest:"#73806b"})[item.category] || "#17243b"; }
 function mapItems() {
@@ -261,7 +300,7 @@ function renderMap() {
   const bounds = [];
   items.forEach((item, index) => {
     const icon = L.divIcon({ className:"", html:`<span style="display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:${markerColor(item)};color:white;border:2px solid white;font:700 12px Arial;box-shadow:0 2px 8px #0004">${item.category === "food" ? "F" : index + 1}</span>`, iconSize:[30,30], iconAnchor:[15,15] });
-    L.marker(item.coordinates,{icon}).bindPopup(`<h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.description || item.note)}</p><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>`).addTo(mapLayer); bounds.push(item.coordinates);
+    L.marker(item.coordinates,{icon}).bindPopup(`<h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.description || item.note)}</p>${place(item.id)?`<button data-action="open-place" data-id="${item.id}">Otwórz kartę miejsca</button><br>`:""}<a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>`).addTo(mapLayer); bounds.push(item.coordinates);
   });
   const mapRouteDay = data.days.find(item => item.id === state.mapDay);
   const route = (mapRouteDay && (state.mapCategory === "all" || state.mapCategory === "attraction") ? activePlaces(mapRouteDay) : []).map(item => item.coordinates);
@@ -281,6 +320,10 @@ function renderSaved() {
   const percent = Math.round(completed/total*100);
   $("#passport").innerHTML = `<article class="passport-card"><div class="passport-top"><div><p class="eyebrow">POSTĘP</p><h2>${completed} z ${total} miejsc</h2><p>${data.days.filter(item => progress(item).percent === 100).length} ukończonych dni · plan na dziś: ${escapeHtml(day().title)}</p></div><div class="progress-ring" style="--progress:${percent}%"><b>${percent}%</b></div></div></article>`;
   const saved = state.saved.map(place).filter(Boolean);
+  queueMicrotask(() => $$("#savedPlaces .saved-item").forEach((node,index) => {
+    const item=saved[index]; if(!item)return;
+    node.insertAdjacentHTML("afterbegin",`<button class="button quiet" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">Zobacz ↗</button>`);
+  }));
   $("#savedPlaces").innerHTML = `<p class="eyebrow">ZAPISANE</p><h2>Chcę tu wrócić</h2><div class="saved-list">${saved.map(item => `<div class="saved-item"><span><b>${escapeHtml(item.name)}</b><br><small>${escapeHtml(item.address)}</small></span><button class="text-button" data-action="save" data-id="${item.id}">Usuń</button></div>`).join("") || "<p>Na razie nic tu nie ma. Zapisuj miejsca z kart trasy.</p>"}</div>`;
   $("#checklist").innerHTML = `<p class="eyebrow">PRZED WYJAZDEM</p><h2>Checklista</h2><div class="check-list">${data.guide.checklist.map((item,index) => `<label><input type="checkbox" data-action="check" data-id="${index}" ${state.checklist[index] ? "checked" : ""}><span>${escapeHtml(item)}</span></label>`).join("")}</div>`;
   renderBudget();
@@ -353,7 +396,13 @@ function renderAll() { renderArrivalJourney(); renderToday(); renderAirportGuide
 function bindEvents() {
   document.addEventListener("click", event => {
     const target = event.target.closest("[data-action]"); if (!target) return;
-    const action = target.dataset.action;
+  const action = target.dataset.action;
+    if (action === "open-place") { event.preventDefault(); openPlace(target.dataset.id); }
+    if (action === "close-place") closePlace();
+    if (action === "resume-point") { update(s => resumePoint(s,day().id,target.dataset.id)); closePlace(); renderToday(); renderPlan(); setView("plan"); $("#dayCompanion").scrollIntoView({behavior:"smooth"}); }
+    if (action === "restart-day") { target.outerHTML='<div class="restart-confirm"><p>Wyzerować postęp tego dnia? Zapisane miejsca i budżet pozostaną bez zmian.</p><button class="button quiet" data-action="confirm-restart">Tak, zacznij od nowa</button><button class="button quiet" data-action="cancel-restart">Anuluj</button></div>'; }
+    if (action === "cancel-restart") renderPlan();
+    if (action === "confirm-restart") { const selected=day(); const ids=[...new Set([...selected.placeIds,...selected.quickIds,...selected.rainIds,...selected.lowEnergyIds])]; update(s=>resetDay(s,selected.id,ids)); renderToday(); renderPlan(); $("#dayCompanion").scrollIntoView({behavior:"smooth"}); }
     if (action === "view") setView(target.dataset.view);
     if (action === "arrival-start") { setView("journey"); setTimeout(() => $("#arrivalJourney")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "arrival-airport") { persist({arrivalAirport:target.dataset.airport,arrivalTransfer:null}); renderArrivalJourney(); renderToday(); }
@@ -368,8 +417,9 @@ function bindEvents() {
     if (action === "map-day") { persist({mapDay:target.dataset.id}); renderMapFilters(); renderMap(); }
     if (action === "map-category") { persist({mapCategory:target.dataset.id}); renderMapFilters(); renderMap(); }
     if (action === "mode") { persist({mode:target.dataset.mode}); renderToday(); renderPlan(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
-    if (action === "done") { const id=target.dataset.id; update(s => ({...s,done:s.done.includes(id)?s.done.filter(x=>x!==id):[...s.done,id],current:{...s.current,[day().id]:nextPlace(place(id))?.id || id}})); renderToday(); renderPlan(); if(state.view === "plan") setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "done") { const id=target.dataset.id; update(s => togglePoint(s,day().id,id,activeIds())); renderToday(); renderPlan(); if($("#placeDialog")?.open) openPlace(id,false); else if(state.view === "plan") setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "save") { const id=target.dataset.id; update(s => ({...s,saved:s.saved.includes(id)?s.saved.filter(x=>x!==id):[...s.saved,id]})); renderPlan(); if (state.view === "saved") renderSaved(); }
+    if(action === "save" && $("#placeDialog")?.open) openPlace($("#placeDialog").dataset.id,false);
     if (action === "food-filter") { persist({foodVegetarian:target.dataset.value === "veg" ? !state.foodVegetarian : false}); renderFood(); renderMapFilters(); if(state.view === "map")renderMap(); }
     if (action === "scenario") scenarioResult(target.dataset.scenario);
     if (action === "offline") { persist({offlinePreparedAt:new Date().toISOString()}); renderPractical(); toast("Plan i dane są gotowe offline"); }
@@ -386,11 +436,12 @@ function bindEvents() {
   document.addEventListener("change", event => { if(event.target.id === "budgetLimit"){persist({budgetLimit:Number(event.target.value)});renderBudget();} });
   $("#plannerForm").addEventListener("submit", event => { event.preventDefault(); applyPlanner(event.target); $("#plannerDialog").close(); });
   addEventListener("online", updateNetwork); addEventListener("offline", updateNetwork);
+  addEventListener("popstate", () => { const id=new URLSearchParams(location.search).get("place"); if(id) openPlace(id,false); else $("#placeDialog")?.close(); });
 }
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=14"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=15"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
-init();
+init().then(() => { const id=new URLSearchParams(location.search).get("place"); if(id && data.places) openPlace(id,false); });

@@ -1,9 +1,11 @@
-const CACHE = "martyna-rome-v14";
+const CACHE = "martyna-rome-v15";
 const APP = [
-  "./","./index.html","./styles.css?v=14","./design.css?v=14","./app.js?v=14","./manifest.webmanifest",
+  "./progression.js","./place-visuals.js","./place-cards.css?v=15",
+  ...["colosseum","colosseum-interior","colosseum-night","palatine","forum","campidoglio","st-peter-square","st-peter","vatican-museums","spanish-steps"].map(id => `./assets/places/${id}.jpg`),
+  "./","./index.html","./styles.css?v=15","./design.css?v=15","./app.js?v=15","./manifest.webmanifest",
   "/assets/postcard-rome.jpg",
-  "./data/guide.json?v=14","./data/days.json?v=14","./data/places.json?v=14","./data/restaurants.json?v=14",
-  "./data/tickets.json?v=14","./data/transport.json?v=14","./data/phrases.json?v=14","./data/emergency.json?v=14",
+  "./data/guide.json?v=15","./data/days.json?v=15","./data/places.json?v=15","./data/restaurants.json?v=15",
+  "./data/tickets.json?v=15","./data/transport.json?v=15","./data/phrases.json?v=15","./data/emergency.json?v=15",
   "/guides/core/storage.js","/guides/core/geo.js"
 ];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP)).then(() => self.skipWaiting())));
