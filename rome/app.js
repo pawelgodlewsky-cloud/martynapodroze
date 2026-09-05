@@ -1,14 +1,15 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
-import { resumePoint, resetDay, togglePoint } from "./progression.js?v=19";
-import { placeVisual } from "./place-visuals.js?v=19";
+import { resumePoint, resetDay, togglePoint } from "./progression.js?v=20";
+import { placeVisual } from "./place-visuals.js?v=20";
+import { POINT_TYPES, activeAlerts, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, resolveRoute, romaPassComparison, vaticanVariant } from "./route-rules.js?v=20";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
 const money = value => `${Number(value || 0).toFixed(2).replace(".", ",")} €`;
 const demoMode = new URLSearchParams(location.search).get("demo") === "1" || location.pathname.includes("/demo/");
-const defaults = { view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null, arrivalAirport:null, arrivalTransfer:null, arrivalComplete:false, hotelAddress:"" };
+const defaults = { view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null, arrivalAirport:null, arrivalTransfer:null, arrivalComplete:false, hotelAddress:"", tripDates:{}, anchorSlots:{colosseum:"08:30","vatican-museums":"08:30","borghese-gallery":"10:00","catacombs-san-sebastiano":"10:30"}, routeOptions:{castelInterior:true,vaticanDome:false,vittorianoTerrace:false,torreArgentinaInterior:false,appiaParkPass:false} };
 const store = createStore("rome", defaults);
 let state = store.get();
 let data = {};
@@ -16,8 +17,8 @@ let map = null;
 let mapLayer = null;
 
 async function loadData() {
-  const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=19`).then(response => {
+  const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency","alerts"];
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=20`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -27,17 +28,28 @@ async function loadData() {
 function persist(patch) { state = store.set(patch); }
 function update(updater) { state = store.update(updater); }
 function day() { return data.days.find(item => item.id === state.dayId) || data.days[0]; }
-function place(id) { return data.places.find(item => item.id === id); }
+function place(id) {
+  const original = data.places.find(item => item.id === id);
+  if (!original) return null;
+  const item = {...original};
+  if (state.anchorSlots?.[id]) item.time = state.anchorSlots[id];
+  if (id === "borghese-gallery" && state.anchorSlots?.[id] === "17:45") item.duration = 75;
+  return item;
+}
 function dayPlaces(selected = day()) { return selected.placeIds.map(place).filter(Boolean); }
 function activeIds(selected = day()) {
-  if (state.mode === "quick") return selected.quickIds;
-  if (state.mode === "rain") return selected.rainIds;
-  if (state.mode === "tired") return selected.lowEnergyIds;
-  return selected.placeIds;
+  const resolved = resolveRoute(selected.id,{...state,mode:"full"}) || selected.placeIds;
+  if (state.mode === "quick") return resolved.filter(id => selected.quickIds.includes(id));
+  if (state.mode === "rain") {
+    const date = state.tripDates?.[selected.id];
+    return selected.rainIds.filter(id => !(id === "borghese-gallery" && isMonday(date)) && !(id === "catacombs-san-sebastiano" && (isMonday(date) || isSanSebastianoAnnualClosure(date))));
+  }
+  if (state.mode === "tired") return resolved.filter(id => selected.lowEnergyIds.includes(id));
+  return resolved;
 }
 function activePlaces(selected = day()) { return activeIds(selected).map(place).filter(Boolean); }
 function progress(selected = day()) {
-  const ids = selected.placeIds;
+  const ids = activeIds(selected);
   const done = ids.filter(id => state.done.includes(id)).length;
   return { done, total: ids.length, percent: ids.length ? Math.round(done / ids.length * 100) : 0 };
 }
@@ -123,7 +135,7 @@ function landmark(number) {
 }
 function renderHomeDays() {
   const short = ["Koloseum, Forum i ślady cesarzy","Watykan, mosty i wielkie place","Trevi, zaułki i Trastevere","Borghese lub starożytna Via Appia"];
-  $("#homeDays").innerHTML = `<header><div><p class="eyebrow">CZTERY DNI. TYSIĄCE WSPOMNIEŃ.</p><h2>Wybierz swój kawałek Rzymu.</h2></div><button class="text-button" data-action="open-planner">Dopasuj plan do siebie ↗</button></header><div class="day-gallery">${["day-1","day-2","day-3","day-4a"].map((id,i) => { const d=data.days.find(x=>x.id===id); return `<button class="day-tile day-color-${i+1}" data-action="day-main" data-day="${i+1}"><div class="day-art"><span>DZIEŃ ${i+1}</span>${landmark(i+1)}<b aria-hidden="true">↗</b></div><div class="day-tile-copy"><h3>${["Antyczne serce","Watykan i centrum","La dolce vita","Jeszcze jeden dzień"][i]}</h3><p>${short[i]}</p><small>${d.duration} · ${d.distance}</small></div></button>`; }).join("")}</div>`;
+  $("#homeDays").innerHTML = `<header><div><p class="eyebrow">3 DNI + DZIEŃ DODATKOWY</p><h2>Wybierz swój kawałek Rzymu.</h2></div><button class="text-button" data-action="open-planner">Dopasuj plan do siebie ↗</button></header><div class="day-gallery">${["day-1","day-2","day-3","day-4a"].map((id,i) => { const d=data.days.find(x=>x.id===id); return `<button class="day-tile day-color-${i+1}" data-action="day-main" data-day="${i+1}"><div class="day-art"><span>${i === 3 ? "DZIEŃ +1" : `DZIEŃ ${i+1}`}</span>${landmark(i+1)}<b aria-hidden="true">↗</b></div><div class="day-tile-copy"><h3>${["Antyczne serce","Watykan i centrum","La dolce vita","Jeszcze jeden dzień"][i]}</h3><p>${short[i]}</p><small>${d.duration} · ${d.distance}</small></div></button>`; }).join("")}</div>`;
 }
 
 function plannerSummary() {
@@ -139,18 +151,27 @@ function plannerSummary() {
 }
 
 function renderReservations() {
-  $("#reservations").innerHTML = `<p class="eyebrow">PRZED WYJAZDEM</p><h2>Co zarezerwować wcześniej</h2><div class="booking-list">${data.tickets.map(ticket => `<article class="booking-card"><span class="status-pill ${ticket.required ? "required" : ""}">${ticket.required ? "rezerwuj" : "opcjonalnie"}</span><b>${escapeHtml(ticket.name)}</b><p><strong>Kiedy:</strong> ${escapeHtml(ticket.when)}</p><p><strong>Koszt:</strong> ${escapeHtml(ticket.price)}</p><p><strong>Nie rób:</strong> ${escapeHtml(ticket.avoid)}</p><div class="place-actions"><a href="${ticket.ticketUrl}" target="_blank" rel="noopener">Oficjalny zakup</a></div><div class="source-line">Zweryfikowano ${ticket.lastVerified} · <a href="${ticket.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></article>`).join("")}</div>`;
+  $("#reservations").innerHTML = `<p class="eyebrow">PRZED WYJAZDEM</p><h2>Co zarezerwować wcześniej</h2><div class="booking-list">${data.tickets.map(ticket => `<article class="booking-card"><span class="status-pill ${ticket.required ? "required" : ""}">${ticket.required ? "rezerwuj" : "opcjonalnie"}</span><b>${escapeHtml(ticket.name)}</b><p><strong>Kiedy:</strong> ${escapeHtml(ticket.when)}</p><p><strong>Koszt:</strong> ${escapeHtml(ticket.price)}</p><p><strong>Nie rób:</strong> ${escapeHtml(ticket.avoid)}</p><div class="place-actions"><a href="${ticket.ticketUrl}" target="_blank" rel="noopener">Oficjalny zakup</a></div><div class="source-line">Sprawdzone ${verified(ticket)} · <a href="${ticket.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></article>`).join("")}</div>`;
 }
 
 function renderAirportGuide() {
   const airports = [data.transport.fiumicino, data.transport.ciampino];
-  $("#airportGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">PIERWSZY I OSTATNI ODCINEK</p><h2>Przylot i odlot bez chaosu</h2><p>Najpierw wybierz lotnisko, potem dzielnicę noclegu. Termini nie zawsze jest najlepszą przesiadką.</p></div><span class="travel-stamp">ARRIVI<br><b>PARTENZE</b></span></div><div class="airport-grid">${airports.map(airport => `<article class="airport-card"><header><span>${escapeHtml(airport.code)}</span><div><small>LOTNISKO</small><h3>${escapeHtml(airport.title)}</h3></div></header><div class="airport-arrival"><b>Po przylocie</b><p>${escapeHtml(airport.arrival)}</p></div><div class="transfer-options">${(airport.options || []).map(option => `<div><small>${escapeHtml(option.for)}</small><h4>${escapeHtml(option.best)}</h4><p>${escapeHtml(option.detail)}</p></div>`).join("")}</div><details><summary>Plan odlotu krok po kroku</summary><ol>${(airport.departure || []).map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol></details><div class="airport-actions"><a href="${airport.officialUrl}" target="_blank" rel="noopener">Aktualne połączenia</a>${airport.ticketUrl ? `<a href="${airport.ticketUrl}" target="_blank" rel="noopener">Kup pociąg</a>` : ""}<a href="${data.transport.back[airport.code === "FCO" ? "fco" : "cia"]}" target="_blank" rel="noopener">Trasa na lotnisko</a></div><div class="source-line">Zweryfikowano ${airport.lastVerified} · <a href="${airport.taxiUrl}" target="_blank" rel="noopener">oficjalne taryfy taxi</a></div></article>`).join("")}</div>`;
+  $("#airportGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">PIERWSZY I OSTATNI ODCINEK</p><h2>Przylot i odlot bez chaosu</h2><p>Najpierw wybierz lotnisko, potem dzielnicę noclegu. Termini nie zawsze jest najlepszą przesiadką.</p></div><span class="travel-stamp">ARRIVI<br><b>PARTENZE</b></span></div><div class="airport-grid">${airports.map(airport => `<article class="airport-card"><header><span>${escapeHtml(airport.code)}</span><div><small>LOTNISKO</small><h3>${escapeHtml(airport.title)}</h3></div></header><div class="airport-arrival"><b>Po przylocie</b><p>${escapeHtml(airport.arrival)}</p></div><div class="transfer-options">${(airport.options || []).map(option => `<div><small>${escapeHtml(option.for)}</small><h4>${escapeHtml(option.best)}</h4><p>${escapeHtml(option.detail)}</p></div>`).join("")}</div><details><summary>Plan odlotu krok po kroku</summary><ol>${(airport.departure || []).map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol></details><div class="airport-actions"><a href="${airport.officialUrl}" target="_blank" rel="noopener">Aktualne połączenia</a>${airport.ticketUrl ? `<a href="${airport.ticketUrl}" target="_blank" rel="noopener">Kup pociąg</a>` : ""}<a href="${data.transport.back[airport.code === "FCO" ? "fco" : "cia"]}" target="_blank" rel="noopener">Trasa na lotnisko</a></div><div class="source-line">Sprawdzone ${verified(airport)} · <a href="${airport.taxiUrl}" target="_blank" rel="noopener">oficjalne taryfy taxi</a></div></article>`).join("")}</div>`;
+}
+
+function romaPassVerdict() {
+  const duration = state.planner?.duration || "3";
+  const selectedDays = duration === "4" ? ["day-1","day-2","day-3",state.dayId.startsWith("day-4") ? state.dayId : "day-4a"] : duration === "2" ? ["day-1","day-2"] : ["day-1","day-2","day-3"];
+  const costs = {colosseum:18,"castel-santangelo":18,pantheon:7,"borghese-gallery":16,"vittoriano-terrace":18,"torre-argentina-area":7,"vatican-museums":25};
+  const ids = [...new Set(selectedDays.flatMap(id => resolveRoute(id,{...state,mode:"full"}) || data.days.find(item => item.id === id)?.placeIds || []))];
+  const result = romaPassComparison({duration,attractionCosts:ids.filter(id => costs[id]).map(id => ({price:costs[id],eligible:id !== "vatican-museums",vatican:id === "vatican-museums"}))});
+  return `${result.worthwhile ? "Przy Twoim planie Roma Pass prawdopodobnie warto." : "Przy Twoim planie bilety osobno wychodzą korzystniej."} Szacunek: osobno ${money(result.separate)}, z kartą ${money(result.withPass)}. Watykan nie jest wliczony do pokrycia kartą.`;
 }
 
 function renderTicketGuide() {
   const city = data.transport.city;
   const pass = data.transport.romaPass;
-  $("#ticketGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">CO KUPIĆ</p><h2>Bilety i Roma Pass</h2><p>${escapeHtml(city.best)}</p></div></div><div class="fare-strip">${city.tickets.map(ticket => `<article><span>${escapeHtml(ticket.name)}</span><strong>${escapeHtml(ticket.price)}</strong><p>${escapeHtml(ticket.note)}</p></article>`).join("")}</div><div class="ticket-notes"><p><b>Tap&Go:</b> ${escapeHtml(city.tap)}</p><p><b>Gdzie działa:</b> ${escapeHtml(city.scope)}</p></div><article class="roma-pass-card"><header><div><p class="eyebrow">KARTA TURYSTYCZNA</p><h3>${escapeHtml(pass.title)}</h3></div><span>ROMA<br>PASS</span></header><div class="pass-variants">${pass.variants.map(variant => `<div><small>${escapeHtml(variant.name)}</small><strong>${escapeHtml(variant.price)}</strong><p>${escapeHtml(variant.included)}</p><p>${escapeHtml(variant.after)}</p></div>`).join("")}</div><div class="pass-columns"><div><h4>Dodatkowo dostajesz</h4><ul>${pass.extras.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div><div class="pass-no"><h4>Tego karta nie obejmuje</h4><ul>${pass.notIncluded.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div></div><div class="pass-warning"><b>Ważna aktywacja</b><p>${escapeHtml(pass.activation)}</p></div><div class="pass-verdict"><span>WERDYKT DLA TEGO PLANU</span><p>${escapeHtml(pass.decision)}</p></div><div class="airport-actions"><a href="${pass.officialUrl}" target="_blank" rel="noopener">Sprawdź Roma Pass</a><a href="${city.officialUrl}" target="_blank" rel="noopener">Cennik ATAC</a></div><div class="source-line">Zweryfikowano ${pass.lastVerified} · ceny sprawdź ponownie przed zakupem</div></article>`;
+  $("#ticketGuide").innerHTML = `<div class="section-heading-rome"><div><p class="eyebrow">CO KUPIĆ</p><h2>Bilety i Roma Pass</h2><p>${escapeHtml(city.best)}</p></div></div><div class="fare-strip">${city.tickets.map(ticket => `<article><span>${escapeHtml(ticket.name)}</span><strong>${escapeHtml(ticket.price)}</strong><p>${escapeHtml(ticket.note)}</p></article>`).join("")}</div><div class="ticket-notes"><p><b>Tap&Go:</b> ${escapeHtml(city.tap)}</p><p><b>Gdzie działa:</b> ${escapeHtml(city.scope)}</p>${(city.stations || []).map(station => `<p><b>${escapeHtml(station.name)} · ${escapeHtml(station.lines.join(" + "))}:</b> ${escapeHtml(station.note)}</p>`).join("")}</div><article class="roma-pass-card"><header><div><p class="eyebrow">KARTA TURYSTYCZNA</p><h3>${escapeHtml(pass.title)}</h3></div><span>ROMA<br>PASS</span></header><div class="pass-variants">${pass.variants.map(variant => `<div><small>${escapeHtml(variant.name)}</small><strong>${escapeHtml(variant.price)}</strong><p>${escapeHtml(variant.included)}</p><p>${escapeHtml(variant.after)}</p></div>`).join("")}</div><div class="pass-columns"><div><h4>Dodatkowo dostajesz</h4><ul>${pass.extras.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div><div class="pass-no"><h4>Tego karta nie obejmuje</h4><ul>${pass.notIncluded.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div></div><div class="pass-warning"><b>Ważna aktywacja</b><p>${escapeHtml(pass.activation)}</p></div><div class="pass-verdict"><span>WERDYKT DLA TEGO PLANU</span><p>${escapeHtml(romaPassVerdict())}</p></div><div class="airport-actions"><a href="${pass.officialUrl}" target="_blank" rel="noopener">Sprawdź Roma Pass</a><a href="${city.officialUrl}" target="_blank" rel="noopener">Cennik ATAC</a></div><div class="source-line">Sprawdzone ${verified(pass)} · ceny sprawdź ponownie przed zakupem</div></article>`;
 }
 
 function renderPractical() {
@@ -158,12 +179,52 @@ function renderPractical() {
   $("#practical").innerHTML = `<p class="eyebrow">PRAKTYCZNIE</p><h2>Rzeczy, które oszczędzają czas</h2><div class="utility-grid">
     <article class="utility-card"><span class="card-label">Transport</span><h3>${transport.city.title}</h3><p>${transport.city.best}</p><a class="text-button" href="#ticketGuide">Bilety i Roma Pass</a></article>
     <article class="utility-card"><span class="card-label">Woda</span><h3>Nasoni</h3><p>Darmowa woda pitna jest dostępna w tysiącach miejskich fontann. Wybrane punkty są na mapie.</p><a class="text-button" href="https://www.turismoroma.it/en/node/167736" target="_blank" rel="noopener">Oficjalna mapa wody</a></article>
-    <article class="utility-card"><span class="card-label">Offline</span><h3>${state.offlinePreparedAt ? "Gotowe na wyjście" : "Zapisz przed wyjściem"}</h3><p>Plan, adresy, checklisty i postęp zostają na urządzeniu. Kafle map i bieżące rozkłady wymagają internetu.</p><button class="text-button" data-action="offline">${state.offlinePreparedAt ? "Odśwież dane offline" : "Przygotuj offline"}</button></article>
+    <article class="utility-card"><span class="card-label">Offline</span><h3>${state.offlinePreparedAt ? "Gotowe na wyjście" : "Zapisz przed wyjściem"}</h3><p>Plan i adresy działają offline. Mapa bazowa i bieżące rozkłady wymagają internetu.</p><button class="text-button" data-action="offline">${state.offlinePreparedAt ? "Odśwież dane offline" : "Przygotuj offline"}</button></article>
     <article class="utility-card"><span class="card-label">Upał</span><h3>Przesuń, nie przyspieszaj</h3><p>Zewnętrzne odcinki rób rano i po 17:00. W środku dnia wybierz muzeum, bazylikę lub dłuższy obiad.</p><button class="text-button" data-action="scenario" data-scenario="heat">Plan na upał</button></article>
   </div>`;
 }
 
 function modeLabel() { return ({full:"pełny",quick:"mało czasu",rain:"deszcz",tired:"spokojny"})[state.mode] || "pełny"; }
+function checked(value) { return value ? "checked" : ""; }
+function verified(item) { return item.verifiedAt || item.lastVerified || "2026-09-05"; }
+function scheduleLabel(type) {
+  return ({[POINT_TYPES.HARD_ANCHOR]:"GODZINA-KOTWICA",[POINT_TYPES.CONSTRAINED]:"OGRANICZONE GODZINAMI",[POINT_TYPES.FLEX]:"ELASTYCZNY PUNKT"})[type] || "ELASTYCZNY PUNKT";
+}
+function routeConfiguration(selected) {
+  const date = state.tripDates?.[selected.id] || "";
+  const slot = (id,label) => `<label><span>${label}</span><input type="time" value="${escapeHtml(state.anchorSlots?.[id] || "")}" data-route-slot="${id}"></label>`;
+  const option = (id,label) => `<label class="route-check"><input type="checkbox" data-route-option="${id}" ${checked(state.routeOptions?.[id])}><span>${label}</span></label>`;
+  let controls = "";
+  if (selected.id === "day-1") controls = slot("colosseum","Slot Koloseum") + option("vittorianoTerrace","Dodaj płatny taras VIVE");
+  if (selected.id === "day-2") controls = slot("vatican-museums","Slot Muzeów Watykańskich") + option("vaticanDome","Dodaj kopułę (+ ok. 60 min)") + option("castelInterior","Rozważ wnętrze Castel Sant’Angelo");
+  if (selected.id === "day-3") controls = option("torreArgentinaInterior","Chcę wejść na teren Largo Argentina");
+  if (selected.id === "day-4a") controls = slot("borghese-gallery","Slot Galleria Borghese");
+  if (selected.id === "day-4b") controls = slot("catacombs-san-sebastiano","Slot katakumb") + option("appiaParkPass","Dodaj obiekt z karnetu Parco Appia");
+  return `<div class="route-configuration"><label><span>Data tego dnia</span><input type="date" value="${escapeHtml(date)}" data-route-date="${selected.id}"></label>${controls}</div>`;
+}
+function routeGuidance(selected) {
+  const date = state.tripDates?.[selected.id] || "";
+  const slot = state.anchorSlots || {};
+  const notes = [];
+  if (selected.id === "day-1") {
+    notes.push(`Koloseum ${slot.colosseum || "08:30"} ma pierwszeństwo przed godzinami przykładowymi.`);
+    if ((slot.colosseum || "08:30") > "10:30") notes.push("Przy tym slocie Forum i Palatyn są przed Koloseum.");
+    if (isWinterColosseumSeason(date)) notes.push("Wariant zimowy nie zostawia Forum i Palatynu na późne popołudnie.");
+  }
+  if (selected.id === "day-2") {
+    const variant = vaticanVariant(slot["vatican-museums"] || "08:30");
+    notes.push(`Wariant Watykan: ${variant === "early" ? "wcześnie" : variant === "medium" ? "średnio" : "późno"}.`);
+    notes.push("Po Muzeach plan zakłada wyjście i 45–75 min na dojście, kolejkę i security do bazyliki.");
+    if (state.routeOptions?.vaticanDome) notes.push("Kopuła dodaje około 60 min, dlatego wnętrze Castel wypada z planu.");
+    if (isMonday(date)) notes.push(isFirstMonday2026(date) ? "To pierwszy poniedziałek miesiąca w 2026: Castel ma specjalny wyjątek 14:00–20:00 (5 €)." : "Poniedziałek: wnętrze Castel Sant’Angelo jest pominięte.");
+  }
+  if (selected.id === "day-3" && !activeIds(selected).includes("gianicolo")) notes.push("Spokojny/rodzinny wariant kończy się w Trastevere; Gianicolo pozostaje opcją.");
+  if (selected.id === "day-4a" && isMonday(date)) notes.push("Poniedziałek: Galleria Borghese jest pominięta; zostaje park, Pincio i spokojny spacer.");
+  if (selected.id === "day-4b" && (isMonday(date) || isSanSebastianoAnnualClosure(date))) notes.push("Dostępny jest wariant outdoorowy Via Appia bez obiecywania wejścia do katakumb.");
+  const alertDate = date || new Date().toLocaleDateString("sv-SE");
+  const alerts = activeAlerts(data.alerts,alertDate).filter(alert => activeIds(selected).includes(alert.affectedPlace));
+  return `<div class="route-guidance">${notes.map(note => `<p>${escapeHtml(note)}</p>`).join("")}${alerts.map(alert => `<p class="route-alert"><b>${escapeHtml(alert.title)}</b> ${escapeHtml(alert.description)} <small>${escapeHtml(alert.sourceLabel)}</small></p>`).join("")}</div>`;
+}
 function renderDaySwitcher() {
   const selectedMain = state.dayId.startsWith("day-4") ? "4" : state.dayId.replace("day-", "");
   const labels = [
@@ -178,7 +239,7 @@ function renderDayOverview() {
   const selected = day();
   const fourthDayChoice = selected.id.startsWith("day-4") ? `<div class="fourth-day-choice" role="group" aria-label="Wybierz wariant dnia czwartego"><button class="${selected.id === "day-4a" ? "is-active" : ""}" data-action="day" data-id="day-4a"><small>WARIANT A</small><b>Borghese i park</b><span>spokojniej · 4,2 km</span></button><button class="${selected.id === "day-4b" ? "is-active" : ""}" data-action="day" data-id="day-4b"><small>WARIANT B</small><b>Via Appia i katakumby</b><span>dalej od centrum · 6–10 km</span></button></div>` : "";
   const dayLabel = selected.number.startsWith("04") ? `04 · WARIANT ${selected.number.at(-1)}` : selected.number;
-  $("#dayOverview").innerHTML = `${fourthDayChoice}<article class="day-intro"><p class="eyebrow">DZIEŃ ${dayLabel} / ${modeLabel()}</p><h3>${escapeHtml(selected.title)}</h3><p>${escapeHtml(selected.anchor)}</p><div class="day-facts"><span><b>${selected.duration}</b>cały plan</span><span><b>${selected.distance}</b>łączna trasa</span><span><b>${selected.intensity}</b>tempo</span><span><b>${selected.cost}</b>atrakcje</span><span><b>${selected.start}</b>zacznij</span></div><div class="route-modes" aria-label="Wybierz wariant intensywności"><button class="${state.mode === "full" ? "is-active" : ""}" data-action="mode" data-mode="full"><b>Pełna trasa</b><span>wszystkie punkty</span></button><button class="${state.mode === "quick" ? "is-active" : ""}" data-action="mode" data-mode="quick"><b>Mam mało czasu</b><span>tylko najważniejsze</span></button><button class="${state.mode === "tired" ? "is-active" : ""}" data-action="mode" data-mode="tired"><b>Spokojniej</b><span>mniej chodzenia</span></button><button class="${state.mode === "rain" ? "is-active" : ""}" data-action="mode" data-mode="rain"><b>Pada</b><span>więcej wnętrz</span></button></div></article>`;
+  $("#dayOverview").innerHTML = `${fourthDayChoice}<article class="day-intro"><p class="eyebrow">DZIEŃ ${dayLabel} / ${modeLabel()}</p><h3>${escapeHtml(selected.title)}</h3><p>${escapeHtml(selected.anchor)}</p><div class="day-facts"><span><b>${selected.duration}</b>cały plan</span><span><b>${selected.distance}</b>łączna trasa</span><span><b>${selected.intensity}</b>tempo</span><span><b>${selected.cost}</b>atrakcje</span><span><b>${selected.start}</b>zacznij</span></div>${routeConfiguration(selected)}${routeGuidance(selected)}<div class="route-modes" aria-label="Wybierz wariant intensywności"><button class="${state.mode === "full" ? "is-active" : ""}" data-action="mode" data-mode="full"><b>Pełna trasa</b><span>wszystkie punkty</span></button><button class="${state.mode === "quick" ? "is-active" : ""}" data-action="mode" data-mode="quick"><b>Mam mało czasu</b><span>tylko najważniejsze</span></button><button class="${state.mode === "tired" ? "is-active" : ""}" data-action="mode" data-mode="tired"><b>Spokojniej</b><span>mniej chodzenia</span></button><button class="${state.mode === "rain" ? "is-active" : ""}" data-action="mode" data-mode="rain"><b>Pada</b><span>więcej wnętrz</span></button></div></article>`;
 }
 
 function modeIcon(mode = "") {
@@ -230,13 +291,13 @@ function renderTimeline() {
     const done = state.done.includes(item.id), saved = state.saved.includes(item.id);
     const following = items[index + 1];
     const leg = legInfo(item,following);
-    return `<article class="place-card ${done ? "is-done" : currentPlace()?.id === item.id ? "is-current" : ""}" data-order="${index + 1}" id="place-${item.id}"><details ${currentPlace()?.id === item.id ? "open" : ""}><summary class="place-head"><div><span class="card-label">${done ? "UKOŃCZONE" : currentPlace()?.id === item.id ? "TERAZ" : escapeHtml(item.category)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></summary><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p><div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div><div class="source-line">Zweryfikowano ${item.lastVerified} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">źródło</a></div></div></details>${following && leg ? `<div class="next-leg"><span><b>${modeIcon(leg.mode)}</b> Dalej: ${escapeHtml(following.name)}</span><span>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</span><a href="${segmentUrl(item,following,leg)}" target="_blank" rel="noopener">Trasa</a></div>` : ""}</article>`;
+    return `<article class="place-card ${done ? "is-done" : currentPlace()?.id === item.id ? "is-current" : ""}" data-order="${index + 1}" id="place-${item.id}"><details ${currentPlace()?.id === item.id ? "open" : ""}><summary class="place-head"><div><span class="card-label">${done ? "UKOŃCZONE" : currentPlace()?.id === item.id ? "TERAZ" : scheduleLabel(item.scheduleType)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></summary><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p>${item.openingNote ? `<div class="opening-note"><b>Godziny i ograniczenia</b><span>${escapeHtml(item.openingNote)}</span></div>` : ""}<div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div></div></details>${following && leg ? `<div class="next-leg"><span><b>${modeIcon(leg.mode)}</b> Dalej: ${escapeHtml(following.name)}</span><span>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</span><a href="${segmentUrl(item,following,leg)}" target="_blank" rel="noopener">Trasa</a></div>` : ""}</article>`;
   }).join("");
 }
 
 function restaurantsOnRoute() { const ids = new Set(day().placeIds); return data.restaurants.filter(item => ids.has(item.stage) && (!state.foodVegetarian || item.vegetarian)); }
 function renderFood() {
-  $("#foodSection").innerHTML = `<p class="eyebrow">JEDZENIE NA TRASIE</p><h2>Przerwa na trasie: dzień ${escapeHtml(day().number)}</h2><div class="filter-row"><button class="${!state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="all">Wszystkie</button><button class="${state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="veg">Tylko wege</button></div><div class="food-grid">${restaurantsOnRoute().map(item => `<article class="food-card"><span class="status-pill">${escapeHtml(item.category)} · ${escapeHtml(item.price)}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.note)}</p><p><b>Zamów:</b> ${escapeHtml(item.order)}</p><a href="${item.maps}" target="_blank" rel="noopener">Otwórz w Google Maps</a></article>`).join("") || "<p>Brak lokali spełniających filtr na tym odcinku.</p>"}</div>`;
+  $("#foodSection").innerHTML = `<p class="eyebrow">JEDZENIE NA TRASIE</p><h2>Przerwa na trasie: dzień ${escapeHtml(day().number)}</h2><div class="filter-row"><button class="${!state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="all">Wszystkie</button><button class="${state.foodVegetarian ? "is-active" : ""}" data-action="food-filter" data-value="veg">Tylko wege</button></div><div class="food-grid">${restaurantsOnRoute().map(item => `<article class="food-card"><span class="status-pill">${escapeHtml(item.category)} · ${escapeHtml(item.price)}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.note)}</p><p><b>Zamów:</b> ${escapeHtml(item.order)}</p><p class="food-current">Sprawdź dzisiejsze godziny przed wyjściem.</p><a href="${item.maps}" target="_blank" rel="noopener">Otwórz w Google Maps</a></article>`).join("") || "<p>Brak lokali spełniających filtr na tym odcinku.</p>"}</div>`;
 }
 function renderExtras() {
   $("#extraSections").innerHTML = `<article class="utility-card"><span class="card-label">0 €</span><h3>Najlepsze rzeczy za darmo</h3>${data.guide.free.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Rzymskie smaki</span><h3>Tego spróbuj</h3>${data.guide.flavours.map(([name, desc]) => `<p><b>${escapeHtml(name)}</b><br>${escapeHtml(desc)}</p>`).join("")}</article><article class="utility-card"><span class="card-label">Bez straszenia</span><h3>Tego lepiej nie robić</h3>${data.guide.mistakes.map(item => `<p>• ${escapeHtml(item)}</p>`).join("")}</article>`;
@@ -270,7 +331,7 @@ function openPlace(id, push = true) {
   const route = activePlaces(), index = route.findIndex(point => point.id === id), next = index >= 0 ? route[index+1] : null;
   const leg = next && legInfo(item,next);
   dialog.dataset.id=id;
-  dialog.innerHTML=`<header class="place-toolbar"><button class="button quiet" data-action="close-place">← Wróć do przewodnika</button><button class="button quiet" data-action="close-place" aria-label="Zamknij kartę">×</button></header><div class="place-editorial"><div class="place-cover">${placeVisual(item)}</div><div class="place-intro"><p class="eyebrow">RZYM · KARTA MIEJSCA</p><h2 id="placeTitle">${escapeHtml(item.name)}</h2><p>${escapeHtml(item.why)}</p><div class="place-fact-grid">${[["Na miejscu",`${item.duration} min`],["Koszt",item.price],["Adres",item.address],["Rezerwacja",item.bookingRequired ? "Zarezerwuj wcześniej" : "Sprawdź warunki na oficjalnej stronie"]].map(([label,value])=>`<div><small>${label}</small><strong>${escapeHtml(value)}</strong></div>`).join("")}</div><div class="place-actions"><a class="button primary" href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.ticketUrl ? `<a class="button quiet" href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="button quiet" data-action="save" data-id="${id}">${state.saved.includes(id)?"Usuń z zapisanych":"Zapisz miejsce"}</button></div></div></div><div class="place-reading"><section><h3>Jak zwiedzać</h3><p>${escapeHtml(item.description)}</p><h3>Nie przegap</h3><p>${escapeHtml(item.dontMiss || item.why)}</p><div class="tip"><b>Martyna podpowiada</b><p>${escapeHtml(item.tip)}</p></div>${item.warning?`<div class="tip warning"><b>Warto wiedzieć</b><p>${escapeHtml(item.warning)}</p></div>`:""}</section><aside><h3>Praktycznie</h3><p>Godzina w planie: ${escapeHtml(item.time)}. To propozycja trasy, nie godziny otwarcia.</p>${item.officialUrl?`<a href="${item.officialUrl}" target="_blank" rel="noopener">Sprawdź godziny i zasady na oficjalnej stronie ↗</a>`:""}<p class="source-line">Dane zweryfikowano: ${escapeHtml(item.lastVerified)} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">Źródło</a></p>${next&&leg?`<h3>Dalej: ${escapeHtml(next.name)}</h3><p>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</p><a href="${segmentUrl(item,next,leg)}" target="_blank" rel="noopener">Trasa do następnego punktu ↗</a><button class="button quiet" data-action="open-place" data-id="${next.id}">Karta następnego miejsca</button>`:""}</aside></div>${id==="colosseum"?`<div class="place-gallery"><img src="assets/places/colosseum-interior.jpg" alt="Wnętrze Koloseum i podziemia areny" loading="lazy"><img src="assets/places/colosseum-night.jpg" alt="Podświetlone Koloseum nocą" loading="lazy"></div>`:""}<footer class="place-footer"><button class="button primary" data-action="done" data-id="${id}">${state.done.includes(id)?"Cofnij oznaczenie jako odwiedzone":"Oznacz jako odwiedzone"}</button>${index>=0?`<button class="button quiet" data-action="resume-point" data-id="${id}">Kontynuuj od tego miejsca</button>`:""}</footer>`;
+  dialog.innerHTML=`<header class="place-toolbar"><button class="button quiet" data-action="close-place">← Wróć do przewodnika</button><button class="button quiet" data-action="close-place" aria-label="Zamknij kartę">×</button></header><div class="place-editorial"><div class="place-cover">${placeVisual(item)}</div><div class="place-intro"><p class="eyebrow">RZYM · ${scheduleLabel(item.scheduleType)}</p><h2 id="placeTitle">${escapeHtml(item.name)}</h2><p>${escapeHtml(item.why)}</p><div class="place-fact-grid">${[["Na miejscu",`${item.duration} min`],["Koszt",item.price],["Adres",item.address],["Rezerwacja",item.bookingRequired ? "Zarezerwuj wcześniej" : "Sprawdź warunki na oficjalnej stronie"]].map(([label,value])=>`<div><small>${label}</small><strong>${escapeHtml(value)}</strong></div>`).join("")}</div><div class="place-actions"><a class="button primary" href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.ticketUrl ? `<a class="button quiet" href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="button quiet" data-action="save" data-id="${id}">${state.saved.includes(id)?"Usuń z zapisanych":"Zapisz miejsce"}</button></div></div></div><div class="place-reading"><section><h3>Jak zwiedzać</h3><p>${escapeHtml(item.description)}</p>${item.openingNote?`<h3>Godziny i ograniczenia</h3><p>${escapeHtml(item.openingNote)}</p>`:""}<h3>Nie przegap</h3><p>${escapeHtml(item.dontMiss || item.why)}</p><div class="tip"><b>Martyna podpowiada</b><p>${escapeHtml(item.tip)}</p></div>${item.warning?`<div class="tip warning"><b>Warto wiedzieć</b><p>${escapeHtml(item.warning)}</p></div>`:""}</section><aside><h3>Praktycznie</h3><p>Godzina w planie: ${escapeHtml(item.time)}. Pierwszeństwo ma godzina Twojej rezerwacji.</p>${item.officialUrl?`<a href="${item.officialUrl}" target="_blank" rel="noopener">Sprawdź godziny i zasady na oficjalnej stronie ↗</a>`:""}<p class="source-line">Sprawdzone ${escapeHtml(verified(item))} · <a href="${item.sourceUrl}" target="_blank" rel="noopener">Źródło</a></p>${next&&leg?`<h3>Dalej: ${escapeHtml(next.name)}</h3><p>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</p><a href="${segmentUrl(item,next,leg)}" target="_blank" rel="noopener">Trasa do następnego punktu ↗</a><button class="button quiet" data-action="open-place" data-id="${next.id}">Karta następnego miejsca</button>`:""}</aside></div>${id==="colosseum"?`<div class="place-gallery"><img src="assets/places/colosseum-interior.jpg" alt="Wnętrze Koloseum i podziemia areny" loading="lazy"><img src="assets/places/colosseum-night.jpg" alt="Podświetlone Koloseum nocą" loading="lazy"></div>`:""}<footer class="place-footer"><button class="button primary" data-action="done" data-id="${id}">${state.done.includes(id)?"Cofnij oznaczenie jako odwiedzone":"Oznacz jako odwiedzone"}</button>${index>=0?`<button class="button quiet" data-action="resume-point" data-id="${id}">Kontynuuj od tego miejsca</button>`:""}</footer>`;
   if(push) { const url=new URL(location.href); url.searchParams.set("place",id); history.pushState({romePlace:true},"",url); }
   if(!dialog.open) dialog.showModal();
   dialog.scrollTop=0;
@@ -433,7 +494,22 @@ function bindEvents() {
     if (event.target.id === "budgetForm") { event.preventDefault(); const values=new FormData(event.target); update(s=>({...s,expenses:[...s.expenses,{label:values.get("label"),amount:Number(values.get("amount"))}]})); renderBudget(); }
     if (event.target.id === "hotelRouteForm") { event.preventDefault(); const values=new FormData(event.target); persist({hotelAddress:String(values.get("hotelAddress") || "").trim()}); renderArrivalJourney(); toast("Adres noclegu zapisany na tym urządzeniu"); }
   });
-  document.addEventListener("change", event => { if(event.target.id === "budgetLimit"){persist({budgetLimit:Number(event.target.value)});renderBudget();} });
+  document.addEventListener("change", event => {
+    const target = event.target;
+    if (target.id === "budgetLimit") { persist({budgetLimit:Number(target.value)}); renderBudget(); }
+    if (target.dataset.routeDate) {
+      persist({tripDates:{...(state.tripDates || {}),[target.dataset.routeDate]:target.value}});
+      renderPlan(); renderTicketGuide();
+    }
+    if (target.dataset.routeSlot) {
+      persist({anchorSlots:{...(state.anchorSlots || {}),[target.dataset.routeSlot]:target.value}});
+      renderPlan(); renderTicketGuide();
+    }
+    if (target.dataset.routeOption) {
+      persist({routeOptions:{...(state.routeOptions || {}),[target.dataset.routeOption]:target.checked}});
+      renderPlan(); renderTicketGuide();
+    }
+  });
   $("#plannerForm").addEventListener("submit", event => { event.preventDefault(); applyPlanner(event.target); $("#plannerDialog").close(); });
   addEventListener("online", updateNetwork); addEventListener("offline", updateNetwork);
   addEventListener("popstate", () => { const id=new URLSearchParams(location.search).get("place"); if(id) openPlace(id,false); else $("#placeDialog")?.close(); });
@@ -441,7 +517,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=19"); }
+  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=20"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init().then(() => { const id=new URLSearchParams(location.search).get("place"); if(id && data.places) openPlace(id,false); });

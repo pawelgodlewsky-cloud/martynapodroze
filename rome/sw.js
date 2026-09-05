@@ -1,11 +1,11 @@
-const CACHE = "martyna-rome-v19";
+const CACHE = "martyna-rome-v20";
 const APP = [
-  "./progression.js?v=19","./place-visuals.js?v=19","./place-cards.css?v=19",
+  "./progression.js?v=20","./place-visuals.js?v=20","./place-cards.css?v=20","./route-rules.js?v=20",
   ...["colosseum","colosseum-interior","colosseum-night","palatine","forum","campidoglio","st-peter-square","st-peter","vatican-museums","spanish-steps"].map(id => `./assets/places/${id}.jpg`),
-  "./","./index.html","./styles.css?v=19","./design.css?v=19","./app.js?v=19","./manifest.webmanifest",
+  "./","./index.html","./styles.css?v=20","./design.css?v=20","./app.js?v=20","./manifest.webmanifest",
   "/assets/postcard-rome.jpg",
-  "./data/guide.json?v=19","./data/days.json?v=19","./data/places.json?v=19","./data/restaurants.json?v=19",
-  "./data/tickets.json?v=19","./data/transport.json?v=19","./data/phrases.json?v=19","./data/emergency.json?v=19",
+  "./data/guide.json?v=20","./data/days.json?v=20","./data/places.json?v=20","./data/restaurants.json?v=20",
+  "./data/tickets.json?v=20","./data/transport.json?v=20","./data/phrases.json?v=20","./data/emergency.json?v=20","./data/alerts.json?v=20",
   "/guides/core/storage.js","/guides/core/geo.js"
 ];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP)).then(() => self.skipWaiting())));

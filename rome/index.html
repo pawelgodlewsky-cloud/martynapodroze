@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
   <script>
     (() => {
-      const release = "19";
+      const release = "20";
       const releaseKey = "rome-guide-release";
       if (localStorage.getItem(releaseKey) === release) return;
       window.addEventListener("load", async () => {
@@ -38,7 +38,7 @@
       }, { once: true });
     })();
   </script>
-  <link rel="stylesheet" href="design.css?v=19">
+  <link rel="stylesheet" href="design.css?v=20">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -54,7 +54,7 @@
           <p class="eyebrow">CIAO, ROMA! · TWÓJ OSOBISTY PRZEWODNIK</p>
           <h1 id="todayTitle">Rzym.<br><em>Po Twojemu.</em></h1>
           <p class="hero-route">Mniej planowania. Więcej zachwytu.</p>
-          <p class="hero-lead">Od pierwszego espresso do ostatniego spaceru. Cztery gotowe dni, dojazdy i małe podpowiedzi, które robią wielką różnicę.</p>
+          <p class="hero-lead">Od pierwszego espresso do ostatniego spaceru. 3 gotowe dni + dzień dodatkowy, dojazdy i małe podpowiedzi, które robią wielką różnicę.</p>
           <div class="hero-actions">
             <button class="button primary" data-action="arrival-start">Zacznij od lotniska <span aria-hidden="true">→</span></button>
             <button class="button quiet" data-action="view" data-view="plan">Wybierz dzień zwiedzania</button>
@@ -71,8 +71,8 @@
       <div class="hero-facts" aria-label="Najważniejsze informacje o przewodniku">
         <div><strong>3+1</strong><span>gotowe dni</span></div>
         <div><strong>4</strong><span>tryby zwiedzania</span></div>
-        <div><strong>na żywo</strong><span>kolejny krok i mapa</span></div>
-        <div><strong>offline</strong><span>plan i adresy</span></div>
+        <div><strong>krok po kroku</strong><span>kolejny punkt i mapa</span></div>
+        <div><strong>offline</strong><span>plan i adresy; mapa bazowa wymaga internetu</span></div>
       </div>
       <div class="today-grid" id="todayPanel"></div>
       <section class="home-days" id="homeDays"></section>
@@ -88,7 +88,7 @@
       <div class="day-switcher" id="daySwitcher" role="group" aria-label="Wybierz dzień"></div>
       <details class="plan-settings"><summary>Tempo, czas i wariant dnia <span>Rozwiń +</span></summary><div id="dayOverview"></div></details>
       <section class="day-companion" id="dayCompanion" aria-live="polite"></section>
-      <div class="route-heading"><p class="eyebrow">CAŁY DZIEŃ W JEDNYM MIEJSCU</p><h2>Twoja trasa</h2><p>Kliknij miejsce, żeby rozwinąć podpowiedzi i bilety. Godziny są przykładowe — pierwszeństwo ma godzina Twojej rezerwacji.</p></div>
+      <div class="route-heading"><p class="eyebrow">CAŁY DZIEŃ W JEDNYM WIDOKU</p><h2>Twoja trasa</h2><p>Kliknij miejsce, żeby rozwinąć podpowiedzi i bilety. Godziny są przykładowe — pierwszeństwo ma godzina Twojej rezerwacji.</p></div>
       <div class="timeline" id="timeline"></div>
       <section class="section utility-grid" id="extraSections"></section>
     </section>
@@ -131,7 +131,7 @@
   <dialog id="plannerDialog" class="sheet">
     <form method="dialog" id="plannerForm">
       <button class="sheet-close" type="button" data-action="close-planner" aria-label="Zamknij">×</button>
-      <p class="eyebrow">DOPASUJ RZYM DO SIEBIE</p><h2>Trzy krótkie decyzje.</h2>
+      <p class="eyebrow">DOPASUJ RZYM DO SIEBIE</p><h2>Cztery krótkie decyzje.</h2>
       <fieldset><legend>Ile masz czasu?</legend><div class="choice-grid" data-choice="duration"></div></fieldset>
       <fieldset><legend>Jak zwiedzasz?</legend><div class="choice-grid" data-choice="pace"></div></fieldset>
       <fieldset><legend>Co jest dla Ciebie najważniejsze?</legend><div class="choice-grid multi" data-choice="interests"></div></fieldset>
@@ -142,7 +142,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <link rel="stylesheet" href="place-cards.css?v=19">
-  <script type="module" src="app.js?v=19"></script>
+  <link rel="stylesheet" href="place-cards.css?v=20">
+  <script type="module" src="app.js?v=20"></script>
 </body>
 </html>

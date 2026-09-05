@@ -1,0 +1,32 @@
+[
+  {
+    "id": "metro-c-evening-closures-2026-09",
+    "title": "Metro C · Colosseo/Fori Imperiali",
+    "description": "7–11 września 2026 stacja jest zamykana o 20:00.",
+    "startDate": "2026-09-07T00:00:00",
+    "endDate": "2026-09-11T23:59:59",
+    "affectedPlace": "colosseum",
+    "severity": "warning",
+    "sourceLabel": "czasowa zmiana organizacji ruchu"
+  },
+  {
+    "id": "metro-c-weekend-closure-2026-09",
+    "title": "Metro C · Colosseo/Fori Imperiali",
+    "description": "Od 20:00 18 września do końca 20 września 2026 stacja jest całkowicie zamknięta.",
+    "startDate": "2026-09-18T20:00:00",
+    "endDate": "2026-09-20T23:59:59",
+    "affectedPlace": "colosseum",
+    "severity": "critical",
+    "sourceLabel": "czasowa zmiana organizacji ruchu"
+  },
+  {
+    "id": "appia-sites-temporary-closure-2026",
+    "title": "Parco Appia · czasowe zamknięcia",
+    "description": "Capo di Bove i Tombe di via Latina są obecnie czasowo zamknięte. Sprawdź aktualny komunikat przed wyborem obiektów karnetu.",
+    "startDate": "2026-09-05T00:00:00",
+    "endDate": null,
+    "affectedPlace": "appia-antica",
+    "severity": "warning",
+    "sourceLabel": "status sprawdzony 05.09.2026; bez ogłoszonej daty końcowej"
+  }
+]
