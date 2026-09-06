@@ -53,7 +53,7 @@ describe("commerce security", () => {
     const response = await publicRomePreview(new Request(`https://martynapodroze.pl/podglad/rzym/${token}/data/guide.json`), { GUIDE_PREVIEW_TOKEN: token } as never);
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/json");
-    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/1f5770cd671bce667b2cc358ee6696b3c0380ff2/rome/data/guide.json", expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/96350a5e152020f5e990c14f5009667a63b60b4d/rome/data/guide.json", expect.any(Object));
   });
 
   it("serves the public Rome test route without an access token", async () => {
@@ -62,6 +62,6 @@ describe("commerce security", () => {
     const response = await publicRomeTest(new Request("https://martynapodroze.pl/romatest123/"));
     expect(response.status).toBe(200);
     expect(response.headers.get("X-Robots-Tag")).toContain("noindex");
-    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/1f5770cd671bce667b2cc358ee6696b3c0380ff2/rome/index.html", expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith("https://raw.githubusercontent.com/pawelgodlewsky-cloud/martynapodroze/96350a5e152020f5e990c14f5009667a63b60b4d/rome/index.html", expect.any(Object));
   });
 });
