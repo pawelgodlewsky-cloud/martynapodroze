@@ -11,6 +11,19 @@ export const DEFAULT_TRIP_PROFILE = Object.freeze({
 });
 
 const isoDate = value => /^\d{4}-\d{2}-\d{2}$/.test(String(value || "")) ? String(value) : "";
+const LEGACY_DEFAULT_SLOTS = Object.freeze({colosseum:"08:30","vatican-museums":"08:30","borghese-gallery":"10:00","catacombs-san-sebastiano":"10:30"});
+const EMPTY_SLOTS = Object.freeze({colosseum:"","vatican-museums":"","borghese-gallery":"","catacombs-san-sebastiano":""});
+
+/**
+ * @param {Record<string,unknown> | null} saved
+ * @returns {{profileVersion?:number,anchorSlots?:Record<string,string>}}
+ */
+export function migrationForLegacyState(saved) {
+  if (!saved || typeof saved !== "object" || Number(saved.profileVersion) >= 1) return {};
+  const slots = saved.anchorSlots && typeof saved.anchorSlots === "object" ? /** @type {Record<string,string>} */ (saved.anchorSlots) : {};
+  const hasOnlyLegacyDefaults = Object.entries(LEGACY_DEFAULT_SLOTS).every(([id,value]) => slots[id] === value);
+  return {profileVersion:1,...(hasOnlyLegacyDefaults ? {anchorSlots:{...EMPTY_SLOTS}} : {})};
+}
 
 export function normalizeTripProfile(profile = {}) {
   const pace = ["slow","normal","intense"].includes(profile.pace) ? profile.pace : "normal";

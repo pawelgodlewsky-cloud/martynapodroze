@@ -1,16 +1,16 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
-import { pointStatus, resumePoint, resetDay, skipPoint, togglePoint } from "./progression.js?v=21";
-import { placeVisual } from "./place-visuals.js?v=21";
-import { POINT_TYPES, activeAlerts, adaptRoute, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, resolveRoute, romaPassComparison, vaticanVariant } from "./route-rules.js?v=21";
-import { DEFAULT_TRIP_PROFILE, datesForTrip, dayIdForDate, normalizeTripProfile, tripDateRange, tripPlanDayIds } from "./trip-profile.js?v=21";
+import { pointStatus, resumePoint, resetDay, skipPoint, togglePoint } from "./progression.js?v=22";
+import { placeVisual } from "./place-visuals.js?v=22";
+import { POINT_TYPES, activeAlerts, adaptRoute, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, resolveRoute, romaPassComparison, vaticanVariant } from "./route-rules.js?v=22";
+import { DEFAULT_TRIP_PROFILE, datesForTrip, dayIdForDate, migrationForLegacyState, normalizeTripProfile, tripDateRange, tripPlanDayIds } from "./trip-profile.js?v=22";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
 const money = value => `${Number(value || 0).toFixed(2).replace(".", ",")} €`;
 const demoMode = new URLSearchParams(location.search).get("demo") === "1" || location.pathname.includes("/demo/");
-const defaults = { view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], skipped:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null, arrivalAirport:null, arrivalTransfer:null, arrivalComplete:false, hotelAddress:"", tripProfile:{...DEFAULT_TRIP_PROFILE}, tripDates:{}, anchorSlots:{colosseum:"","vatican-museums":"","borghese-gallery":"","catacombs-san-sebastiano":""}, routeOptions:{castelInterior:true,vaticanDome:false,vittorianoTerrace:false,torreArgentinaInterior:false,appiaParkPass:false}, startedDays:{}, routeOverrides:{}, adjustments:{}, transition:null };
+const defaults = { profileVersion:1, view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], skipped:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null, arrivalAirport:null, arrivalTransfer:null, arrivalComplete:false, hotelAddress:"", tripProfile:{...DEFAULT_TRIP_PROFILE}, tripDates:{}, anchorSlots:{colosseum:"","vatican-museums":"","borghese-gallery":"","catacombs-san-sebastiano":""}, routeOptions:{castelInterior:true,vaticanDome:false,vittorianoTerrace:false,torreArgentinaInterior:false,appiaParkPass:false}, startedDays:{}, routeOverrides:{}, adjustments:{}, transition:null };
 const store = createStore("rome", defaults);
 let state = store.get();
 let data = {};
@@ -21,7 +21,7 @@ let adjustmentPreview = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency","alerts"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=21`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=22`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -30,6 +30,13 @@ async function loadData() {
 
 function persist(patch) { state = store.set(patch); }
 function update(updater) { state = store.update(updater); }
+function migrateStoredState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(store.key) || "null");
+    const patch = migrationForLegacyState(saved);
+    if (Object.keys(patch).length) persist(patch);
+  } catch { persist({profileVersion:1}); }
+}
 function day() { return data.days.find(item => item.id === state.dayId) || data.days[0]; }
 function place(id) {
   const original = data.places.find(item => item.id === id);
@@ -492,7 +499,8 @@ function renderMyRome() {
   const complete = prep.filter(item => item.done).length;
   checklist.innerHTML = `<p class="eyebrow">PRZED WYJAZDEM</p><div class="checklist-title"><h2>${complete} / ${prep.length} gotowe</h2><div class="progress-track"><i style="width:${complete/prep.length*100}%"></i></div></div><div class="pretrip-list">${prep.map(item => {
     const ticket=ticketFor(item.id);
-    return `<article class="${item.done ? "is-done" : ""}"><span aria-hidden="true">${item.done ? "✓" : "○"}</span><div><b>${escapeHtml(item.label)}</b>${item.done ? `<small>${item.id === "hotel" ? escapeHtml(profile.accommodationName || profile.accommodationAddress) : item.id === "airport" ? (profile.airport === "FCO" ? "Fiumicino" : "Ciampino") : escapeHtml(state.anchorSlots[item.id])}</small>` : ""}</div>${["airport","hotel"].includes(item.id) ? `<button class="mini-button" data-action="open-trip">UZUPEŁNIJ</button>` : `<div class="pretrip-actions"><button class="mini-button" data-action="open-trip">DODAJ GODZINĘ</button>${ticket?.ticketUrl ? `<a href="${ticket.ticketUrl}" target="_blank" rel="noopener">KUP OFICJALNY BILET <small>· internet</small></a>` : ""}</div>`}</article>`;
+    const editLabel = item.done ? "ZMIEŃ" : ["airport","hotel"].includes(item.id) ? "UZUPEŁNIJ" : "DODAJ GODZINĘ";
+    return `<article class="${item.done ? "is-done" : ""}"><span aria-hidden="true">${item.done ? "✓" : "○"}</span><div><b>${escapeHtml(item.label)}</b>${item.done ? `<small>${item.id === "hotel" ? escapeHtml(profile.accommodationName || profile.accommodationAddress) : item.id === "airport" ? (profile.airport === "FCO" ? "Fiumicino" : "Ciampino") : escapeHtml(state.anchorSlots[item.id])}</small>` : ""}</div>${["airport","hotel"].includes(item.id) ? `<button class="mini-button" data-action="open-trip">${editLabel}</button>` : `<div class="pretrip-actions"><button class="mini-button" data-action="open-trip">${editLabel}</button>${ticket?.ticketUrl ? `<a href="${ticket.ticketUrl}" target="_blank" rel="noopener">KUP OFICJALNY BILET <small>· internet</small></a>` : ""}</div>`}</article>`;
   }).join("")}</div>`;
 }
 
@@ -705,7 +713,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); const autoDay=currentTripDayId(); if(autoDay && !state.startedDays?.[state.dayId]) persist({dayId:autoDay,mapDay:autoDay}); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=21"); }
+  try { migrateStoredState(); await loadData(); const autoDay=currentTripDayId(); if(autoDay && !state.startedDays?.[state.dayId]) persist({dayId:autoDay,mapDay:autoDay}); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=22"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init().then(() => { const id=new URLSearchParams(location.search).get("place"); if(id && data.places) openPlace(id,false); });
