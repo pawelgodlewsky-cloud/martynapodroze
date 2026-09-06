@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
-import {resumePoint,resetDay,togglePoint} from '../rome/progression.js';
-const base = {done:[],current:{},saved:['trevi'],expenses:[{amount:5}]};
+import {pointStatus,resumePoint,resetDay,skipPoint,togglePoint} from '../rome/progression.js';
+const base = {done:[],skipped:[],current:{},saved:['trevi'],expenses:[{amount:5}]};
 describe('Rome route progression',()=>{
   it('advances then restores a previous point',()=>{
     const next=togglePoint(base,'day-1','a',['a','b']);
@@ -22,5 +22,11 @@ describe('Rome route progression',()=>{
   it('unmark returns to that point, without skipping it',()=>{
     const result=togglePoint({...base,done:['a']},'day-1','a',['a','b']);
     expect(result.current['day-1']).toBe('a'); expect(result.done).toEqual([]);
+  });
+  it('persists DONE and SKIPPED as distinct statuses',()=>{
+    const done=togglePoint(base,'day-1','a',['a','b']);
+    const skipped=skipPoint(done,'day-1','b',['a','b']);
+    expect(pointStatus(skipped,'a')).toBe('DONE');
+    expect(pointStatus(skipped,'b')).toBe('SKIPPED');
   });
 });

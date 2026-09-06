@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
   <script>
     (() => {
-      const release = "20";
+      const release = "21";
       const releaseKey = "rome-guide-release";
       if (localStorage.getItem(releaseKey) === release) return;
       window.addEventListener("load", async () => {
@@ -38,7 +38,7 @@
       }, { once: true });
     })();
   </script>
-  <link rel="stylesheet" href="design.css?v=20">
+  <link rel="stylesheet" href="design.css?v=21">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -56,8 +56,8 @@
           <p class="hero-route">Mniej planowania. Więcej zachwytu.</p>
           <p class="hero-lead">Od pierwszego espresso do ostatniego spaceru. 3 gotowe dni + dzień dodatkowy, dojazdy i małe podpowiedzi, które robią wielką różnicę.</p>
           <div class="hero-actions">
-            <button class="button primary" data-action="arrival-start">Zacznij od lotniska <span aria-hidden="true">→</span></button>
-            <button class="button quiet" data-action="view" data-view="plan">Wybierz dzień zwiedzania</button>
+            <button class="button primary" data-action="open-trip">Dopasuj mój Rzym <span aria-hidden="true">→</span></button>
+            <button class="button quiet" data-action="view" data-view="plan">Zobacz gotowy plan</button>
           </div>
           <nav class="hero-shortcuts" aria-label="Informacje przed podróżą">
             <button data-action="view" data-view="prepare">Co przygotować przed wyjazdem? →</button>
@@ -103,11 +103,13 @@
 
     <section class="view" id="saved" data-view="saved" aria-labelledby="savedTitle">
       <header class="section-head"><p class="eyebrow">MOJA PODRÓŻ</p><h2 id="savedTitle">Mój Rzym</h2></header>
+      <div id="tripSummary"></div>
+      <section class="section" id="pretripChecklist"></section>
       <div id="passport"></div>
       <section class="section" id="savedPlaces"></section>
       <section class="section" id="checklist"></section>
       <section class="section" id="budget"></section>
-      <button class="text-button danger" data-action="reset">Wyczyść moje dane na tym urządzeniu</button>
+      <button class="text-button danger" data-action="reset">RESETUJ PLAN</button>
     </section>
 
     <section class="view" id="help" data-view="help" aria-labelledby="helpTitle">
@@ -121,11 +123,11 @@
 
   <button class="floating-help" data-action="view" data-view="help" aria-label="Otwórz panel pomocy">?</button>
   <nav class="bottom-nav" aria-label="Główna nawigacja">
-    <button class="is-active" data-action="view" data-view="today"><span aria-hidden="true">⌂</span>Start</button>
+    <button class="is-active" data-action="view" data-view="today"><span aria-hidden="true">⌂</span>Dzisiaj</button>
     <button data-action="view" data-view="plan"><span aria-hidden="true">↝</span>Plan</button>
     <button data-action="view" data-view="map"><span aria-hidden="true">◇</span>Mapa</button>
     <button data-action="view" data-view="prepare"><span aria-hidden="true">▤</span>Niezbędnik</button>
-    <button data-action="view" data-view="saved"><span aria-hidden="true">♡</span>Moje</button>
+    <button data-action="view" data-view="saved"><span aria-hidden="true">♡</span>Mój Rzym</button>
   </nav>
 
   <dialog id="plannerDialog" class="sheet">
@@ -140,9 +142,22 @@
     </form>
   </dialog>
 
+  <dialog id="tripDialog" class="sheet trip-sheet">
+    <form id="tripForm">
+      <button class="sheet-close" type="button" data-action="close-trip" aria-label="Zamknij">×</button>
+      <div class="trip-step" data-trip-step="0"><p class="eyebrow">MÓJ RZYM · 1 Z 4</p><h2>Kiedy jesteś w Rzymie?</h2><p>Daty są opcjonalne. Pomogą automatycznie wybrać właściwy dzień.</p><div class="form-grid"><label>Data przyjazdu<input type="date" name="arrivalDate"></label><label>Data wyjazdu<input type="date" name="departureDate"></label><label>Liczba pełnych dni<select name="fullDays"><option value="1">1 dzień</option><option value="2">2 dni</option><option value="3">3 dni</option><option value="4">4 dni</option></select></label></div></div>
+      <div class="trip-step" data-trip-step="1"><p class="eyebrow">MÓJ RZYM · 2 Z 4</p><h2>Przylot i nocleg</h2><div class="choice-grid compact"><label><input type="radio" name="airport" value="FCO"><span>Fiumicino</span></label><label><input type="radio" name="airport" value="CIA"><span>Ciampino</span></label><label><input type="radio" name="airport" value="none"><span>Inne / bez transferu</span></label></div><div class="form-grid"><label>Nazwa noclegu<input name="accommodationName" autocomplete="organization" placeholder="np. Hotel Roma"></label><label>Adres noclegu<input name="accommodationAddress" autocomplete="street-address" placeholder="np. Via Cavour 20, Roma"></label></div><p class="form-note">Nie zgadujemy czasu dojazdu. Adres służy tylko do otwarcia trasy w mapie.</p></div>
+      <div class="trip-step" data-trip-step="2"><p class="eyebrow">MÓJ RZYM · 3 Z 4</p><h2>Godziny biletów</h2><p>Wpisz tylko bilety, które już masz. Puste pole oznacza „Jeszcze nie mam”.</p><div class="form-grid anchor-fields"><label>Koloseum<input type="time" name="colosseum"><small>Jeszcze nie mam — zostaw puste</small></label><label>Muzea Watykańskie<input type="time" name="vatican-museums"><small>Jeszcze nie mam — zostaw puste</small></label><label>Galleria Borghese<input type="time" name="borghese-gallery"><small>Jeszcze nie mam — zostaw puste</small></label><label>Katakumby / inna kotwica<input type="time" name="catacombs-san-sebastiano"><small>Opcjonalnie</small></label></div></div>
+      <div class="trip-step" data-trip-step="3"><p class="eyebrow">MÓJ RZYM · 4 Z 4</p><h2>Jak podróżujesz?</h2><fieldset><legend>Tempo</legend><div class="choice-grid compact"><label><input type="radio" name="tripPace" value="slow"><span>Spokojnie</span></label><label><input type="radio" name="tripPace" value="normal"><span>Normalnie</span></label><label><input type="radio" name="tripPace" value="intense"><span>Intensywnie</span></label></div></fieldset><fieldset><legend>Typ podróży</legend><div class="choice-grid compact"><label><input type="radio" name="travelType" value="couple"><span>Solo / para</span></label><label><input type="radio" name="travelType" value="children"><span>Z dziećmi</span></label><label><input type="radio" name="travelType" value="other"><span>Inne</span></label></div></fieldset></div>
+      <div class="trip-nav"><button type="button" class="button quiet" data-action="trip-back">Wstecz</button><button type="button" class="button primary" data-action="trip-next">Dalej</button><button type="submit" class="button primary">ZAPISZ MÓJ RZYM</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="rescueDialog" class="sheet rescue-sheet"></dialog>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <link rel="stylesheet" href="place-cards.css?v=20">
-  <script type="module" src="app.js?v=20"></script>
+  <link rel="stylesheet" href="place-cards.css?v=21">
+  <script type="module" src="app.js?v=21"></script>
 </body>
 </html>

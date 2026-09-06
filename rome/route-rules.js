@@ -71,7 +71,8 @@ export function resolveRoute(dayId, state = {}) {
     return easy ? base : [...base,"gianicolo"];
   }
   if (dayId === "day-4a" && mode === "full") {
-    if (isMonday(dates[dayId])) return ["villa-borghese","pincio","popolo"];
+    const hasGalleryTicket = !state.tripProfile?.configured || Boolean(slots["borghese-gallery"]);
+    if (isMonday(dates[dayId]) || !hasGalleryTicket) return ["villa-borghese","pincio","popolo"];
     return minutes(slots["borghese-gallery"] || "10:00") <= minutes("12:00")
       ? ["borghese-gallery","villa-borghese","pincio","popolo"]
       : ["villa-borghese","pincio","borghese-gallery","popolo"];
@@ -85,6 +86,89 @@ export function resolveRoute(dayId, state = {}) {
     return route;
   }
   return null;
+}
+
+const uniqueInOrder = values => [...new Set(values)];
+
+/**
+ * Deterministic rescue rules used by the on-street assistant.
+ * @param {{
+ *   ids?: string[],
+ *   places?: Array<{id:string,scheduleType?:string,duration?:number,environment?:string}>,
+ *   situation?: string,
+ *   level?: string,
+ *   delayMinutes?: number,
+ *   currentIndex?: number,
+ *   nowMinutes?: number,
+ *   closingMinutes?: Record<string,number>,
+ *   rainIds?: string[],
+ *   essentialIds?: string[]
+ * }} options
+ */
+export function adaptRoute({
+  ids = [],
+  places = [],
+  situation = "delay",
+  level = "light",
+  delayMinutes = 0,
+  currentIndex = 0,
+  nowMinutes = 0,
+  closingMinutes = {},
+  rainIds = [],
+  essentialIds = []
+} = {}) {
+  const byId = new Map(places.map(item => [item.id,item]));
+  const protectedIds = new Set(ids.slice(0,Math.max(0,currentIndex + 1)));
+  ids.forEach(id => { if (byId.get(id)?.scheduleType === POINT_TYPES.HARD_ANCHOR) protectedIds.add(id); });
+  const removed = [];
+  const shortened = [];
+  let nextIds = [...ids];
+  const remove = id => {
+    if (protectedIds.has(id) || !nextIds.includes(id)) return false;
+    nextIds = nextIds.filter(value => value !== id);
+    removed.push(id);
+    return true;
+  };
+  const flexCandidates = () => [...nextIds].reverse().filter(id => byId.get(id)?.scheduleType === POINT_TYPES.FLEX && !protectedIds.has(id) && !essentialIds.includes(id));
+
+  if (situation === "delay") {
+    if (nowMinutes) {
+      let cursor = nowMinutes + Number(delayMinutes || 0);
+      for (const id of [...nextIds]) {
+        const item = byId.get(id);
+        if (!item || protectedIds.has(id)) continue;
+        cursor += Number(item.duration || 0);
+        if (item.scheduleType === POINT_TYPES.CONSTRAINED && closingMinutes[id] && cursor > closingMinutes[id]) remove(id);
+      }
+    }
+    const flexToRemove = delayMinutes >= 60 ? 2 : delayMinutes >= 30 ? 1 : 0;
+    flexCandidates().slice(0,flexToRemove).forEach(remove);
+    if (delayMinutes >= 30) {
+      const compact = nextIds.find(id => byId.get(id)?.scheduleType === POINT_TYPES.FLEX && !protectedIds.has(id));
+      if (compact) shortened.push(compact);
+    }
+  }
+
+  if (situation === "tired") {
+    if (level === "strong") {
+      const keep = new Set([...protectedIds,...essentialIds]);
+      nextIds.filter(id => !keep.has(id)).forEach(remove);
+    } else flexCandidates().slice(0,2).forEach(remove);
+  }
+
+  if (situation === "rain") {
+    const preferred = rainIds.length ? rainIds : ids.filter(id => byId.get(id)?.environment !== "outdoor");
+    const keep = new Set([...preferred,...protectedIds]);
+    nextIds.filter(id => !keep.has(id)).forEach(remove);
+    nextIds = uniqueInOrder([...ids.filter(id => keep.has(id)),...preferred.filter(id => !ids.includes(id))]);
+  }
+
+  return {
+    ids:uniqueInOrder(nextIds),
+    removed:uniqueInOrder(removed),
+    shortened:uniqueInOrder(shortened),
+    hardAnchors:ids.filter(id => byId.get(id)?.scheduleType === POINT_TYPES.HARD_ANCHOR)
+  };
 }
 
 /** @param {{duration?: string, attractionCosts?: Array<{price:number, eligible:boolean, vatican?:boolean}>}} options */

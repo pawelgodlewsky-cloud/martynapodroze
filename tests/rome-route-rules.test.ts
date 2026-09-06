@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { activeAlerts, isFirstMonday2026, isSanSebastianoAnnualClosure, resolveRoute, romaPassComparison, vaticanVariant } from "../rome/route-rules.js";
+import { activeAlerts, adaptRoute, isFirstMonday2026, isSanSebastianoAnnualClosure, resolveRoute, romaPassComparison, vaticanVariant } from "../rome/route-rules.js";
 
 describe("Rome route rules", () => {
   it("selects all three Vatican variants at their boundaries", () => {
@@ -27,6 +27,11 @@ describe("Rome route rules", () => {
     expect(isSanSebastianoAnnualClosure("2026-12-27")).toBe(true);
   });
 
+  it("uses the park fallback when a configured trip has no Borghese ticket", () => {
+    const route=resolveRoute("day-4a",{mode:"full",tripProfile:{configured:true},anchorSlots:{"borghese-gallery":""},tripDates:{"day-4a":"2026-09-08"}});
+    expect(route).toEqual(["villa-borghese","pincio","popolo"]);
+  });
+
   it("expires temporary alerts automatically", () => {
     const alerts = [{startDate:"2026-09-07T00:00:00",endDate:"2026-09-11T23:59:59"}];
     expect(activeAlerts(alerts,"2026-09-10")).toHaveLength(1);
@@ -37,5 +42,25 @@ describe("Rome route rules", () => {
     const result = romaPassComparison({duration:"2",attractionCosts:[{price:18,eligible:true},{price:25,eligible:false,vatican:true}]});
     expect(result.separate).toBe(33);
     expect(result.worthwhile).toBe(false);
+  });
+
+  const rescuePlaces = [
+    {id:"anchor",scheduleType:"HARD_ANCHOR",duration:75,environment:"indoor"},
+    {id:"flex",scheduleType:"FLEX",duration:45,environment:"outdoor"},
+    {id:"limited",scheduleType:"CONSTRAINED",duration:60,environment:"indoor"},
+    {id:"extra",scheduleType:"FLEX",duration:30,environment:"outdoor"}
+  ];
+
+  it("never removes a HARD_ANCHOR for delay or tired mode", () => {
+    const delayed=adaptRoute({ids:["anchor","flex","limited","extra"],places:rescuePlaces,situation:"delay",delayMinutes:60,currentIndex:0});
+    const tired=adaptRoute({ids:["anchor","flex","limited","extra"],places:rescuePlaces,situation:"tired",level:"strong",essentialIds:[]});
+    expect(delayed.ids).toContain("anchor");
+    expect(tired.ids).toContain("anchor");
+  });
+
+  it("can remove FLEX and an unsafe CONSTRAINED point", () => {
+    const result=adaptRoute({ids:["anchor","flex","limited","extra"],places:rescuePlaces,situation:"delay",delayMinutes:60,currentIndex:0,nowMinutes:17*60,closingMinutes:{limited:18*60}});
+    expect(result.ids).not.toContain("extra");
+    expect(result.ids).not.toContain("limited");
   });
 });

@@ -1,24 +1,27 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
-import { resumePoint, resetDay, togglePoint } from "./progression.js?v=20";
-import { placeVisual } from "./place-visuals.js?v=20";
-import { POINT_TYPES, activeAlerts, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, resolveRoute, romaPassComparison, vaticanVariant } from "./route-rules.js?v=20";
+import { pointStatus, resumePoint, resetDay, skipPoint, togglePoint } from "./progression.js?v=21";
+import { placeVisual } from "./place-visuals.js?v=21";
+import { POINT_TYPES, activeAlerts, adaptRoute, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, resolveRoute, romaPassComparison, vaticanVariant } from "./route-rules.js?v=21";
+import { DEFAULT_TRIP_PROFILE, datesForTrip, dayIdForDate, normalizeTripProfile, tripDateRange, tripPlanDayIds } from "./trip-profile.js?v=21";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
 const money = value => `${Number(value || 0).toFixed(2).replace(".", ",")} €`;
 const demoMode = new URLSearchParams(location.search).get("demo") === "1" || location.pathname.includes("/demo/");
-const defaults = { view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null, arrivalAirport:null, arrivalTransfer:null, arrivalComplete:false, hotelAddress:"", tripDates:{}, anchorSlots:{colosseum:"08:30","vatican-museums":"08:30","borghese-gallery":"10:00","catacombs-san-sebastiano":"10:30"}, routeOptions:{castelInterior:true,vaticanDome:false,vittorianoTerrace:false,torreArgentinaInterior:false,appiaParkPass:false} };
+const defaults = { view:"today", dayId:"day-1", mapDay:"day-1", mapCategory:"all", done:[], skipped:[], saved:[], current:{}, mode:"full", planner:null, checklist:{}, budgetLimit:0, expenses:[], foodVegetarian:false, offlinePreparedAt:null, arrivalAirport:null, arrivalTransfer:null, arrivalComplete:false, hotelAddress:"", tripProfile:{...DEFAULT_TRIP_PROFILE}, tripDates:{}, anchorSlots:{colosseum:"","vatican-museums":"","borghese-gallery":"","catacombs-san-sebastiano":""}, routeOptions:{castelInterior:true,vaticanDome:false,vittorianoTerrace:false,torreArgentinaInterior:false,appiaParkPass:false}, startedDays:{}, routeOverrides:{}, adjustments:{}, transition:null };
 const store = createStore("rome", defaults);
 let state = store.get();
 let data = {};
 let map = null;
 let mapLayer = null;
+let tripStep = 0;
+let adjustmentPreview = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency","alerts"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=20`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=21`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -38,7 +41,9 @@ function place(id) {
 }
 function dayPlaces(selected = day()) { return selected.placeIds.map(place).filter(Boolean); }
 function activeIds(selected = day()) {
-  const resolved = resolveRoute(selected.id,{...state,mode:"full"}) || selected.placeIds;
+  const profile = normalizeTripProfile(state.tripProfile);
+  const routeState = {...state,mode:"full",planner:{...(state.planner || {}),pace:profile.pace === "slow" ? "slow" : profile.pace,company:profile.travelType === "children" ? "family" : state.planner?.company}};
+  const resolved = state.routeOverrides?.[selected.id] || resolveRoute(selected.id,routeState) || selected.placeIds;
   if (state.mode === "quick") return resolved.filter(id => selected.quickIds.includes(id));
   if (state.mode === "rain") {
     const date = state.tripDates?.[selected.id];
@@ -51,13 +56,14 @@ function activePlaces(selected = day()) { return activeIds(selected).map(place).
 function progress(selected = day()) {
   const ids = activeIds(selected);
   const done = ids.filter(id => state.done.includes(id)).length;
-  return { done, total: ids.length, percent: ids.length ? Math.round(done / ids.length * 100) : 0 };
+  const skipped = ids.filter(id => state.skipped?.includes(id)).length;
+  return { done, skipped, complete:done + skipped, total: ids.length, percent: ids.length ? Math.round((done + skipped) / ids.length * 100) : 0 };
 }
 function currentPlace() {
   const selected = day();
   const active = activePlaces(selected);
   const explicit = place(state.current[selected.id]);
-  return explicit && active.some(item => item.id === explicit.id) && !state.done.includes(explicit.id) ? explicit : active.find(item => !state.done.includes(item.id)) || null;
+  return explicit && active.some(item => item.id === explicit.id) && !state.done.includes(explicit.id) && !state.skipped?.includes(explicit.id) ? explicit : active.find(item => !state.done.includes(item.id) && !state.skipped?.includes(item.id)) || null;
 }
 function nextPlace(current = currentPlace()) {
   const list = activePlaces();
@@ -66,6 +72,48 @@ function nextPlace(current = currentPlace()) {
 }
 function isDemoLocked(item, index) { return demoMode && (!data.guide.demo.unlockedDays.includes(day().id) || index >= data.guide.demo.unlockedPlaceCount); }
 function toast(message) { const node = $("#toast"); node.textContent = message; node.classList.add("show"); setTimeout(() => node.classList.remove("show"), 1800); }
+
+const dayMeta = {
+  "day-1":{start:"08:15",end:"około 17:00",cost:18,needs:["bilet do Koloseum","dokument tożsamości","wygodne buty i woda"],essential:["colosseum","palatine","forum","vittoriano"]},
+  "day-2":{start:"07:45",end:"około 19:00",cost:32,needs:["bilet do Muzeów Watykańskich","dokument tożsamości","zakryte ramiona i kolana"],essential:["vatican-museums","st-peter","pantheon"]},
+  "day-3":{start:"08:00",end:"około 18:30",cost:0,needs:["wygodne buty","butelka wody","karta lub trochę gotówki"],essential:["spanish-steps","trevi","trastevere"]},
+  "day-4a":{start:"08:45",end:"około 16:00",cost:18,needs:["bilet do Galleria Borghese, jeśli ją wybierasz","dokument tożsamości","wygodne buty"],essential:["borghese-gallery","villa-borghese","pincio"]},
+  "day-4b":{start:"08:30",end:"około 16:30",cost:10,needs:["bilet do katakumb, jeśli wchodzisz","buty z dobrą podeszwą","woda"],essential:["appia-antica","catacombs-san-sebastiano"]}
+};
+const editorialVisuals = new Set(["colosseum","palatine","forum","vatican-museums","st-peter","castel-santangelo","pantheon","spanish-steps","trevi","trastevere","santa-maria-trastevere","gianicolo","borghese-gallery","villa-borghese","pincio","appia-antica","catacombs-san-sebastiano"]);
+const closingMinutes = {pantheon:1110,"vittoriano-terrace":1125,"catacombs-san-sebastiano":1005,"borghese-gallery":1140,"torre-argentina-area":1080};
+const todayIso = () => new Date().toLocaleDateString("sv-SE");
+const tripProfile = () => normalizeTripProfile(state.tripProfile);
+const currentTripDayId = () => dayIdForDate(tripProfile(),todayIso());
+const ticketFor = id => data.tickets.find(item => item.id === id || (id === "catacombs-san-sebastiano" && item.id === "catacombs"));
+const tripAnchor = selected => {
+  const id = selected.reservations?.[0];
+  const anchorId = id === "catacombs" ? "catacombs-san-sebastiano" : id;
+  const slot = state.anchorSlots?.[anchorId];
+  return anchorId && slot ? `${place(anchorId)?.name || ticketFor(anchorId)?.name}: ${slot}` : anchorId ? `${place(anchorId)?.name || ticketFor(anchorId)?.name}: jeszcze nie masz godziny` : "Bez rezerwacji godzinowej";
+};
+function dayStart(selected) {
+  const anchorId = selected.reservations?.[0] === "catacombs" ? "catacombs-san-sebastiano" : selected.reservations?.[0];
+  const slot = state.anchorSlots?.[anchorId];
+  if (!slot) return dayMeta[selected.id]?.start || "08:30";
+  const [hour,minute] = slot.split(":").map(Number);
+  const early = Math.max(0,hour * 60 + minute - 15);
+  return `${String(Math.floor(early / 60)).padStart(2,"0")}:${String(early % 60).padStart(2,"0")}`;
+}
+function dayCost(selected) {
+  const prices = {colosseum:18,"vatican-museums":25,pantheon:7,"castel-santangelo":18,"borghese-gallery":18,"catacombs-san-sebastiano":10,"vittoriano-terrace":18,"torre-argentina-area":7};
+  return activeIds(selected).reduce((sum,id) => sum + (prices[id] || 0),0);
+}
+function accommodationUrl() {
+  const profile = tripProfile();
+  const destination = profile.accommodationAddress || profile.accommodationName;
+  return destination ? transitDirections("",destination,"transit") : "https://www.google.com/maps/dir/?api=1&travelmode=transit";
+}
+function parsePlaceTime(item) {
+  const value = state.anchorSlots?.[item.id] || item.time;
+  const match = String(value || "").match(/^(\d{1,2}):(\d{2})/);
+  return match ? Number(match[1]) * 60 + Number(match[2]) : 9 * 60;
+}
 
 function setView(view) {
   view = ["today","journey","prepare","plan","food","map","saved","help"].includes(view) ? view : "today";
@@ -83,7 +131,7 @@ function setView(view) {
 function transitDirections(origin, destination, travelMode = "transit") {
   const url = new URL("https://www.google.com/maps/dir/");
   url.searchParams.set("api", "1");
-  url.searchParams.set("origin", origin);
+  if (origin) url.searchParams.set("origin", origin);
   url.searchParams.set("destination", destination);
   url.searchParams.set("travelmode", travelMode);
   return url.toString();
@@ -118,10 +166,54 @@ function renderArrivalJourney() {
 }
 
 function renderToday() {
+  const profile = tripProfile();
+  const selected = day();
+  document.body.classList.toggle("has-my-rome",profile.configured);
+  document.body.classList.toggle("is-day-started",Boolean(state.startedDays?.[selected.id]));
+  if (!profile.configured) {
+    $("#todayPanel").innerHTML = `<article class="resume-card welcome-card"><span class="resume-icon" aria-hidden="true">◎</span><div><p class="eyebrow">MÓJ RZYM</p><h2>Ułóż podróż wokół swoich biletów.</h2><p>Daty i godziny są opcjonalne. Możesz też od razu otworzyć gotowe trasy.</p></div><div class="today-actions"><button class="button primary" data-action="open-trip">Dopasuj mój Rzym</button><button class="button quiet" data-action="view" data-view="plan">Zobacz gotowy plan</button></div></article>`;
+    renderHomeDays();
+    return;
+  }
+  const started = Boolean(state.startedDays?.[selected.id]);
+  $("#todayPanel").innerHTML = started ? renderStreetGuide(selected) : renderDayBrief(selected);
+  $("#homeDays").innerHTML = "";
+}
+
+function renderDayBrief(selected) {
+  const meta = dayMeta[selected.id] || dayMeta["day-1"];
+  const p = progress(selected);
+  return `<article class="day-brief">
+    <header><div><p class="eyebrow">DZISIAJ · DZIEŃ ${escapeHtml(selected.number)}</p><h2>${escapeHtml(selected.title)}</h2><p>${escapeHtml(selected.subtitle)}</p></div><span class="day-number">${escapeHtml(selected.number)}</span></header>
+    <div class="brief-metrics"><div><small>START</small><b>${dayStart(selected)}</b></div><div><small>KONIEC</small><b>${escapeHtml(meta.end)}</b></div><div><small>SPACER</small><b>około ${escapeHtml(selected.distance)}</b></div></div>
+    <div class="brief-columns"><section><p class="card-label">DZISIAJ POTRZEBUJESZ</p><ul>${meta.needs.slice(0,5).map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section><section><p class="card-label">NAJWAŻNIEJSZE</p><strong>${escapeHtml(tripAnchor(selected))}</strong><p>Szacowany koszt dnia: <b>około ${money(dayCost(selected))} / osoba</b></p></section></div>
+    ${p.complete ? `<p class="brief-progress">Zapisany postęp: ${p.complete} / ${p.total}</p>` : ""}
+    <button class="button primary full street-primary" data-action="start-day">${p.complete ? "KONTYNUUJ DZIEŃ" : "ROZPOCZNIJ DZIEŃ"}</button>
+    <div class="brief-links"><button class="text-button" data-action="open-trip">Edytuj wyjazd</button>${tripProfile().accommodationAddress || tripProfile().accommodationName ? `<a href="${accommodationUrl()}" target="_blank" rel="noopener">Sprawdź trasę z noclegu <small>· wymaga internetu</small></a>` : ""}</div>
+  </article>`;
+}
+
+function renderStreetGuide(selected) {
+  const ids = activeIds(selected);
+  const p = progress(selected);
   const current = currentPlace();
-  const arrived = state.arrivalComplete || state.done.length > 0;
-  $("#todayPanel").innerHTML = `<article class="resume-card"><span class="resume-icon" aria-hidden="true">${arrived ? "↝" : "✈"}</span><div><p class="eyebrow">${arrived ? "TWOJA PODRÓŻ TRWA" : "ZACZYNAMY OD PRZYLOTU"}</p><h2>${arrived ? escapeHtml(current?.name || "Ten dzień już za Tobą") : "Wylądowałaś? Chodźmy do miasta."}</h2><p>${arrived ? `Dzień ${escapeHtml(day().number)} · ${progress().done}/${progress().total} miejsc · Twój postęp jest zapisany.` : "Fiumicino czy Ciampino? Pokażę Ci wyjście, transport i trasę do noclegu."}</p></div><button class="button primary" data-action="${arrived ? "continue" : "arrival-start"}">${arrived ? "Kontynuuj trasę" : "Prowadź mnie"} <span aria-hidden="true">→</span></button></article>`;
-  renderHomeDays();
+  if (state.transition?.dayId === selected.id) {
+    const completed = place(state.transition.completedId);
+    const upcoming = place(state.transition.nextId);
+    return `<article class="transition-card"><span class="done-seal">✓</span><p class="eyebrow">GOTOWE</p><h2>${escapeHtml(completed?.name || "Punkt ukończony")}</h2>${upcoming ? `<div class="next-step"><small>NASTĘPNY PUNKT</small><h3>${escapeHtml(upcoming.name)}</h3><p>${escapeHtml(completed?.next?.distance || "kolejny punkt")} · ${escapeHtml(completed?.next?.minutes || "")} min pieszo</p></div><a class="button primary full" href="${mapsUrl(upcoming.coordinates)}" target="_blank" rel="noopener">PROWADŹ MNIE <small>· internet</small></a><button class="button quiet full" data-action="transition-next">PRZEJDŹ DALEJ</button>` : `<p>To wszystkie punkty tego dnia. Brawo — reszta wieczoru jest Twoja.</p><a class="button primary full" href="${accommodationUrl()}" target="_blank" rel="noopener">WRÓĆ DO NOCLEGU <small>· internet</small></a><button class="button quiet full" data-action="finish-day">ZAKOŃCZ DZIEŃ</button>`}</article>`;
+  }
+  if (!current) return `<article class="transition-card"><span class="done-seal">✓</span><p class="eyebrow">DZIEŃ UKOŃCZONY</p><h2>Roma zrobiona po Twojemu.</h2><p>${p.done} miejsca oznaczone jako gotowe, ${p.skipped} pominięte.</p><a class="button primary full" href="${accommodationUrl()}" target="_blank" rel="noopener">WRÓĆ DO NOCLEGU <small>· internet</small></a></article>`;
+  const index = ids.indexOf(current.id);
+  const visual = editorialVisuals.has(current.id) ? placeVisual(current) : null;
+  return `<article class="street-card">
+    <div class="street-progress"><div><span>${index + 1} Z ${ids.length}</span><b>${p.complete} / ${p.total} punktów</b></div><div class="progress-track"><i style="width:${p.percent}%"></i></div></div>
+    <header><p class="eyebrow">TERAZ · ${escapeHtml(selected.title)}</p><h2>${escapeHtml(current.name)}</h2><strong>${escapeHtml(current.time)} · ${current.duration} min</strong></header>
+    ${visual ? `<figure class="street-visual">${visual}</figure>` : `<div class="route-instruction"><span aria-hidden="true">↝</span><p>Ten punkt jest krótkim odcinkiem trasy. Skup się na wskazówce i przejdź dalej bez dodatkowego przystanku fotograficznego.</p></div>`}
+    <p class="street-description">${escapeHtml(current.description)}</p>
+    <div class="street-essential"><p><b>Najważniejsze:</b> ${escapeHtml(current.tip)}</p>${current.warning ? `<p><b>Uwaga:</b> ${escapeHtml(current.warning)}</p>` : ""}${current.verifiedAt && current.scheduleType !== POINT_TYPES.FLEX ? `<p class="source-line">Sprawdzone ${escapeHtml(current.verifiedAt.split("-").reverse().join("."))} · <a href="${current.officialSource || current.officialUrl}" target="_blank" rel="noopener">Oficjalne źródło ↗ <small>internet</small></a></p>` : ""}</div>
+    <div class="street-actions"><a class="button primary full" href="${mapsUrl(current.coordinates)}" target="_blank" rel="noopener">PROWADŹ MNIE <small>· internet</small></a><button class="button ink full" data-action="done" data-id="${current.id}">MAM TO ✓</button><button class="button quiet" data-action="skip" data-id="${current.id}">POMIŃ</button><button class="text-button" data-action="open-place" data-id="${current.id}">WIĘCEJ INFO</button></div>
+    <div class="rescue-actions"><span>Plan się zmienił?</span><button data-action="open-rescue" data-kind="delay">Spóźniam się</button><button data-action="open-rescue" data-kind="tired">Jestem zmęczona</button><button data-action="open-rescue" data-kind="rain">Pada</button></div>
+  </article>`;
 }
 
 function landmark(number) {
@@ -288,10 +380,10 @@ function renderTimeline() {
   const items = ids.map(place).filter(Boolean);
   $("#timeline").innerHTML = items.map((item, index) => {
     if (isDemoLocked(item, index)) return `<article class="place-card demo-lock" data-order="${index + 1}"><h3>Dalsza część trasy premium</h3><p>W wersji demo widzisz początek dnia i sposób prowadzenia. Pełny produkt zawiera wszystkie dni, warianty i mapy.</p><a class="button primary" href="${data.guide.demo.ctaUrl}">Zapytaj o przewodnik</a></article>`;
-    const done = state.done.includes(item.id), saved = state.saved.includes(item.id);
+    const status = pointStatus(state,item.id), done = status === "DONE", skipped = status === "SKIPPED", saved = state.saved.includes(item.id);
     const following = items[index + 1];
     const leg = legInfo(item,following);
-    return `<article class="place-card ${done ? "is-done" : currentPlace()?.id === item.id ? "is-current" : ""}" data-order="${index + 1}" id="place-${item.id}"><details ${currentPlace()?.id === item.id ? "open" : ""}><summary class="place-head"><div><span class="card-label">${done ? "UKOŃCZONE" : currentPlace()?.id === item.id ? "TERAZ" : scheduleLabel(item.scheduleType)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></summary><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p>${item.openingNote ? `<div class="opening-note"><b>Godziny i ograniczenia</b><span>${escapeHtml(item.openingNote)}</span></div>` : ""}<div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div></div></details>${following && leg ? `<div class="next-leg"><span><b>${modeIcon(leg.mode)}</b> Dalej: ${escapeHtml(following.name)}</span><span>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</span><a href="${segmentUrl(item,following,leg)}" target="_blank" rel="noopener">Trasa</a></div>` : ""}</article>`;
+    return `<article class="place-card ${done ? "is-done" : skipped ? "is-skipped" : currentPlace()?.id === item.id ? "is-current" : ""}" data-order="${index + 1}" id="place-${item.id}"><details ${currentPlace()?.id === item.id ? "open" : ""}><summary class="place-head"><div><span class="card-label">${done ? "UKOŃCZONE" : skipped ? "POMINIĘTE" : currentPlace()?.id === item.id ? "TERAZ" : scheduleLabel(item.scheduleType)} / ${escapeHtml(item.address)}</span><h3>${escapeHtml(item.name)}</h3></div><div class="place-time">${escapeHtml(item.time)}<small>${item.duration} min · ${escapeHtml(item.price)}</small></div></summary><div class="photo-slot"><span>${escapeHtml(item.photo || "punkt praktyczny: bez zdjęcia")}</span></div><div class="place-body"><p>${escapeHtml(item.description)}</p>${item.openingNote ? `<div class="opening-note"><b>Godziny i ograniczenia</b><span>${escapeHtml(item.openingNote)}</span></div>` : ""}<div class="place-details"><div class="detail"><b>Dlaczego warto</b>${escapeHtml(item.why)}</div><div class="detail"><b>Nie przegap</b>${escapeHtml(item.dontMiss || "To punkt praktyczny na trasie.")}</div></div><div class="tip"><b>Martyna podpowiada:</b> ${escapeHtml(item.tip)}</div>${item.warning ? `<div class="tip warning"><b>Uważaj:</b> ${escapeHtml(item.warning)}</div>` : ""}<div class="place-actions"><a href="${mapsUrl(item.coordinates)}" target="_blank" rel="noopener">Prowadź mnie</a>${item.officialUrl ? `<a href="${item.officialUrl}" target="_blank" rel="noopener">Oficjalna strona</a>` : ""}${item.ticketUrl ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener">Bilety</a>` : ""}<button class="done ${done ? "is-active" : ""}" data-action="done" data-id="${item.id}">${done ? "Ukończone" : "Oznacz jako odwiedzone"}</button><button class="save ${saved ? "is-active" : ""}" data-action="save" data-id="${item.id}" aria-label="${saved ? "Usuń z zapisanych" : "Zapisz miejsce"}">${saved ? "Zapisane" : "Zapisz"}</button></div></div></details>${following && leg ? `<div class="next-leg"><span><b>${modeIcon(leg.mode)}</b> Dalej: ${escapeHtml(following.name)}</span><span>${leg.minutes} min · ${escapeHtml(leg.distance)} · ${escapeHtml(leg.mode)}</span><a href="${segmentUrl(item,following,leg)}" target="_blank" rel="noopener">Trasa</a></div>` : ""}</article>`;
   }).join("");
 }
 
@@ -309,12 +401,12 @@ function decoratePlaces() {
   const index = current ? items.findIndex(item => item.id === current.id) : items.length;
   const previous = items[index-1];
   $("#dayCompanion").insertAdjacentHTML("beforeend", `<div class="route-controls">${previous ? `<button class="button quiet" data-action="resume-point" data-id="${previous.id}">← Wróć: ${escapeHtml(previous.name)}</button>` : ""}<button class="button quiet" data-action="restart-day">Zacznij dzień od nowa</button></div>`);
-  if (current) $(".companion-now").insertAdjacentHTML("afterbegin", `<button class="place-preview companion-place-preview" data-action="open-place" data-id="${current.id}" aria-label="Otwórz kartę: ${escapeHtml(current.name)}">${placeVisual(current)}<span>Otwórz pełną kartę miejsca ↗</span></button>`);
+  if (current && editorialVisuals.has(current.id)) $(".companion-now").insertAdjacentHTML("afterbegin", `<button class="place-preview companion-place-preview" data-action="open-place" data-id="${current.id}" aria-label="Otwórz kartę: ${escapeHtml(current.name)}">${placeVisual(current)}<span>Otwórz pełną kartę miejsca ↗</span></button>`);
   $$("#timeline .place-card:not(.demo-lock)").forEach(node => {
     const item = place(node.id.slice(6));
     const summary = $("summary",node);
     summary.dataset.action = "open-place"; summary.dataset.id = item.id;
-    node.insertAdjacentHTML("afterbegin", `<button class="point-image-frame place-preview" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">${placeVisual(item)}<span>Zobacz miejsce ↗</span></button>`);
+    if (editorialVisuals.has(item.id)) node.insertAdjacentHTML("afterbegin", `<button class="point-image-frame place-preview" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">${placeVisual(item)}<span>Zobacz miejsce ↗</span></button>`);
     $(".photo-slot",node)?.remove();
   });
 }
@@ -375,7 +467,67 @@ function renderMapFilters() {
 }
 function renderMapFallback() { $("#mapFallback").innerHTML = `<h3>Mapa jest offline</h3><p>Kafelków OpenStreetMap nie zapisujemy hurtowo. Nadal masz kolejność, adresy i linki, które zadziałają po odzyskaniu internetu.</p>${activePlaces().map((item,index) => `<p><b>${index+1}. ${escapeHtml(item.name)}</b><br>${escapeHtml(item.address)}</p>`).join("")}`; }
 
+function renderMyRome() {
+  const profile = tripProfile();
+  const summary = $("#tripSummary");
+  const checklist = $("#pretripChecklist");
+  if (!summary || !checklist) return;
+  if (!profile.configured) {
+    summary.innerHTML = `<article class="trip-empty"><p class="eyebrow">MÓJ RZYM</p><h2>Plan, który zna Twoje bilety.</h2><p>Dodaj tylko to, co już wiesz. Żadne pole z biletem nie jest obowiązkowe.</p><button class="button primary" data-action="open-trip">Dopasuj mój Rzym</button></article>`;
+    checklist.innerHTML = "";
+    return;
+  }
+  const ids = tripPlanDayIds(profile);
+  summary.innerHTML = `<article class="trip-summary"><header><div><p class="eyebrow">MÓJ RZYM</p><h2>${escapeHtml(tripDateRange(profile))}</h2><p>${profile.accommodationName || profile.accommodationAddress ? `Nocleg: ${escapeHtml(profile.accommodationName || profile.accommodationAddress)}` : "Nocleg możesz dodać później."}</p></div><button class="button quiet" data-action="open-trip">EDYTUJ WYJAZD</button></header><div class="my-days">${ids.map((id,index) => {
+    const selected = data.days.find(item => item.id === id); const meta=dayMeta[id];
+    return `<article><span>DZIEŃ ${index+1}</span><h3>${escapeHtml(selected.title)}</h3><p>${escapeHtml(selected.subtitle)}</p><div><small>${dayStart(selected)}–${escapeHtml(meta.end.replace("około ",""))}</small><small>${escapeHtml(selected.distance)}</small><small>${money(dayCost(selected))}</small></div><strong>${escapeHtml(tripAnchor(selected))}</strong><button class="text-button" data-action="day-today" data-id="${id}">Otwórz dzień →</button></article>`;
+  }).join("")}</div></article>`;
+  const prep = [
+    {label:"Koloseum",done:Boolean(state.anchorSlots?.colosseum),id:"colosseum"},
+    {label:"Muzea Watykańskie",done:Boolean(state.anchorSlots?.["vatican-museums"]),id:"vatican-museums"},
+    {label:"Galleria Borghese — jeśli chcesz",done:Boolean(state.anchorSlots?.["borghese-gallery"]),id:"borghese-gallery"},
+    {label:"Wybierz transfer z lotniska",done:profile.airport !== "none",id:"airport"},
+    {label:"Wpisz adres noclegu",done:Boolean(profile.accommodationAddress || profile.accommodationName),id:"hotel"}
+  ];
+  const complete = prep.filter(item => item.done).length;
+  checklist.innerHTML = `<p class="eyebrow">PRZED WYJAZDEM</p><div class="checklist-title"><h2>${complete} / ${prep.length} gotowe</h2><div class="progress-track"><i style="width:${complete/prep.length*100}%"></i></div></div><div class="pretrip-list">${prep.map(item => {
+    const ticket=ticketFor(item.id);
+    return `<article class="${item.done ? "is-done" : ""}"><span aria-hidden="true">${item.done ? "✓" : "○"}</span><div><b>${escapeHtml(item.label)}</b>${item.done ? `<small>${item.id === "hotel" ? escapeHtml(profile.accommodationName || profile.accommodationAddress) : item.id === "airport" ? (profile.airport === "FCO" ? "Fiumicino" : "Ciampino") : escapeHtml(state.anchorSlots[item.id])}</small>` : ""}</div>${["airport","hotel"].includes(item.id) ? `<button class="mini-button" data-action="open-trip">UZUPEŁNIJ</button>` : `<div class="pretrip-actions"><button class="mini-button" data-action="open-trip">DODAJ GODZINĘ</button>${ticket?.ticketUrl ? `<a href="${ticket.ticketUrl}" target="_blank" rel="noopener">KUP OFICJALNY BILET <small>· internet</small></a>` : ""}</div>`}</article>`;
+  }).join("")}</div>`;
+}
+
+function rescuePreview(kind,value) {
+  const selected=day(); const ids=activeIds(selected); const current=currentPlace(); const currentIndex=Math.max(0,ids.indexOf(current?.id));
+  const result=adaptRoute({ids,places:data.places,situation:kind,level:value,delayMinutes:Number(value)||0,currentIndex,nowMinutes:parsePlaceTime(current || place(ids[0])),closingMinutes,rainIds:selected.rainIds,essentialIds:dayMeta[selected.id]?.essential || []});
+  const names=list=>list.map(id=>place(id)?.name).filter(Boolean).join(", ");
+  let message="";
+  if(kind==="delay") message=`Masz około ${value} minut opóźnienia. ${names(result.hardAnchors) || "Rezerwacje godzinowe"} zostaje bez zmian.${result.removed.length ? ` Pomijamy: ${names(result.removed)}.` : " Reszta trasy nadal się mieści."}${result.shortened.length ? ` Skracamy: ${names(result.shortened)}.` : ""}`;
+  if(kind==="tired") message=value==="strong" ? `Zostawiam najważniejszą oś dnia i wszystkie rezerwacje godzinowe. Pomijamy: ${names(result.removed) || "dodatkowe punkty"}.${selected.id==="day-3" ? " Dzień kończy się spokojnie w Trastevere." : ""}` : `Odejmuję 1–2 mniej ważne punkty FLEX: ${names(result.removed) || "na razie nic"}. Rezerwacje godzinowe zostają.`;
+  if(kind==="rain") message=`Ograniczam długie odcinki na zewnątrz i układam dzień wokół miejsc pod dachem. Rezerwacje godzinowe zostają.${result.removed.length ? ` Pomijamy: ${names(result.removed)}.` : ""}`;
+  return {...result,kind,value,message};
+}
+
+function openRescue(kind) {
+  const dialog=$("#rescueDialog");
+  const choices=kind==="delay" ? [[15,"+15 min"],[30,"+30 min"],[60,"+60 min"],[90,"więcej"]] : kind==="tired" ? [["light","Lekko"],["strong","Mocno"]] : [["rain","Dopasuj plan"]];
+  dialog.dataset.kind=kind;
+  dialog.innerHTML=`<form method="dialog"><button class="sheet-close" type="button" data-action="close-rescue" aria-label="Zamknij">×</button><p class="eyebrow">RATUJEMY DZIEŃ</p><h2>${kind==="delay" ? "O ile się spóźniasz?" : kind==="tired" ? "Jak bardzo jesteś zmęczona?" : "Pada? Skróćmy plener."}</h2><div class="rescue-choices">${choices.map(([id,label])=>`<button type="button" class="button quiet" data-action="preview-rescue" data-value="${id}">${label}</button>`).join("")}</div><div id="rescuePreview" aria-live="polite"></div></form>`;
+  dialog.showModal();
+  if(kind==="rain") showRescuePreview("rain");
+}
+function showRescuePreview(value) {
+  adjustmentPreview=rescuePreview($("#rescueDialog").dataset.kind,value);
+  $("#rescuePreview").innerHTML=`<article><p>${escapeHtml(adjustmentPreview.message)}</p><div class="today-actions"><button type="button" class="button primary" data-action="apply-rescue">ZASTOSUJ ZMIANY</button><button type="button" class="button quiet" data-action="close-rescue">ZOSTAW PLAN</button></div></article>`;
+}
+function applyRescue() {
+  if(!adjustmentPreview)return;
+  const selected=day();
+  update(s=>({...s,routeOverrides:{...(s.routeOverrides||{}),[selected.id]:adjustmentPreview.ids},adjustments:{...(s.adjustments||{}),[selected.id]:{kind:adjustmentPreview.kind,value:adjustmentPreview.value,message:adjustmentPreview.message}},skipped:[...new Set([...(s.skipped||[]),...adjustmentPreview.removed])],transition:null}));
+  $("#rescueDialog").close(); adjustmentPreview=null; renderAll(); setView("today"); toast("Plan dnia został bezpiecznie skrócony");
+}
+
 function renderSaved() {
+  renderMyRome();
   const total = data.days.reduce((sum,item) => sum + item.placeIds.length,0);
   const completed = new Set(state.done).size;
   const percent = Math.round(completed/total*100);
@@ -444,6 +596,28 @@ function plannerChoices() {
     container.innerHTML = options.map(([value,label],index) => `<label><input type="${key === "interests" ? "checkbox" : "radio"}" name="${key}" value="${value}" ${index === (key === "duration" ? 3 : key === "pace" ? 1 : 0) && key !== "interests" ? "checked" : ""}><span>${escapeHtml(label)}</span></label>`).join("");
   }
 }
+function renderTripStep() {
+  $$("#tripDialog .trip-step").forEach((node,index)=>node.classList.toggle("is-active",index===tripStep));
+  const back=$("#tripDialog [data-action='trip-back']"), next=$("#tripDialog [data-action='trip-next']"), submit=$("#tripDialog [type='submit']");
+  back.hidden=tripStep===0; next.hidden=tripStep===3; submit.hidden=tripStep!==3;
+}
+function openTrip() {
+  const profile=tripProfile(); const form=$("#tripForm"); tripStep=0;
+  for(const name of ["arrivalDate","departureDate","fullDays","accommodationName","accommodationAddress"]) if(form.elements[name]) form.elements[name].value=profile[name] ?? "";
+  for(const name of ["colosseum","vatican-museums","borghese-gallery","catacombs-san-sebastiano"]) form.elements[name].value=state.anchorSlots?.[name] || "";
+  const airport=form.querySelector(`[name="airport"][value="${profile.airport}"]`); if(airport)airport.checked=true;
+  const pace=form.querySelector(`[name="tripPace"][value="${profile.pace}"]`); if(pace)pace.checked=true;
+  const travel=form.querySelector(`[name="travelType"][value="${profile.travelType}"]`); if(travel)travel.checked=true;
+  renderTripStep(); $("#tripDialog").showModal();
+}
+function saveTrip(form) {
+  const values=new FormData(form);
+  const profile=normalizeTripProfile({configured:true,arrivalDate:values.get("arrivalDate"),departureDate:values.get("departureDate"),fullDays:values.get("fullDays"),airport:values.get("airport"),accommodationName:values.get("accommodationName"),accommodationAddress:values.get("accommodationAddress"),pace:values.get("tripPace"),travelType:values.get("travelType")});
+  const slots=Object.fromEntries(["colosseum","vatican-museums","borghese-gallery","catacombs-san-sebastiano"].map(id=>[id,String(values.get(id)||"")]));
+  const dates=datesForTrip(profile); const selected=dayIdForDate(profile,todayIso()) || tripPlanDayIds(profile)[0];
+  persist({tripProfile:profile,tripDates:dates,anchorSlots:slots,arrivalAirport:profile.airport==="none"?null:profile.airport,hotelAddress:profile.accommodationAddress,planner:{duration:String(profile.fullDays),pace:profile.pace==="slow"?"slow":profile.pace==="intense"?"max":"normal",company:profile.travelType==="children"?"family":"solo",interests:[]},dayId:selected,mapDay:selected,mode:"full",routeOverrides:{},transition:null});
+  $("#tripDialog").close(); renderAll(); setView("saved"); toast("Mój Rzym jest zapisany na tym urządzeniu");
+}
 function applyPlanner(form) {
   const values = new FormData(form); const duration = values.get("duration") || "3", pace = values.get("pace") || "normal", company = values.get("company") || "solo", interests = values.getAll("interests");
   let dayId = interests.includes("vatican") ? "day-2" : interests.includes("streets") || interests.includes("food") ? "day-3" : "day-1";
@@ -460,6 +634,19 @@ function bindEvents() {
   const action = target.dataset.action;
     if (action === "open-place") { event.preventDefault(); openPlace(target.dataset.id); }
     if (action === "close-place") closePlace();
+    if (action === "open-trip") openTrip();
+    if (action === "close-trip") $("#tripDialog").close();
+    if (action === "trip-back") { tripStep=Math.max(0,tripStep-1); renderTripStep(); }
+    if (action === "trip-next") { tripStep=Math.min(3,tripStep+1); renderTripStep(); }
+    if (action === "start-day") { persist({startedDays:{...(state.startedDays||{}),[day().id]:true},transition:null}); renderToday(); }
+    if (action === "transition-next") { persist({transition:null}); renderToday(); }
+    if (action === "finish-day") { persist({transition:null}); renderToday(); }
+    if (action === "skip") { const id=target.dataset.id; update(s=>skipPoint(s,day().id,id,activeIds())); renderToday(); renderPlan(); }
+    if (action === "open-rescue") openRescue(target.dataset.kind);
+    if (action === "preview-rescue") showRescuePreview(target.dataset.value);
+    if (action === "close-rescue") { $("#rescueDialog").close(); adjustmentPreview=null; }
+    if (action === "apply-rescue") applyRescue();
+    if (action === "day-today") { persist({dayId:target.dataset.id,mapDay:target.dataset.id,transition:null}); renderAll(); setView("today"); }
     if (action === "resume-point") { update(s => resumePoint(s,day().id,target.dataset.id)); closePlace(); renderToday(); renderPlan(); setView("plan"); $("#dayCompanion").scrollIntoView({behavior:"smooth"}); }
     if (action === "restart-day") { target.outerHTML='<div class="restart-confirm"><p>Wyzerować postęp tego dnia? Zapisane miejsca i budżet pozostaną bez zmian.</p><button class="button quiet" data-action="confirm-restart">Tak, zacznij od nowa</button><button class="button quiet" data-action="cancel-restart">Anuluj</button></div>'; }
     if (action === "cancel-restart") renderPlan();
@@ -478,7 +665,7 @@ function bindEvents() {
     if (action === "map-day") { persist({mapDay:target.dataset.id}); renderMapFilters(); renderMap(); }
     if (action === "map-category") { persist({mapCategory:target.dataset.id}); renderMapFilters(); renderMap(); }
     if (action === "mode") { persist({mode:target.dataset.mode}); renderToday(); renderPlan(); setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
-    if (action === "done") { const id=target.dataset.id; update(s => togglePoint(s,day().id,id,activeIds())); renderToday(); renderPlan(); if($("#placeDialog")?.open) openPlace(id,false); else if(state.view === "plan") setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
+    if (action === "done") { const id=target.dataset.id; const wasDone=state.done.includes(id); const ids=activeIds(); update(s => togglePoint(s,day().id,id,ids)); if(!wasDone && state.view==="today") persist({transition:{dayId:day().id,completedId:id,nextId:state.current[day().id] || null}}); renderToday(); renderPlan(); if($("#placeDialog")?.open) openPlace(id,false); else if(state.view === "plan") setTimeout(() => $("#dayCompanion")?.scrollIntoView({behavior:"smooth",block:"start"}),100); }
     if (action === "save") { const id=target.dataset.id; update(s => ({...s,saved:s.saved.includes(id)?s.saved.filter(x=>x!==id):[...s.saved,id]})); renderPlan(); if (state.view === "saved") renderSaved(); }
     if(action === "save" && $("#placeDialog")?.open) openPlace($("#placeDialog").dataset.id,false);
     if (action === "food-filter") { persist({foodVegetarian:target.dataset.value === "veg" ? !state.foodVegetarian : false}); renderFood(); renderMapFilters(); if(state.view === "map")renderMap(); }
@@ -487,10 +674,11 @@ function bindEvents() {
     if (action === "phrase") renderPhrases(target.dataset.key);
     if (action === "check") { update(s => ({...s,checklist:{...s.checklist,[target.dataset.id]:target.checked}})); }
     if (action === "expense-remove") { update(s => ({...s,expenses:s.expenses.filter((_,i)=>i!==Number(target.dataset.index))})); renderBudget(); }
-    if (action === "reset" && confirm("Usunąć postęp, zapisane miejsca, checklistę i budżet na tym urządzeniu?")) { state=store.reset(); renderAll(); toast("Dane zostały usunięte"); }
+    if (action === "reset" && confirm("Usunąć profil wyjazdu, plan, postęp, zapisane miejsca i budżet na tym urządzeniu?")) { state=store.reset(); renderAll(); toast("Dane zostały usunięte"); }
     if (action === "utility" && target.dataset.utility === "transport") { setView("help"); const t=data.transport.city; $("#helpResult").classList.add("has-content"); $("#helpResult").innerHTML=`<h3>${t.title}</h3><p>${t.best}</p>${t.tickets.map(x=>`<p><b>${x.name} · ${x.price}</b><br>${x.note}</p>`).join("")}<p>${t.tap}</p><a href="${t.officialUrl}" target="_blank" rel="noopener">Aktualne informacje ATAC</a>`; }
   });
   document.addEventListener("submit", event => {
+    if (event.target.id === "tripForm") { event.preventDefault(); saveTrip(event.target); }
     if (event.target.id === "budgetForm") { event.preventDefault(); const values=new FormData(event.target); update(s=>({...s,expenses:[...s.expenses,{label:values.get("label"),amount:Number(values.get("amount"))}]})); renderBudget(); }
     if (event.target.id === "hotelRouteForm") { event.preventDefault(); const values=new FormData(event.target); persist({hotelAddress:String(values.get("hotelAddress") || "").trim()}); renderArrivalJourney(); toast("Adres noclegu zapisany na tym urządzeniu"); }
   });
@@ -517,7 +705,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { await loadData(); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=20"); }
+  try { await loadData(); const autoDay=currentTripDayId(); if(autoDay && !state.startedDays?.[state.dayId]) persist({dayId:autoDay,mapDay:autoDay}); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=21"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init().then(() => { const id=new URLSearchParams(location.search).get("place"); if(id && data.places) openPlace(id,false); });
