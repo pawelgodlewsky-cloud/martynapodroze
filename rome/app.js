@@ -1,9 +1,9 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
-import { pointStatus, resumePoint, resetDay, skipPoint, togglePoint } from "./progression.js?v=22";
-import { placeVisual } from "./place-visuals.js?v=22";
-import { POINT_TYPES, activeAlerts, adaptRoute, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, resolveRoute, romaPassComparison, vaticanVariant } from "./route-rules.js?v=22";
-import { DEFAULT_TRIP_PROFILE, datesForTrip, dayIdForDate, migrationForLegacyState, normalizeTripProfile, tripDateRange, tripPlanDayIds } from "./trip-profile.js?v=22";
+import { pointStatus, resumePoint, resetDay, skipPoint, togglePoint } from "./progression.js?v=23";
+import { placeVisual } from "./place-visuals.js?v=23";
+import { POINT_TYPES, activeAlerts, adaptRoute, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, resolveRoute, romaPassComparison, routeStartTime, vaticanVariant } from "./route-rules.js?v=23";
+import { DEFAULT_TRIP_PROFILE, datesForTrip, dayIdForDate, migrationForLegacyState, normalizeTripProfile, tripDateRange, tripPlanDayIds } from "./trip-profile.js?v=23";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -21,7 +21,7 @@ let adjustmentPreview = null;
 
 async function loadData() {
   const names = ["guide","days","places","restaurants","tickets","transport","phrases","emergency","alerts"];
-  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=22`).then(response => {
+  const results = await Promise.all(names.map(name => fetch(`data/${name}.json?v=23`).then(response => {
     if (!response.ok) throw new Error(`Nie udało się wczytać ${name}`);
     return response.json();
   })));
@@ -102,10 +102,7 @@ const tripAnchor = selected => {
 function dayStart(selected) {
   const anchorId = selected.reservations?.[0] === "catacombs" ? "catacombs-san-sebastiano" : selected.reservations?.[0];
   const slot = state.anchorSlots?.[anchorId];
-  if (!slot) return dayMeta[selected.id]?.start || "08:30";
-  const [hour,minute] = slot.split(":").map(Number);
-  const early = Math.max(0,hour * 60 + minute - 15);
-  return `${String(Math.floor(early / 60)).padStart(2,"0")}:${String(early % 60).padStart(2,"0")}`;
+  return routeStartTime(selected.id,slot,dayMeta[selected.id]?.start || "08:30");
 }
 function dayCost(selected) {
   const prices = {colosseum:18,"vatican-museums":25,pantheon:7,"castel-santangelo":18,"borghese-gallery":18,"catacombs-san-sebastiano":10,"vittoriano-terrace":18,"torre-argentina-area":7};
@@ -713,7 +710,7 @@ function bindEvents() {
 function updateNetwork() { const online=navigator.onLine; $("#networkStatus").textContent=online?"online":"offline"; $("#networkStatus").classList.toggle("is-offline",!online); document.body.classList.toggle("offline",!online); }
 
 async function init() {
-  try { migrateStoredState(); await loadData(); const autoDay=currentTripDayId(); if(autoDay && !state.startedDays?.[state.dayId]) persist({dayId:autoDay,mapDay:autoDay}); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=22"); }
+  try { migrateStoredState(); await loadData(); const autoDay=currentTripDayId(); if(autoDay && !state.startedDays?.[state.dayId]) persist({dayId:autoDay,mapDay:autoDay}); plannerChoices(); bindEvents(); renderAll(); setView(state.view || "today"); updateNetwork(); if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js?v=23"); }
   catch(error) { console.error(error); $("#todayPanel").innerHTML=`<article class="today-card"><h2>Nie udało się otworzyć przewodnika</h2><p>Odśwież stronę. Jeśli jesteś offline i otwierasz ją pierwszy raz, połącz się z internetem.</p></article>`; }
 }
 init().then(() => { const id=new URLSearchParams(location.search).get("place"); if(id && data.places) openPlace(id,false); });

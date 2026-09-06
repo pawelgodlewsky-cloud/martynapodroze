@@ -1,11 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { activeAlerts, adaptRoute, isFirstMonday2026, isSanSebastianoAnnualClosure, resolveRoute, romaPassComparison, vaticanVariant } from "../rome/route-rules.js";
+import { activeAlerts, adaptRoute, isFirstMonday2026, isSanSebastianoAnnualClosure, resolveRoute, romaPassComparison, routeStartTime, vaticanVariant } from "../rome/route-rules.js";
 
 describe("Rome route rules", () => {
   it("selects all three Vatican variants at their boundaries", () => {
     expect(vaticanVariant("09:30")).toBe("early");
     expect(vaticanVariant("10:00")).toBe("medium");
     expect(vaticanVariant("12:00")).toBe("late");
+  });
+
+  it("starts before morning stops when an anchor is late", () => {
+    expect(routeStartTime("day-2","13:00","07:45")).toBe("09:00");
+    expect(routeStartTime("day-1","13:00","08:15")).toBe("08:15");
+    expect(routeStartTime("day-4a","15:00","08:45")).toBe("08:45");
+    expect(routeStartTime("day-1","09:20","08:15")).toBe("09:05");
   });
 
   it("puts Pantheon before a late Vatican slot and omits Castel interior", () => {

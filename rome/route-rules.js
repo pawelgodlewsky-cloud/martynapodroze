@@ -16,6 +16,15 @@ export function vaticanVariant(slot = "08:00") {
   return "late";
 }
 
+export function routeStartTime(dayId, slot, fallback = "08:30") {
+  if (!slot) return fallback;
+  if (dayId === "day-1" && minutes(slot) > minutes("10:30")) return fallback;
+  if (dayId === "day-2" && vaticanVariant(slot) === "late") return "09:00";
+  if (dayId === "day-4a" && minutes(slot) > minutes("12:00")) return fallback;
+  const start = Math.max(0,minutes(slot) - 15);
+  return `${String(Math.floor(start / 60)).padStart(2,"0")}:${String(start % 60).padStart(2,"0")}`;
+}
+
 export function isMonday(dateValue) {
   if (!dateValue) return false;
   return new Date(`${dateValue}T12:00:00`).getDay() === 1;
