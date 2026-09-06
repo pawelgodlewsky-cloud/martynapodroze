@@ -12,6 +12,11 @@ describe("Rome trip profile",()=>{
     expect(datesForTrip(profile)["day-4a"]).toBe("2026-10-10");
     expect(dayIdForDate(profile,"2026-10-09")).toBe("day-3");
   });
+  it("keeps optional dome routing and reduced-admission preferences",()=>{
+    const profile=normalizeTripProfile({domeRoute:"sobieski",reducedAdmission:true});
+    expect(profile.domeRoute).toBe("sobieski");
+    expect(profile.reducedAdmission).toBe(true);
+  });
   it("clears only the obsolete default ticket slots",()=>{
     const legacy=migrationForLegacyState({anchorSlots:{colosseum:"08:30","vatican-museums":"08:30","borghese-gallery":"10:00","catacombs-san-sebastiano":"10:30"}});
     const custom=migrationForLegacyState({anchorSlots:{colosseum:"09:20","vatican-museums":"08:30","borghese-gallery":"10:00","catacombs-san-sebastiano":"10:30"}});

@@ -26,3 +26,22 @@ export function pointStatus(state, id) {
   if ((state.skipped || []).includes(id)) return "SKIPPED";
   return "TODO";
 }
+
+export function applyRouteAdjustment(state,dayId,preview) {
+  return {...state,
+    routeOverrides:{...(state.routeOverrides || {}),[dayId]:preview.ids},
+    adjustments:{...(state.adjustments || {}),[dayId]:{kind:preview.kind,value:preview.value,message:preview.message}},
+    skipped:[...new Set([...(state.skipped || []),...(preview.removed || [])])],
+    lastAdjustment:{dayId,previousOverride:state.routeOverrides?.[dayId] || null,previousSkipped:[...(state.skipped || [])]},
+    transition:null
+  };
+}
+
+export function undoRouteAdjustment(state) {
+  const change=state.lastAdjustment;
+  if(!change)return state;
+  const routeOverrides={...(state.routeOverrides || {})};
+  if(change.previousOverride)routeOverrides[change.dayId]=change.previousOverride; else delete routeOverrides[change.dayId];
+  const adjustments={...(state.adjustments || {})}; delete adjustments[change.dayId];
+  return {...state,routeOverrides,adjustments,skipped:[...change.previousSkipped],lastAdjustment:null,transition:null};
+}

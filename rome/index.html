@@ -12,33 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-  <script>
-    (() => {
-      const release = "24";
-      const releaseKey = "rome-guide-release";
-      if (localStorage.getItem(releaseKey) === release) return;
-      window.addEventListener("load", async () => {
-        try {
-          const scopePath = new URL("./", location.href).pathname;
-          if ("serviceWorker" in navigator) {
-            const registrations = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(registrations
-              .filter(registration => new URL(registration.scope).pathname === scopePath)
-              .map(registration => registration.unregister()));
-          }
-          if ("caches" in window) {
-            const names = await caches.keys();
-            await Promise.all(names.filter(name => name.startsWith("martyna-rome-")).map(name => caches.delete(name)));
-          }
-          localStorage.setItem(releaseKey, release);
-          const freshUrl = new URL(location.href);
-          freshUrl.searchParams.set("v", release);
-          location.replace(freshUrl);
-        } catch (_) {}
-      }, { once: true });
-    })();
-  </script>
-  <link rel="stylesheet" href="design.css?v=24">
+  <script>window.__ROME_RELEASE__="25";</script>
+  <link rel="stylesheet" href="design.css?v=25">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -147,7 +122,7 @@
       <button class="sheet-close" type="button" data-action="close-trip" aria-label="Zamknij">×</button>
       <div class="trip-step" data-trip-step="0"><p class="eyebrow">MÓJ RZYM · 1 Z 4</p><h2>Kiedy jesteś w Rzymie?</h2><p>Daty są opcjonalne. Pomogą automatycznie wybrać właściwy dzień.</p><div class="form-grid"><label>Data przyjazdu<input type="date" name="arrivalDate"></label><label>Data wyjazdu<input type="date" name="departureDate"></label><label>Liczba pełnych dni<select name="fullDays"><option value="1">1 dzień</option><option value="2">2 dni</option><option value="3">3 dni</option><option value="4">4 dni</option></select></label></div></div>
       <div class="trip-step" data-trip-step="1"><p class="eyebrow">MÓJ RZYM · 2 Z 4</p><h2>Przylot i nocleg</h2><div class="choice-grid compact"><label><input type="radio" name="airport" value="FCO"><span>Fiumicino</span></label><label><input type="radio" name="airport" value="CIA"><span>Ciampino</span></label><label><input type="radio" name="airport" value="none"><span>Inne / bez transferu</span></label></div><div class="form-grid"><label>Nazwa noclegu<input name="accommodationName" autocomplete="organization" placeholder="np. Hotel Roma"></label><label>Adres noclegu<input name="accommodationAddress" autocomplete="street-address" placeholder="np. Via Cavour 20, Roma"></label></div><p class="form-note">Nie zgadujemy czasu dojazdu. Adres służy tylko do otwarcia trasy w mapie.</p></div>
-      <div class="trip-step" data-trip-step="2"><p class="eyebrow">MÓJ RZYM · 3 Z 4</p><h2>Godziny biletów</h2><p>Wpisz tylko bilety, które już masz. Puste pole oznacza „Jeszcze nie mam”.</p><div class="form-grid anchor-fields"><label>Koloseum<input type="time" name="colosseum"><small>Jeszcze nie mam — zostaw puste</small></label><label>Muzea Watykańskie<input type="time" name="vatican-museums"><small>Jeszcze nie mam — zostaw puste</small></label><label>Galleria Borghese<input type="time" name="borghese-gallery"><small>Jeszcze nie mam — zostaw puste</small></label><label>Katakumby / inna kotwica<input type="time" name="catacombs-san-sebastiano"><small>Opcjonalnie</small></label></div></div>
+      <div class="trip-step" data-trip-step="2"><p class="eyebrow">MÓJ RZYM · 3 Z 4</p><h2>Godziny biletów</h2><p>Wpisz tylko bilety, które już masz. Puste pole oznacza „Jeszcze nie mam”.</p><div class="form-grid anchor-fields"><label>Koloseum<input type="time" name="colosseum"><small>Jeszcze nie mam — zostaw puste</small></label><label>Muzea Watykańskie<input type="time" name="vatican-museums"><small>Jeszcze nie mam — zostaw puste</small></label><label>Galleria Borghese<input type="time" name="borghese-gallery"><small>Jeszcze nie mam — zostaw puste</small></label><label>Katakumby / inna kotwica<input type="time" name="catacombs-san-sebastiano"><small>Opcjonalnie</small></label><label>Kopuła św. Piotra<input type="time" name="st-peter-dome"><small>Tylko jeśli masz rezerwację</small></label><label>Trasa biletu do kopuły<select name="domeRoute"><option value="none">Nie mam biletu</option><option value="unknown">Nie wiem</option><option value="sobieski">Sobieski</option><option value="lambertini">Lambertini</option></select><small>Jeśli nie wiesz, sprawdź mail z biletem — trasa ustala kolejność Bazyliki i kopuły.</small></label></div><label class="form-check"><input type="checkbox" name="reducedAdmission"><span>Mam prawo do biletu ulgowego UE 18–25 (Koloseum / Panteon)</span></label><p class="form-note">Dane Twojego wyjazdu są zapisywane tylko na tym urządzeniu.</p></div>
       <div class="trip-step" data-trip-step="3"><p class="eyebrow">MÓJ RZYM · 4 Z 4</p><h2>Jak podróżujesz?</h2><fieldset><legend>Tempo</legend><div class="choice-grid compact"><label><input type="radio" name="tripPace" value="slow"><span>Spokojnie</span></label><label><input type="radio" name="tripPace" value="normal"><span>Normalnie</span></label><label><input type="radio" name="tripPace" value="intense"><span>Intensywnie</span></label></div></fieldset><fieldset><legend>Typ podróży</legend><div class="choice-grid compact"><label><input type="radio" name="travelType" value="couple"><span>Solo / para</span></label><label><input type="radio" name="travelType" value="children"><span>Z dziećmi</span></label><label><input type="radio" name="travelType" value="other"><span>Inne</span></label></div></fieldset></div>
       <div class="trip-nav"><button type="button" class="button quiet" data-action="trip-back">Wstecz</button><button type="button" class="button primary" data-action="trip-next">Dalej</button><button type="submit" class="button primary">ZAPISZ MÓJ RZYM</button></div>
     </form>
@@ -155,9 +130,11 @@
 
   <dialog id="rescueDialog" class="sheet rescue-sheet"></dialog>
 
+  <aside id="updateNotice" class="update-notice" hidden><span>Dostępna jest nowsza wersja przewodnika.</span><button class="mini-button" data-action="update-app">ZAKTUALIZUJ</button></aside>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <link rel="stylesheet" href="place-cards.css?v=24">
-  <script type="module" src="app.js?v=24"></script>
+  <link rel="stylesheet" href="place-cards.css?v=25">
+  <script type="module" src="app.js?v=25"></script>
 </body>
 </html>

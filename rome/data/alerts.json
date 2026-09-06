@@ -20,6 +20,26 @@
     "sourceLabel": "czasowa zmiana organizacji ruchu"
   },
   {
+    "id": "roma-termini-regional-changes-2026-09",
+    "title": "Roma Termini · połączenia regionalne",
+    "description": "Na części połączeń regionalnych w rejonie Roma Termini obowiązują zmiany tras i godzin. Część pociągów może korzystać z Roma Tiburtina. Sprawdź aktualny pociąg przed wyjazdem.",
+    "startDate": "2026-09-07T00:00:00",
+    "endDate": "2026-09-19T23:59:59",
+    "affectedPlace": "roma-termini",
+    "severity": "warning",
+    "sourceLabel": "czasowa zmiana organizacji ruchu"
+  },
+  {
+    "id": "rome-fiumicino-works-2026",
+    "title": "Rome–Fiumicino · prace kolejowe",
+    "description": "Na części połączeń kolejowych Rome–Fiumicino trwają prace związane z Roma Ostiense. Przed przejazdem sprawdź aktualny rozkład w Trenitalia.",
+    "startDate": "2026-09-04T00:00:00",
+    "endDate": "2026-10-11T23:59:59",
+    "affectedPlace": "fiumicino",
+    "severity": "warning",
+    "sourceLabel": "czasowa zmiana organizacji ruchu"
+  },
+  {
     "id": "appia-sites-temporary-closure-2026",
     "title": "Parco Appia · czasowe zamknięcia",
     "description": "Capo di Bove i Tombe di via Latina są obecnie czasowo zamknięte. Sprawdź aktualny komunikat przed wyborem obiektów karnetu.",

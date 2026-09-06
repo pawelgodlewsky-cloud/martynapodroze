@@ -1,5 +1,7 @@
 import {afterEach,beforeEach,describe,expect,it} from "vitest";
 import {createStore} from "../guides/core/storage.js";
+// @ts-expect-error This Workers project intentionally omits Node ambient types; Vitest runs this file in Node.
+import {readFileSync} from "node:fs";
 
 describe("Rome local profile storage",()=>{
   const values=new Map<string,string>();
@@ -17,5 +19,13 @@ describe("Rome local profile storage",()=>{
     expect(store.get().tripProfile.configured).toBe(false);
     values.set("mp:rome-test:state:v1","{");
     expect(createStore("rome-test",{tripProfile:{configured:false}}).get().tripProfile.configured).toBe(false);
+  });
+  it("updates dated data through the network without touching saved progress",()=>{
+    const source=readFileSync(new URL("../rome/sw.js",import.meta.url),"utf8");
+    expect(source).toContain('martyna-rome-v25');
+    expect(source).toContain('url.pathname.includes("/data/")');
+    expect(source).toContain('cache:"no-store"');
+    expect(source).not.toContain("localStorage");
+    expect(source).not.toContain("skipWaiting()))");
   });
 });

@@ -6,6 +6,8 @@ export const DEFAULT_TRIP_PROFILE = Object.freeze({
   airport:"none",
   accommodationName:"",
   accommodationAddress:"",
+  domeRoute:"none",
+  reducedAdmission:false,
   pace:"normal",
   travelType:"couple"
 });
@@ -29,6 +31,7 @@ export function normalizeTripProfile(profile = {}) {
   const pace = ["slow","normal","intense"].includes(profile.pace) ? profile.pace : "normal";
   const travelType = ["couple","children","other"].includes(profile.travelType) ? profile.travelType : "couple";
   const airport = ["FCO","CIA","none"].includes(profile.airport) ? profile.airport : "none";
+  const domeRoute = ["none","unknown","sobieski","lambertini"].includes(profile.domeRoute) ? profile.domeRoute : "none";
   return {
     ...DEFAULT_TRIP_PROFILE,
     ...profile,
@@ -37,6 +40,8 @@ export function normalizeTripProfile(profile = {}) {
     departureDate:isoDate(profile.departureDate),
     fullDays:Math.max(1,Math.min(4,Number(profile.fullDays) || 3)),
     airport,
+    domeRoute,
+    reducedAdmission:Boolean(profile.reducedAdmission),
     pace,
     travelType,
     accommodationName:String(profile.accommodationName || "").trim(),
@@ -52,11 +57,11 @@ export function tripPlanDayIds(profile = {}) {
 export function datesForTrip(profile = {}) {
   const normalized = normalizeTripProfile(profile);
   if (!normalized.arrivalDate) return {};
-  const start = new Date(`${normalized.arrivalDate}T12:00:00`);
+  const start = new Date(`${normalized.arrivalDate}T12:00:00Z`);
   return Object.fromEntries(tripPlanDayIds(normalized).map((dayId,index) => {
     const date = new Date(start);
-    date.setDate(start.getDate() + index);
-    return [dayId,date.toLocaleDateString("sv-SE")];
+    date.setUTCDate(start.getUTCDate() + index);
+    return [dayId,date.toISOString().slice(0,10)];
   }));
 }
 
@@ -68,9 +73,9 @@ export function dayIdForDate(profile = {}, dateValue = "") {
 export function tripDateRange(profile = {}, locale = "pl-PL") {
   const normalized = normalizeTripProfile(profile);
   if (!normalized.arrivalDate) return "Daty nieustawione";
-  const arrival = new Date(`${normalized.arrivalDate}T12:00:00`);
+  const arrival = new Date(`${normalized.arrivalDate}T12:00:00Z`);
   const departureValue = normalized.departureDate || Object.values(datesForTrip(normalized)).at(-1);
-  const departure = new Date(`${departureValue}T12:00:00`);
-  const format = date => date.toLocaleDateString(locale,{day:"numeric",month:"long"});
+  const departure = new Date(`${departureValue}T12:00:00Z`);
+  const format = date => date.toLocaleDateString(locale,{day:"numeric",month:"long",timeZone:"Europe/Rome"});
   return `${format(arrival)}–${format(departure)}`;
 }

@@ -9,6 +9,84 @@ const minutes = value => {
   return hour * 60 + minute;
 };
 
+export const ROME_TIME_ZONE = "Europe/Rome";
+export const CASTEL_SPECIAL_MONDAYS_2026 = Object.freeze(["2026-08-03","2026-09-07","2026-10-05","2026-11-02","2026-12-07"]);
+export const TREVI_LATE_OPENING_DATES_2026 = Object.freeze(["2026-09-14","2026-09-28","2026-10-12","2026-10-26","2026-11-09","2026-11-23","2026-12-07","2026-12-21"]);
+export const VATICAN_CLOSED_DATES_2026 = Object.freeze(["2026-01-01","2026-01-06","2026-02-11","2026-03-19","2026-04-06","2026-05-01","2026-06-29","2026-08-14","2026-08-15","2026-11-01","2026-12-08","2026-12-25","2026-12-26"]);
+
+const dateAtNoonUtc = dateValue => new Date(`${dateValue}T12:00:00Z`);
+export function weekdayInRome(dateValue) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateValue || ""))) return -1;
+  const short = new Intl.DateTimeFormat("en-US",{timeZone:ROME_TIME_ZONE,weekday:"short"}).format(dateAtNoonUtc(dateValue));
+  return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(short);
+}
+export function romeDateTimeParts(value = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:ROME_TIME_ZONE,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(value).map(part => [part.type,part.value]));
+  return {date:`${parts.year}-${parts.month}-${parts.day}`,time:`${parts.hour}:${parts.minute}`,minutes:Number(parts.hour) * 60 + Number(parts.minute)};
+}
+export function isFirstSunday(dateValue) { return weekdayInRome(dateValue) === 0 && Number(String(dateValue).slice(8,10)) <= 7; }
+export function isLastSunday(dateValue) {
+  if (weekdayInRome(dateValue) !== 0) return false;
+  const date = dateAtNoonUtc(dateValue); date.setUTCDate(date.getUTCDate() + 7);
+  return date.getUTCMonth() !== Number(dateValue.slice(5,7)) - 1;
+}
+
+const FREE_DAY_POLICIES = Object.freeze({
+  colosseum:{admissionPrice:0,reservationRequired:false,reservationFee:0,ticketMethod:"on_site",note:"Dziś obowiązuje darmowy wstęp. Nie wybierasz standardowego slotu online. Przyjedź możliwie wcześnie i odbierz bilet na miejscu."},
+  pantheon:{admissionPrice:0,reservationRequired:false,reservationFee:0,ticketMethod:"on_site",note:"Dziś wstęp jest bezpłatny."},
+  "castel-santangelo":{admissionPrice:0,reservationRequired:false,reservationFee:0,ticketMethod:"on_site",note:"Dziś wstęp może być bezpłatny. Sprawdź zasady wydawania biletu na miejscu."},
+  "borghese-gallery":{admissionPrice:0,reservationRequired:true,reservationFee:2,ticketMethod:"reservation",note:"Wstęp bezpłatny, rezerwacja 2 EUR. Rezerwacja godziny nadal jest obowiązkowa."}
+});
+
+export function admissionPolicy(placeId,dateValue,{reduced=false,slot=""}={}) {
+  const standard = {
+    colosseum:{admissionPrice:reduced ? 2 : 18,reservationRequired:true,reservationFee:0,ticketMethod:"online_slot"},
+    pantheon:{admissionPrice:reduced ? 2 : 7,reservationRequired:false,reservationFee:0,ticketMethod:"ticket"},
+    "castel-santangelo":{admissionPrice:18,reservationRequired:false,reservationFee:0,ticketMethod:"ticket"},
+    "borghese-gallery":{admissionPrice:slot === "17:45" ? 11 : 16,reservationRequired:true,reservationFee:2,ticketMethod:"reservation"},
+    "vatican-museums":{admissionPrice:25,reservationRequired:true,reservationFee:0,ticketMethod:"online_slot"},
+    "torre-argentina-area":{admissionPrice:7,reservationRequired:false,reservationFee:0,ticketMethod:"ticket"},
+    "catacombs-san-sebastiano":{admissionPrice:10,reservationRequired:true,reservationFee:0,ticketMethod:"reservation"},
+    "vittoriano-terrace":{admissionPrice:18,reservationRequired:false,reservationFee:0,ticketMethod:"ticket"}
+  }[placeId] || {admissionPrice:0,reservationRequired:false,reservationFee:0,ticketMethod:"none"};
+  if (placeId === "castel-santangelo" && CASTEL_SPECIAL_MONDAYS_2026.includes(dateValue)) return {...standard,admissionPrice:5,reservationRequired:false,reservationFee:0,ticketMethod:"on_site",note:"Specjalne otwarcie 14:00–20:00, ostatnie wejście 19:00. Bilet 5 EUR, sprzedaż na miejscu."};
+  if (placeId === "castel-santangelo" && isMonday(dateValue)) return {...standard,admissionPrice:0,available:false,note:"Dziś zamknięte. Specjalne poniedziałkowe otwarcia w 2026 obowiązują tylko w pięciu jawnie wskazanych terminach."};
+  if (placeId === "vatican-museums" && isLastSunday(dateValue)) return {...standard,admissionPrice:0,reservationRequired:false,reservationFee:0,ticketMethod:"on_site",note:"Ostatnia niedziela miesiąca: darmowy wstęp w specjalnym trybie 09:00–14:00, ostatnie wejście 12:30."};
+  const nationalColosseumFree = placeId === "colosseum" && dateValue?.startsWith("2026-") && ["04-25","06-02","11-04"].includes(dateValue.slice(5));
+  if ((isFirstSunday(dateValue) || nationalColosseumFree) && FREE_DAY_POLICIES[placeId]) return {...standard,...FREE_DAY_POLICIES[placeId]};
+  return standard;
+}
+
+export function vaticanMuseumStatus(dateValue) {
+  if (!dateValue) return {open:true,mode:"standard",hours:"08:00–20:00",lastEntry:"18:00"};
+  if (VATICAN_CLOSED_DATES_2026.includes(dateValue)) return {open:false,mode:"closed",reason:"Muzea Watykańskie są tego dnia zamknięte."};
+  if (weekdayInRome(dateValue) === 0) return isLastSunday(dateValue)
+    ? {open:true,mode:"last_sunday",hours:"09:00–14:00",lastEntry:"12:30",note:"Ostatnia niedziela miesiąca: specjalny tryb i zasady darmowego wejścia."}
+    : {open:false,mode:"closed",reason:"Muzea Watykańskie są tego dnia zamknięte."};
+  return {open:true,mode:"standard",hours:"08:00–20:00",lastEntry:"18:00"};
+}
+
+export function largoArgentinaStatus(dateValue,timeValue="12:00") {
+  if (!dateValue) return {open:true,lastEntry:"18:45",hours:"10:00–19:00"};
+  if (weekdayInRome(dateValue) === 1 || ["12-25","05-01"].includes(dateValue.slice(5))) return {open:false,reason:"Teren archeologiczny jest tego dnia zamknięty."};
+  if (["12-24","12-31"].includes(dateValue.slice(5))) return {open:minutes(timeValue) <= minutes("13:15"),hours:"09:30–14:00",lastEntry:"13:15"};
+  const winter = dateValue.slice(5) >= "10-25" || dateValue.slice(5) <= "03-28";
+  const lastEntry = winter ? "15:45" : "18:45";
+  return {open:minutes(timeValue) <= minutes(lastEntry),hours:winter ? "10:00–16:00" : "10:00–19:00",lastEntry};
+}
+
+export function treviPaidZoneStatus(dateValue,timeValue="12:00") {
+  const opening = TREVI_LATE_OPENING_DATES_2026.includes(dateValue) ? "14:00" : [1,5].includes(weekdayInRome(dateValue)) ? "11:30" : "09:00";
+  return {open:minutes(timeValue) >= minutes(opening) && minutes(timeValue) <= minutes("21:00"),opening,closing:"22:00",lastEntry:"21:00"};
+}
+
+export function borgheseVisit(dateValue,slot="10:00") {
+  if (weekdayInRome(dateValue) === 1) return {open:false,duration:0,end:"",...admissionPolicy("borghese-gallery",dateValue,{slot})};
+  const duration = slot === "17:45" ? 75 : 120;
+  const endMinutes = minutes(slot) + duration;
+  return {open:true,duration,end:`${String(Math.floor(endMinutes / 60)).padStart(2,"0")}:${String(endMinutes % 60).padStart(2,"0")}`,...admissionPolicy("borghese-gallery",dateValue,{slot})};
+}
+
 export function vaticanVariant(slot = "08:00") {
   const value = minutes(slot);
   if (value <= minutes("09:30")) return "early";
@@ -26,14 +104,11 @@ export function routeStartTime(dayId, slot, fallback = "08:30") {
 }
 
 export function isMonday(dateValue) {
-  if (!dateValue) return false;
-  return new Date(`${dateValue}T12:00:00`).getDay() === 1;
+  return weekdayInRome(dateValue) === 1;
 }
 
 export function isFirstMonday2026(dateValue) {
-  if (!dateValue || !dateValue.startsWith("2026-")) return false;
-  const date = new Date(`${dateValue}T12:00:00`);
-  return date.getDay() === 1 && date.getDate() <= 7;
+  return CASTEL_SPECIAL_MONDAYS_2026.includes(dateValue);
 }
 
 export function isWinterColosseumSeason(dateValue) {
@@ -61,10 +136,11 @@ export function resolveRoute(dayId, state = {}) {
   if (dayId === "day-1" && mode === "full") {
     const normal = ["colosseum","arch-constantine","palatine","forum","fori-imperiali","forum-view","campidoglio","piazza-venezia","vittoriano"];
     const late = ["palatine","forum","fori-imperiali","forum-view","colosseum","arch-constantine","campidoglio","piazza-venezia","vittoriano"];
-    const route = minutes(slots.colosseum || "08:30") > minutes("10:30") ? late : normal;
+    const route = admissionPolicy("colosseum",dates[dayId],{slot:slots.colosseum}).ticketMethod !== "on_site" && minutes(slots.colosseum || "08:30") > minutes("10:30") ? late : normal;
     return options.vittorianoTerrace ? [...route,"vittoriano-terrace"] : route;
   }
   if (dayId === "day-2" && mode === "full") {
+    if (!vaticanMuseumStatus(dates[dayId]).open) return ["st-peter","st-peter-square","ponte-santangelo","piazza-navona","pantheon"];
     const variant = vaticanVariant(slots["vatican-museums"] || "08:30");
     const dome = Boolean(options.vaticanDome);
     if (variant === "late") return ["pantheon","piazza-navona","vatican-museums","st-peter","st-peter-square","ponte-santangelo"];
@@ -75,7 +151,7 @@ export function resolveRoute(dayId, state = {}) {
   }
   if (dayId === "day-3" && mode === "full") {
     const base = ["spanish-steps","trevi","via-del-corso","campo-fiori","torre-argentina","jewish-ghetto","tiber-island","trastevere","santa-maria-trastevere"];
-    if (options.torreArgentinaInterior && !isMonday(dates[dayId])) base.splice(5,0,"torre-argentina-area");
+    if (options.torreArgentinaInterior && largoArgentinaStatus(dates[dayId],"12:00").open) base.splice(5,0,"torre-argentina-area");
     const easy = state.planner?.pace === "slow" || state.planner?.company === "family" || state.planner?.company === "mobility";
     return easy ? base : [...base,"gianicolo"];
   }
@@ -176,7 +252,8 @@ export function adaptRoute({
     ids:uniqueInOrder(nextIds),
     removed:uniqueInOrder(removed),
     shortened:uniqueInOrder(shortened),
-    hardAnchors:ids.filter(id => byId.get(id)?.scheduleType === POINT_TYPES.HARD_ANCHOR)
+    hardAnchors:ids.filter(id => byId.get(id)?.scheduleType === POINT_TYPES.HARD_ANCHOR),
+    savedMinutes:removed.reduce((sum,id)=>sum + Number(byId.get(id)?.duration || 0),0) + shortened.length * 15
   };
 }
 

@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {pointStatus,resumePoint,resetDay,skipPoint,togglePoint} from '../rome/progression.js';
+import {applyRouteAdjustment,pointStatus,resumePoint,resetDay,skipPoint,togglePoint,undoRouteAdjustment} from '../rome/progression.js';
 const base = {done:[],skipped:[],current:{},saved:['trevi'],expenses:[{amount:5}]};
 describe('Rome route progression',()=>{
   it('advances then restores a previous point',()=>{
@@ -28,5 +28,16 @@ describe('Rome route progression',()=>{
     const skipped=skipPoint(done,'day-1','b',['a','b']);
     expect(pointStatus(skipped,'a')).toBe('DONE');
     expect(pointStatus(skipped,'b')).toBe('SKIPPED');
+  });
+  it('stores an adjustment preview only when it is applied and can undo it',()=>{
+    const preview={ids:['anchor'],removed:['flex'],kind:'delay',value:60,message:'Podgląd zmian'};
+    expect((base as typeof base & {routeOverrides?:unknown}).routeOverrides).toBeUndefined();
+    const applied=applyRouteAdjustment(base,'day-1',preview);
+    expect(applied.routeOverrides['day-1']).toEqual(['anchor']);
+    expect(applied.skipped).toContain('flex');
+    const restored=undoRouteAdjustment(applied);
+    expect(restored.routeOverrides['day-1']).toBeUndefined();
+    expect(restored.skipped).toEqual([]);
+    expect(restored.lastAdjustment).toBeNull();
   });
 });
