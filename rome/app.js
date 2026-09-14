@@ -1,7 +1,7 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
 import { applyRouteAdjustment, pointStatus, resumePoint, resetDay, skipPoint, togglePoint, undoRouteAdjustment } from "./progression.js?v=25";
-import { hasRealVisual, placeVisual } from "./place-visuals.js?v=26";
+import { hasRealVisual, placeVisual } from "./place-visuals.js?v=27";
 import { POINT_TYPES, activeAlerts, adaptRoute, admissionPolicy, borgheseVisit, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, largoArgentinaStatus, resolveRoute, romaPassComparison, romeDateTimeParts, routeStartTime, treviPaidZoneStatus, vaticanMuseumStatus, vaticanVariant } from "./route-rules.js?v=25";
 import { DEFAULT_TRIP_PROFILE, datesForTrip, dayIdForDate, migrationForLegacyState, normalizeTripProfile, tripDateRange, tripPlanDayIds } from "./trip-profile.js?v=25";
 
@@ -807,7 +807,7 @@ function updateNetwork() { const online=navigator.onLine; $("#networkStatus").te
 
 async function setupServiceWorker() {
   if (!("serviceWorker" in navigator) || !location.protocol.startsWith("http")) return;
-  serviceWorkerRegistration=await navigator.serviceWorker.register("sw.js?v=26");
+  serviceWorkerRegistration=await navigator.serviceWorker.register("sw.js?v=27");
   const showUpdate=()=>{ if(navigator.serviceWorker.controller) $("#updateNotice").hidden=false; };
   if(serviceWorkerRegistration.waiting)showUpdate();
   serviceWorkerRegistration.addEventListener("updatefound",()=>{

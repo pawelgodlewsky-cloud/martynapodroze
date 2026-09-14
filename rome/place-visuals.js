@@ -1,4 +1,8 @@
-const photos = new Set(['colosseum','palatine','forum','campidoglio','st-peter-square','st-peter','vatican-museums','spanish-steps']);
+const photos = new Set([
+  'colosseum','palatine','forum','fori-imperiali','forum-view','campidoglio','piazza-venezia','vittoriano',
+  'st-peter-square','st-peter','vatican-museums','castel-santangelo','ponte-santangelo','piazza-navona','pantheon',
+  'spanish-steps','trevi'
+]);
 const motifs = {
   arch:'<path d="M175 235V95h250v140h-55v-95q-35-55-70 0v95h-35v-65q-22-35-45 0v65z"/><path d="M175 110h250M190 80h220M200 125v105M405 125v105"/>',
   temple:'<path d="M140 120l160-70 160 70zM150 230h300M135 245h330"/><path d="M170 125v105m52-105v105m52-105v105m52-105v105m52-105v105m52-105v105" stroke-width="14"/>',

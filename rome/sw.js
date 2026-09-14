@@ -1,8 +1,8 @@
-const CACHE = "martyna-rome-v26";
+const CACHE = "martyna-rome-v27";
 const APP = [
-  "./progression.js?v=25","./place-visuals.js?v=26","./place-cards.css?v=26","./route-rules.js?v=25","./trip-profile.js?v=25",
-  ...["colosseum","colosseum-interior","colosseum-night","palatine","forum","campidoglio","st-peter-square","st-peter","vatican-museums","spanish-steps"].map(id => `./assets/places/${id}.jpg`),
-  "./","./index.html","./styles.css?v=20","./design.css?v=25","./app.js?v=26","./manifest.webmanifest",
+  "./progression.js?v=25","./place-visuals.js?v=27","./place-cards.css?v=26","./route-rules.js?v=25","./trip-profile.js?v=25",
+  ...["colosseum","colosseum-interior","colosseum-night","palatine","forum","fori-imperiali","forum-view","campidoglio","piazza-venezia","vittoriano","st-peter-square","st-peter","vatican-museums","castel-santangelo","ponte-santangelo","piazza-navona","pantheon","spanish-steps","trevi"].map(id => `./assets/places/${id}.jpg`),
+  "./","./index.html","./styles.css?v=20","./design.css?v=25","./app.js?v=27","./manifest.webmanifest",
   "/assets/postcard-rome.jpg",
   "./data/guide.json?v=25","./data/days.json?v=25","./data/places.json?v=25","./data/restaurants.json?v=25",
   "./data/tickets.json?v=25","./data/transport.json?v=25","./data/phrases.json?v=25","./data/emergency.json?v=25","./data/alerts.json?v=25",
