@@ -22,7 +22,7 @@ describe("Rome local profile storage",()=>{
   });
   it("updates dated data through the network without touching saved progress",()=>{
     const source=readFileSync(new URL("../rome/sw.js",import.meta.url),"utf8");
-    expect(source).toContain('martyna-rome-v25');
+    expect(source).toContain('martyna-rome-v26');
     expect(source).toContain('url.pathname.includes("/data/")');
     expect(source).toContain('cache:"no-store"');
     expect(source).not.toContain("localStorage");

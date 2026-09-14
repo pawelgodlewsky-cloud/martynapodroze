@@ -1,7 +1,7 @@
 import { createStore } from "/guides/core/storage.js";
 import { distanceKm, mapsUrl, routeUrl } from "/guides/core/geo.js";
 import { applyRouteAdjustment, pointStatus, resumePoint, resetDay, skipPoint, togglePoint, undoRouteAdjustment } from "./progression.js?v=25";
-import { placeVisual } from "./place-visuals.js?v=25";
+import { hasRealVisual, placeVisual } from "./place-visuals.js?v=26";
 import { POINT_TYPES, activeAlerts, adaptRoute, admissionPolicy, borgheseVisit, isFirstMonday2026, isMonday, isSanSebastianoAnnualClosure, isWinterColosseumSeason, largoArgentinaStatus, resolveRoute, romaPassComparison, romeDateTimeParts, routeStartTime, treviPaidZoneStatus, vaticanMuseumStatus, vaticanVariant } from "./route-rules.js?v=25";
 import { DEFAULT_TRIP_PROFILE, datesForTrip, dayIdForDate, migrationForLegacyState, normalizeTripProfile, tripDateRange, tripPlanDayIds } from "./trip-profile.js?v=25";
 
@@ -104,7 +104,6 @@ const dayMeta = {
   "day-4a":{start:"08:45",end:"około 16:00",cost:18,needs:["bilet do Galleria Borghese, jeśli ją wybierasz","dokument tożsamości","wygodne buty"],essential:["borghese-gallery","villa-borghese","pincio"]},
   "day-4b":{start:"08:30",end:"około 16:30",cost:10,needs:["bilet do katakumb, jeśli wchodzisz","buty z dobrą podeszwą","woda"],essential:["appia-antica","catacombs-san-sebastiano"]}
 };
-const editorialVisuals = new Set(["colosseum","palatine","forum","vatican-museums","st-peter","castel-santangelo","pantheon","spanish-steps","trevi","trastevere","santa-maria-trastevere","gianicolo","borghese-gallery","villa-borghese","pincio","appia-antica","catacombs-san-sebastiano"]);
 const closingMinutes = {pantheon:1110,"vittoriano-terrace":1125,"catacombs-san-sebastiano":1005,"borghese-gallery":1140,"torre-argentina-area":945};
 const todayIso = () => romeDateTimeParts().date;
 const tripProfile = () => normalizeTripProfile(state.tripProfile);
@@ -262,7 +261,7 @@ function renderStreetGuide(selected) {
   }
   if (!current) return `<article class="transition-card"><span class="done-seal">✓</span><p class="eyebrow">DZIEŃ UKOŃCZONY</p><h2>Roma zrobiona po Twojemu.</h2><p>${p.done} miejsca oznaczone jako gotowe, ${p.skipped} pominięte.</p><a class="button primary full" href="${accommodationUrl()}" target="_blank" rel="noopener">WRÓĆ DO NOCLEGU <small>· internet</small></a></article>`;
   const index = ids.indexOf(current.id);
-  const visual = editorialVisuals.has(current.id) ? placeVisual(current) : null;
+  const visual = hasRealVisual(current) ? placeVisual(current) : null;
   const countdown=nextAnchorCountdown(selected,current,index);
   return `<article class="street-card">
     <div class="street-progress"><div><span>${index + 1} Z ${ids.length}</span><b>${p.complete} / ${p.total} punktów</b></div><div class="progress-track"><i style="width:${p.percent}%"></i></div></div>
@@ -476,12 +475,18 @@ function decoratePlaces() {
   const index = current ? items.findIndex(item => item.id === current.id) : items.length;
   const previous = items[index-1];
   $("#dayCompanion").insertAdjacentHTML("beforeend", `<div class="route-controls">${previous ? `<button class="button quiet" data-action="resume-point" data-id="${previous.id}">← Wróć: ${escapeHtml(previous.name)}</button>` : ""}<button class="button quiet" data-action="restart-day">Zacznij dzień od nowa</button></div>`);
-  if (current && editorialVisuals.has(current.id)) $(".companion-now").insertAdjacentHTML("afterbegin", `<button class="place-preview companion-place-preview" data-action="open-place" data-id="${current.id}" aria-label="Otwórz kartę: ${escapeHtml(current.name)}">${placeVisual(current)}<span>Otwórz pełną kartę miejsca ↗</span></button>`);
+  if (current && hasRealVisual(current)) {
+    $(".companion-now").classList.add("has-visual");
+    $(".companion-now").insertAdjacentHTML("afterbegin", `<button class="place-preview companion-place-preview" data-action="open-place" data-id="${current.id}" aria-label="Otwórz kartę: ${escapeHtml(current.name)}">${placeVisual(current)}<span>Otwórz pełną kartę miejsca ↗</span></button>`);
+  }
   $$("#timeline .place-card:not(.demo-lock)").forEach(node => {
     const item = place(node.id.slice(6));
     const summary = $("summary",node);
     summary.dataset.action = "open-place"; summary.dataset.id = item.id;
-    if (editorialVisuals.has(item.id)) node.insertAdjacentHTML("afterbegin", `<button class="point-image-frame place-preview" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">${placeVisual(item)}<span>Zobacz miejsce ↗</span></button>`);
+    if (hasRealVisual(item)) {
+      node.classList.add("has-visual");
+      node.insertAdjacentHTML("afterbegin", `<button class="point-image-frame place-preview" data-action="open-place" data-id="${item.id}" aria-label="Otwórz kartę: ${escapeHtml(item.name)}">${placeVisual(item)}<span>Zobacz miejsce ↗</span></button>`);
+    }
     $(".photo-slot",node)?.remove();
   });
 }
@@ -802,7 +807,7 @@ function updateNetwork() { const online=navigator.onLine; $("#networkStatus").te
 
 async function setupServiceWorker() {
   if (!("serviceWorker" in navigator) || !location.protocol.startsWith("http")) return;
-  serviceWorkerRegistration=await navigator.serviceWorker.register("sw.js?v=25");
+  serviceWorkerRegistration=await navigator.serviceWorker.register("sw.js?v=26");
   const showUpdate=()=>{ if(navigator.serviceWorker.controller) $("#updateNotice").hidden=false; };
   if(serviceWorkerRegistration.waiting)showUpdate();
   serviceWorkerRegistration.addEventListener("updatefound",()=>{

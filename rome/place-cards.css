@@ -5,12 +5,12 @@
 
 /* Kadrowanie punktów trasy przeniesione z mechaniki kart Lombardia/Como. */
 @media (min-width:701px){
-  .companion-now{display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:28px;align-items:start}
+  .companion-now.has-visual{display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:28px;align-items:start}
   .companion-now>.companion-place-preview{grid-column:1;grid-row:1/20;width:220px;margin:0;border-radius:110px 110px 18px 18px;overflow:hidden}
   .companion-now>.companion-place-preview .point-image{display:block;width:220px;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center;border-radius:0}
   .companion-now>.companion-place-preview~*{grid-column:2;min-width:0}
   .companion-now>.companion-place-preview>span,.companion-now>.companion-place-preview .visual-caption{padding-inline:15px}
-  #timeline .place-card:not(.demo-lock){display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:30px;align-items:start;padding:24px 24px 0;overflow:visible}
+  #timeline .place-card.has-visual:not(.demo-lock){display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:30px;align-items:start;padding:24px 24px 0;overflow:visible}
   #timeline .place-card>.point-image-frame{grid-column:1;grid-row:1;align-self:start;width:220px;margin:0;border-radius:110px 110px 18px 18px;overflow:hidden}
   #timeline .place-card>.point-image-frame .point-image{display:block;width:220px;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center;border-radius:0;transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .28s ease}
   #timeline .place-card>details{grid-column:2;grid-row:1;min-width:0}
@@ -21,7 +21,7 @@
   #timeline .place-head{padding:4px 0 20px}
   #timeline .place-body{padding:0 0 24px}
 }
-@media (min-width:1050px){#timeline .place-card:not(.demo-lock){grid-template-columns:230px minmax(0,1fr);column-gap:38px}#timeline .place-card>.point-image-frame{width:230px;border-radius:115px 115px 18px 18px}#timeline .place-card>.point-image-frame .point-image{width:230px}}
+@media (min-width:1050px){#timeline .place-card.has-visual:not(.demo-lock){grid-template-columns:230px minmax(0,1fr);column-gap:38px}#timeline .place-card>.point-image-frame{width:230px;border-radius:115px 115px 18px 18px}#timeline .place-card>.point-image-frame .point-image{width:230px}}
 @media (max-width:700px){
   .companion-now>.companion-place-preview{width:min(100%,240px);margin:0 auto 22px;border-radius:120px 120px 18px 18px;overflow:hidden}
   .companion-now>.companion-place-preview .point-image{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center;border-radius:0}
