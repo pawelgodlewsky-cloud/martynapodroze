@@ -8,7 +8,7 @@ export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["worker-public/**/*.js", "assets/cookie-consent.js"],
+    files: ["worker-public/**/*.js", "assets/cookie-consent.js", "assets/inquiry-form.js"],
     languageOptions: {
       globals: {
         document: "readonly",
@@ -19,6 +19,7 @@ export default [
         crypto: "readonly",
         CustomEvent: "readonly",
         FormData: "readonly",
+        AbortSignal: "readonly",
         URL: "readonly",
         fetch: "readonly",
         setTimeout: "readonly"

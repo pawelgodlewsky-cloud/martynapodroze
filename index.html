@@ -2915,6 +2915,19 @@
       left: -9999px;
     }
 
+    .inquiry-status,
+    .inquiry-backup {
+      grid-column: 1 / -1;
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .inquiry-status:empty { display: none; }
+    .inquiry-status[data-state="error"] { color: #a03928; }
+    .inquiry-backup a { color: inherit; overflow-wrap: anywhere; }
+    .inquiry-submit:disabled { cursor: wait; opacity: 0.65; }
+
     @media (max-width: 900px) {
       .inquiry-grid {
         grid-template-columns: 1fr;
@@ -4215,14 +4228,9 @@
         <form
           class="inquiry-form"
           id="inquiry-form"
-          action="https://formsubmit.co/podroz.martyna@gmail.com"
+          action="/api/inquiry"
           method="POST"
         >
-          <input type="hidden" name="_subject" value="Nowe zgłoszenie ze strony Martyna Podróże">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_next" value="https://martynapodroze.pl/dziekujemy.html">
-          <input type="hidden" name="_url" value="https://martynapodroze.pl/#zamowienie">
-          <input type="hidden" name="_autoresponse" value="Dziękuję za wiadomość. Przeczytam Twoje zgłoszenie i odpowiem na podany adres e-mail. Martyna">
           <label class="form-honey" aria-hidden="true">
             Nie wypełniaj tego pola
             <input type="text" name="_honey" tabindex="-1" autocomplete="off">
@@ -4246,17 +4254,17 @@
 
             <label class="inquiry-field">
               Imię *
-              <input type="text" name="Imię" autocomplete="given-name" placeholder="Jak masz na imię?" required>
+              <input type="text" name="Imię" autocomplete="given-name" maxlength="100" placeholder="Jak masz na imię?" required>
             </label>
 
             <label class="inquiry-field">
               Adres e-mail *
-              <input type="email" name="email" autocomplete="email" placeholder="np. anna@gmail.com" required>
+              <input type="email" name="email" autocomplete="email" maxlength="254" placeholder="np. anna@gmail.com" required>
             </label>
 
             <label class="inquiry-field">
               Numer telefonu
-              <input type="tel" name="Telefon" autocomplete="tel" placeholder="Opcjonalnie">
+              <input type="tel" name="Telefon" autocomplete="tel" maxlength="40" placeholder="Opcjonalnie">
             </label>
 
             <label class="inquiry-field">
@@ -4269,17 +4277,17 @@
 
             <label class="inquiry-field">
               Dokąd chcesz pojechać? *
-              <input type="text" name="Kierunek podróży" placeholder="np. Rzym lub jeszcze nie wiem" required>
+              <input type="text" name="Kierunek podróży" maxlength="200" placeholder="np. Rzym lub jeszcze nie wiem" required>
             </label>
 
             <label class="inquiry-field">
               Kiedy planujesz wyjazd?
-              <input type="text" name="Termin podróży" placeholder="np. wrzesień 2026">
+              <input type="text" name="Termin podróży" maxlength="120" placeholder="np. wrzesień 2026">
             </label>
 
             <label class="inquiry-field">
               Skąd możesz wylecieć? *
-              <input type="text" name="Lotniska wylotowe" placeholder="np. Warszawa, Łódź lub Katowice" required>
+              <input type="text" name="Lotniska wylotowe" maxlength="200" placeholder="np. Warszawa, Łódź lub Katowice" required>
             </label>
 
             <label class="inquiry-field">
@@ -4304,7 +4312,7 @@
 
             <label class="inquiry-field">
               Budżet całego wyjazdu
-              <input type="text" name="Budżet podróży" placeholder="np. 4000 zł">
+              <input type="text" name="Budżet podróży" maxlength="100" placeholder="np. 4000 zł">
               <small>Może być orientacyjny.</small>
             </label>
 
@@ -4335,7 +4343,7 @@
 
             <label class="inquiry-field is-wide">
               Jakiego efektu oczekujesz? *
-              <textarea name="Opis potrzeb" minlength="20" placeholder="Opisz swoje priorytety, to, co jest już zarezerwowane, oraz kwestie, które trzeba uwzględnić w ofercie." required></textarea>
+              <textarea name="Opis potrzeb" minlength="20" maxlength="5000" placeholder="Opisz swoje priorytety, to, co jest już zarezerwowane, oraz kwestie, które trzeba uwzględnić w ofercie." required></textarea>
             </label>
 
             <label class="inquiry-consent">
@@ -4348,9 +4356,12 @@
               <span aria-hidden="true">→</span>
             </button>
 
+            <p id="inquiry-status" class="inquiry-status" role="status" aria-live="polite" tabindex="-1"></p>
+            <p class="inquiry-backup">Wolisz napisać bezpośrednio? <a href="mailto:podroz.martyna@gmail.com">podroz.martyna@gmail.com</a></p>
+
             <details class="inquiry-privacy">
               <summary>Jak wykorzystamy Twoje dane?</summary>
-              <p>Administratorem danych jest Martyna Podróże, kontakt: podroz.martyna@gmail.com. Dane wykorzystamy wyłącznie do obsługi zgłoszenia i przygotowania odpowiedzi. Nie zapisujemy Cię w ten sposób do newslettera. Formularz technicznie obsługuje zewnętrzny dostawca FormSubmit.</p>
+              <p>Administratorem danych jest Martyna Podróże, kontakt: podroz.martyna@gmail.com. Dane wykorzystamy wyłącznie do obsługi zgłoszenia i przygotowania odpowiedzi. Nie zapisujemy Cię w ten sposób do newslettera. Formularz obsługuje Cloudflare, a wiadomość e-mail dostarcza Resend.</p>
             </details>
           </div>
         </form>
@@ -4782,5 +4793,6 @@
     })();
   </script>
   <script src="assets/cookie-consent.js?v=3"></script>
+  <script src="assets/inquiry-form.js?v=1"></script>
 </body>
 </html>

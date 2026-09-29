@@ -41,6 +41,7 @@ import {
   validCommerceOrderId
 } from "../src/commerce-admin";
 import { incrementArticleView, isPublishedArticleSlug } from "../src/article-views";
+import { inquiryApi } from "../src/inquiry";
 
 const ADMIN_CSP = "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl data:; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
 const PUBLIC_CSP = "default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self'; font-src https://fonts.gstatic.com; img-src 'self' https://martynapodroze.pl; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
@@ -279,6 +280,7 @@ export default {
       }
       if (url.pathname === "/api/admin/session") return adminSession(request, env);
       if (url.pathname.replace(/\/$/, "") === "/api/newsletter/subscribe") return newsletterApi(request, env);
+      if (url.pathname.replace(/\/$/, "") === "/api/inquiry") return inquiryApi(request, env);
       const articleViewsMatch = url.pathname.match(/^\/api\/blog\/views\/([a-z0-9-]+)\/?$/);
       if (articleViewsMatch) return articleViewsApi(request, env, articleViewsMatch[1] ?? "");
       if (url.pathname.replace(/\/$/, "") === "/api/stripe/webhook") return stripeWebhook(request, env);
